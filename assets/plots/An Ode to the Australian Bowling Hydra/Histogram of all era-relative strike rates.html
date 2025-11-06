@@ -41,11 +41,10 @@
 </head>
 <body>
 
-  <!-- <h2>Differential Strike Rate by Team (Across Eras)</h2> -->
   <div class="chart-container">
     <canvas id="diffChart"></canvas>
     <p style="text-align:center; font-size:14px; color:#555; margin-top:10px;">
-    highest era-relative strike rates.
+    Highest era-relative strike rates.
     </p>
   </div>
 
@@ -73,8 +72,9 @@
       3.471050265, 3.388645498, 3.366428788, 3.34412377
     ];
 
-    const backgroundColors = diffStrike.map(v =>
-      v < -5 ? "rgba(255, 99, 132, 0.7)" : "rgba(54, 162, 235, 0.7)"
+    // Highlight Aussie women in yellow, others in blue
+    const backgroundColors = teams.map(team =>
+      team.includes("Australia (women)") ? "rgba(255, 206, 0, 0.7)" : "rgba(54, 162, 235, 0.7)"
     );
 
     new Chart(ctx, {
@@ -98,7 +98,7 @@
           legend: { display: false },
           title: {
             display: true,
-            text: 'Histogram of all era-relative strike rates',
+            text: 'Highest era-relative strike rates',
             color: '#333',
             font: { size: 16, weight: 'bold' }
           },
@@ -110,7 +110,6 @@
               }
             }
           }
-
         },
         scales: {
           x: {
