@@ -39,7 +39,7 @@ England's men's team from 2015-19 operated with a simple, audacious philosophy: 
 <iframe 
   src="{{ '/assets/plots/An Ode to the Australian Bowling Hydra/Histogram of all era-relative strike rates.html' | relative_url }}" 
   width="100%" 
-  height="300" 
+  height="400" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
