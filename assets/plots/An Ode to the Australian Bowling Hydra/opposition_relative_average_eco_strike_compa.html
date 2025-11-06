@@ -10,22 +10,17 @@
       margin: 0;
       padding: 0;
       width: 100%;
-      height: 100%; /* ✅ ensures full height context */
-      overflow: hidden; /* ✅ removes both horizontal + vertical scrollbars */
       background-color: #f4f4f4;
       font-family: Arial, sans-serif;
     }
     body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       text-align: center;
       box-sizing: border-box;
     }
     .chart-container {
       width: 95%;
       max-width: 700px;
+      margin: 50px auto 20px auto;
     }
     canvas {
       width: 100% !important;
@@ -33,7 +28,7 @@
       background: #ffffff;
       border-radius: 15px;
       padding: 20px;
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 0 12px rgba(0,0,0,0.2);
       display: block;
     }
     p {
@@ -41,6 +36,8 @@
       color: #555;
       margin-top: 10px;
       max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
     }
   </style>
 </head>
@@ -67,9 +64,9 @@
       '2011–2015 Australia'
     ];
 
-    const economy = [1.048214564, 1.33755663, 0.404289303, 1.029779374, 0.274247986, 0.266074748, 0.097570097];
-    const strikeRate = [13.76297356, 23.16220096, 7.826691633, 8.398693985, 15.61691484, 12.77860297, 7.581706408];
-    const average = [18.06442384, 28.37464115, 10.59262065, 12.77030913, 16.28227019, 12.57641796, 7.030709762];
+    const economy = [1.048, 1.338, 0.404, 1.030, 0.274, 0.266, 0.098];
+    const strikeRate = [13.763, 23.162, 7.827, 8.399, 15.617, 12.779, 7.582];
+    const average = [18.064, 28.375, 10.593, 12.770, 16.282, 12.576, 7.031];
 
     const metrics = [
       { name: 'Era-relative Economy', data: economy },
@@ -111,7 +108,8 @@
       type: 'radar',
       data: radarData,
       options: {
-        maintainAspectRatio: true, // ✅ prevent overflow in smaller frames
+        responsive: true,
+        maintainAspectRatio: true,
         scales: {
           r: {
             min: 0,
@@ -126,10 +124,39 @@
           legend: { position: 'top' },
           title: {
             display: true,
-            text: 'Opposition relative strike rate, economy and average of select teams.'
+            text: 'Opposition relative strike rate, economy and average of select teams'
           }
         }
-      }
+      },
+      plugins: [{
+        id: 'axisNumbers',
+        afterDraw: (chart) => {
+          const { ctx, scales: { r } } = chart;
+          const centerX = r.xCenter;
+          const centerY = r.yCenter;
+          const radius = r.drawingArea;
+
+          ctx.save();
+          ctx.fillStyle = '#333';
+          ctx.font = '12px Arial';
+          ctx.textAlign = 'center';
+
+          metrics.forEach((m, i) => {
+            const angle = (Math.PI * 2 / metrics.length) * i - Math.PI/2;
+            const min = Math.min(...m.data);
+            const max = Math.max(...m.data);
+            for (let j = 1; j <= 5; j++) {
+              const frac = j / 5;
+              const value = min + frac * (max - min);
+              const x = centerX + Math.cos(angle) * radius * frac;
+              const y = centerY + Math.sin(angle) * radius * frac;
+              ctx.fillText(value.toFixed(1), x, y);
+            }
+          });
+
+          ctx.restore();
+        }
+      }]
     };
 
     new Chart(document.getElementById('radarChart'), radarConfig);
