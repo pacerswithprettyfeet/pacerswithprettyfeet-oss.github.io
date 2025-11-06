@@ -14,19 +14,13 @@
       background: #f5f5f5;
     }
 
-    h2 {
-      text-align: center;
-      margin: 40px 10px 20px;
-      color: #222;
-    }
-
     .chart-container {
       box-sizing: border-box;
       width: 100%;
       max-width: 900px;
-      margin: 0 auto 60px;
+      margin: 0 auto 20px;
       background: #fff;
-      padding: 20px 30px;
+      padding: 20px 20px 10px 20px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       border-radius: 12px;
       text-align: center;
@@ -36,7 +30,6 @@
       display: block;
       width: 100% !important;
       height: auto !important;
-      max-width: 100%;
     }
 
     p.caption {
@@ -82,7 +75,7 @@
       v < -5 ? "rgba(255, 99, 132, 0.7)" : "rgba(54, 162, 235, 0.7)"
     );
 
-    // Dynamically calculate canvas height
+    // Set canvas height based on number of bars
     const barHeight = 40; // pixels per bar
     const canvas = document.getElementById('diffChart');
     canvas.height = teams.length * barHeight;
@@ -107,7 +100,7 @@
       options: {
         indexAxis: 'y',
         responsive: true,
-        maintainAspectRatio: false, // allows dynamic height
+        maintainAspectRatio: false,
         plugins: {
           legend: { display: false },
           title: {
@@ -118,10 +111,8 @@
           },
           tooltip: {
             callbacks: {
-              title: function() { return ''; },
-              label: function(context) {
-                return context.raw.toFixed(2);
-              }
+              title: () => '',
+              label: function(context) { return context.raw.toFixed(2); }
             }
           }
         },
@@ -139,19 +130,13 @@
         }
       }
     });
+
+    // Send the correct height to parent once, no infinite loop
+    window.addEventListener('load', () => {
+      const totalHeight = document.documentElement.scrollHeight;
+      window.parent.postMessage({ type: 'setHeight', height: totalHeight }, '*');
+    });
   </script>
 
 </body>
-<script>
-function sendHeightToParent() {
-  const height = document.documentElement.scrollHeight;
-  window.parent.postMessage({ type: 'setHeight', height }, '*');
-}
-
-// Only on load, not resize
-window.addEventListener('load', sendHeightToParent);
-</script>
-
 </html>
-
-
