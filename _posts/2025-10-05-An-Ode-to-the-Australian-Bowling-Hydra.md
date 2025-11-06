@@ -19,7 +19,7 @@ Moreover, extending your batting or bowling depth would probably mean playing a 
 <iframe 
   src="{{ '/assets/plots/An Ode to the Australian Bowling Hydra/All-rounder era-differential strike rate and economy comparison.html' | relative_url }}" 
   width="100%" 
-  height="700" 
+  height="800" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
@@ -113,7 +113,7 @@ The radar chart with phase-wise position relative stats.
 <iframe 
   src="{{ '/assets/plots/An Ode to the Australian Bowling Hydra/The radar chart with phase-wise position relative stats.html' | relative_url }}" 
   width="100%" 
-  height="900" 
+  height="850" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
