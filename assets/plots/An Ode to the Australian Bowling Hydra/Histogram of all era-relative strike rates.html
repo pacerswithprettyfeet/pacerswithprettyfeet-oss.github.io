@@ -29,6 +29,7 @@
       padding: 20px 30px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       border-radius: 12px;
+      text-align: center;
     }
 
     canvas {
@@ -37,21 +38,25 @@
       height: auto !important;
       max-width: 100%;
     }
+
+    p.caption {
+      font-size: 14px;
+      color: #555;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
 
-  <!-- <h2>Differential Strike Rate by Team (Across Eras)</h2> -->
   <div class="chart-container">
     <canvas id="diffChart"></canvas>
-    <p style="text-align:center; font-size:14px; color:#555; margin-top:10px;">
-    highest era-relative strike rates.
+    <p class="caption">
+      Highest era-relative strike rates across teams.
     </p>
   </div>
 
   <script>
-    const ctx = document.getElementById('diffChart').getContext('2d');
-
+    // Example data
     const teams = [
       "2022–2025 Australia (women)",
       "2017–2022 Australia (women)",
@@ -68,14 +73,21 @@
     ];
 
     const diffStrike = [
-      6.771902914, 5.912993689, 5.873581379,
-      5.800921579, 4.822586522, 4.80926817, 4.330495719, 3.833268747, 
-      3.471050265, 3.388645498, 3.366428788, 3.34412377
+      6.77, 5.91, 5.87,
+      5.80, 4.82, 4.80, 4.33, 3.83, 
+      3.47, 3.38, 3.36, 3.34
     ];
 
     const backgroundColors = diffStrike.map(v =>
       v < -5 ? "rgba(255, 99, 132, 0.7)" : "rgba(54, 162, 235, 0.7)"
     );
+
+    // Dynamically calculate canvas height
+    const barHeight = 40; // pixels per bar
+    const canvas = document.getElementById('diffChart');
+    canvas.height = teams.length * barHeight;
+
+    const ctx = canvas.getContext('2d');
 
     new Chart(ctx, {
       type: 'bar',
@@ -87,40 +99,41 @@
           backgroundColor: backgroundColors,
           borderColor: 'rgba(0, 0, 0, 0.3)',
           borderWidth: 1.2,
-          borderRadius: 6
+          borderRadius: 6,
+          barPercentage: 0.8,
+          categoryPercentage: 0.8
         }]
       },
       options: {
         indexAxis: 'y',
         responsive: true,
-        maintainAspectRatio: true,
+        maintainAspectRatio: false, // allows dynamic height
         plugins: {
           legend: { display: false },
           title: {
             display: true,
-            text: 'Histogram of all era-relative strike rates',
+            text: 'Histogram of Era-relative Strike Rates',
             color: '#333',
             font: { size: 16, weight: 'bold' }
           },
           tooltip: {
             callbacks: {
-              title: function() { return ''; }, // removes team name title
+              title: function() { return ''; },
               label: function(context) {
                 return context.raw.toFixed(2);
               }
             }
           }
-
         },
         scales: {
           x: {
             title: { display: true, text: 'Era-relative Strike Rate' },
             beginAtZero: true,
-            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+            grid: { color: 'rgba(0,0,0,0.05)' }
           },
           y: {
             title: { display: true, text: 'Team' },
-            grid: { color: 'rgba(0, 0, 0, 0.05)' },
+            grid: { color: 'rgba(0,0,0,0.05)' },
             ticks: { autoSkip: false }
           }
         }
