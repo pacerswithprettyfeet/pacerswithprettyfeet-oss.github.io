@@ -6,27 +6,45 @@
   <title>Bowler Radar Chart</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
     body {
       font-family: Arial, sans-serif;
       max-width: 900px;
       margin: 50px auto;
       text-align: center;
-      background-color: #f4f4f4;
+    }
+    .chart-container {
+      width: 95%;
+      max-width: 700px;
+      margin: 0 auto;
     }
     canvas {
+      display: block;
+      width: 100% !important;
+      height: auto !important; /* ✅ responsive height */
       background: #ffffff;
       border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+      padding: 8px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.2);
+    }
+    p {
+      font-size: 14px;
+      color: #555;
+      margin: 10px auto 0;
     }
   </style>
 </head>
 <body>
-  <!-- <h2>Economy, strike rate and average of Australian bowlers since the conclusion of the 2022 World Cup</h2> -->
-  <canvas id="radarChart" width="600" height="600"></canvas>
-  <p style="text-align:center; font-size:14px; color:#555; margin-top:2px;">
-  Aussie actual numbers: Clicking on the names of each bowler toggles their stats on and off
-  </p>
+  <div class="chart-container">
+    <canvas id="radarChart"></canvas>
+    <p>
+      Aussie actual numbers: Clicking on the names of each bowler toggles their stats on and off
+    </p>
+  </div>
 
   <script>
     const bowlers = [
@@ -45,7 +63,6 @@
       { name: 'Average', data: average }
     ];
 
-    // Normalize with padding
     function normalizeWithPadding(arr, scaleMax = 90, padding = 0.1) {
       const min = Math.min(...arr);
       const max = Math.max(...arr);
@@ -55,7 +72,6 @@
       return arr.map(v => ((v - paddedMin) / (paddedMax - paddedMin)) * scaleMax);
     }
 
-    // Normalize all metrics
     const normalizedData = metrics.map(m => normalizeWithPadding(m.data));
 
     const colors = [
@@ -82,17 +98,14 @@
       type: 'radar',
       data: radarData,
       options: {
+        responsive: true, // ✅ scales to container
+        maintainAspectRatio: true,
         scales: {
           r: {
             min: 0,
             max: 90,
-            ticks: {
-              display: false,
-              stepSize: 15,
-              color: '#555',
-              backdropColor: 'transparent'
-            },
-            grid: { color: '#bbb' },
+            ticks: { display: false },
+            grid: { color: 'rgba(0,0,0,0.1)' },
             angleLines: { color: '#888' },
             pointLabels: { font: { size: 14, weight: 'bold' } }
           }
@@ -101,53 +114,11 @@
           legend: { position: 'top' },
           title: {
             display: true,
-            text: 'Economy, strike rate and average of Australian bowlers since the conclusion of the 2022 World Cup'
-          },
-          tooltip: {
-            callbacks: {
-              label: function(context) {
-                const i = context.datasetIndex;
-                const idx = context.dataIndex;
-                let value;
-                if (idx === 0) value = economy[i];
-                else if (idx === 1) value = strikeRate[i];
-                else value = average[i];
-                return `${context.dataset.label} — ${context.label}: ${value.toFixed(2)}`;
-              }
-            }
+            text: 'Economy, strike rate and average of Australian bowlers since the conclusion of the 2022 World Cup',
+            padding: { top: 5, bottom: 0 }
           }
         }
-      },
-      plugins: [{
-        id: 'customAxisLabels',
-        afterDraw: (chart) => {
-          const { ctx, scales: { r } } = chart;
-          const centerX = r.xCenter;
-          const centerY = r.yCenter;
-          const radius = r.drawingArea;
-
-          ctx.save();
-          ctx.fillStyle = '#333';
-          ctx.font = '12px Arial';
-          ctx.textAlign = 'center';
-
-          // Draw axis labels for each metric
-          metrics.forEach((m, i) => {
-            const angle = (Math.PI * 2 / metrics.length) * i - Math.PI / 2;
-            const min = Math.min(...m.data);
-            const max = Math.max(...m.data);
-            for (let j = 1; j <= 5; j++) {
-              const frac = j / 5;
-              const value = min + frac * (max - min);
-              const x = centerX + Math.cos(angle) * radius * frac;
-              const y = centerY + Math.sin(angle) * radius * frac;
-              ctx.fillText(value.toFixed(1), x, y);
-            }
-          });
-
-          ctx.restore();
-        }
-      }]
+      }
     };
 
     new Chart(document.getElementById('radarChart'), radarConfig);
