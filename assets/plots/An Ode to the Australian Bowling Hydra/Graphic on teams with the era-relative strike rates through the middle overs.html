@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Differential Strike Rate by Team</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      width: 100%;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f5f5f5;
+    }
+
+    h2 {
+      text-align: center;
+      margin: 40px 10px 20px;
+      color: #222;
+    }
+
+    .chart-container {
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto 60px;
+      background: #fff;
+      padding: 20px 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+    }
+
+    canvas {
+      display: block;
+      width: 100% !important;
+      height: auto !important;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- <h2>Differential Strike Rate (Middle Overs) by Team</h2> -->
+  <div class="chart-container">
+    <canvas id="diffChart"></canvas>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('diffChart').getContext('2d');
+
+    const teams = [
+      "2023–2025 Sri Lanka",
+      "2022–2025 (women) Australia",
+      "2022–2025 (women) England",
+      "2019–2023 India",
+      "2015–2019 South Africa",
+      "2011–2015 South Africa",
+      "2015–2019 India",
+      "2017–2022 (women) Australia",
+      "2007–2011 Sri Lanka",
+      "2007–2011 Australia",
+      "2011–2015 Australia",
+      "2023–2025 New Zealand",
+      "2017–2022 (women) England",
+    ];
+
+    const diffStrike = [
+      11.46693935,
+      9.744757845,
+      9.548289626,
+      9.288471232,
+      6.694538837,
+      6.264282439,
+      6.216275427,
+      6.086273684,
+      5.447793243,
+      4.866681519,
+      4.463561818,
+      4.112553708,
+      4.088655204,
+    ];
+
+    const backgroundColors = teams.map((team, i) =>
+      team.includes("Australia")
+        ? "rgba(255, 215, 0, 0.8)" // gold
+        : "rgba(54, 162, 235, 0.7)" // blue
+    );
+
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: teams,
+        datasets: [{
+          label: 'Differential Strike Rate',
+          data: diffStrike,
+          backgroundColor: backgroundColors,
+          borderColor: 'rgba(0, 0, 0, 0.3)',
+          borderWidth: 1.2,
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: 'Teams with the best era-relative strike rates in the middle overs',
+            color: '#333',
+            font: { size: 16, weight: 'bold' }
+          },
+          tooltip: {
+            callbacks: {
+              title: function() { return ''; },
+              label: function(context) {
+                return context.raw.toFixed(3);
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            title: { display: true, text: 'Era-relative strike rate' },
+            beginAtZero: false,
+            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+          },
+          y: {
+            title: { display: true, text: 'Team / Era' },
+            grid: { color: 'rgba(0, 0, 0, 0.05)' },
+            ticks: { autoSkip: false }
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

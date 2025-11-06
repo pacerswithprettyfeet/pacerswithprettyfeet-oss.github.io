@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Era-relative Strike Rate Radar Chart (Absolute with Axis Labels)</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+      background-color: #f4f4f4;
+    }
+    canvas {
+        background: #ffffff;
+        border-radius: 15px;
+        padding: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+        margin-bottom: 0px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="eraRadarChart" width="500" height="500"></canvas>
+  <p style="text-align:center; font-size:14px; color:#555; margin-top:2px;">
+    Absolute values of era-relative strike rate of teams across overs 11–20, 21–30, and 31–40.
+  </p>
+
+  <script>
+    const teams = [
+      '2023–2025 Sri Lanka',
+      '2019–2023 India',
+      '2022–2025 (women) England',
+      '2015–2019 South Africa',
+      '2022–2025 (women) Australia',
+      '2017–2022 (women) Australia',
+      '2007–2011 Sri Lanka'
+    ];
+
+    // Absolute values
+    const sr11_20 = [-18.51501358, -15.12320792, -12.01598682, -10.32862473, -7.676565207, -5.946313462, -4.185598313].map(Math.abs);
+    const sr21_30 = [-12.44047619, -7.654488199, -8.118111178, -5.200125152, -8.89631941, -6.612244898, -6.234437751].map(Math.abs);
+    const sr31_40 = [-3.362068966, -6.059834938, -8.904326594, -5.4909551, -11.12905733, -5.105040461, -5.955326312].map(Math.abs);
+
+    const metrics = [
+      { name: 'Overs 11–20', data: sr11_20 },
+      { name: 'Overs 21–30', data: sr21_30 },
+      { name: 'Overs 31–40', data: sr31_40 }
+    ];
+
+    // Normalize each axis individually to 0-100 scale for plotting
+    function normalizeWithPadding(arr, padding = 0.1) {
+      const min = 0; // we start from 0 for absolute values
+      const max = Math.max(...arr);
+      const paddedMax = max + max * padding;
+      return arr.map(v => (v - min) / (paddedMax - min) * 100);
+    }
+
+    const normalizedData = metrics.map(m => normalizeWithPadding(m.data));
+
+    const colors = [
+      '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728',
+      '#9467bd', '#8c564b', '#e377c2'
+    ];
+
+    const radarData = {
+      labels: metrics.map(m => m.name),
+      datasets: teams.map((t, i) => ({
+        label: t,
+        data: normalizedData.map(m => m[i]),
+        fill: true,
+        backgroundColor: colors[i] + '55',
+        borderColor: colors[i],
+        borderWidth: 2,
+        pointRadius: 4,
+        pointBackgroundColor: colors[i]
+      }))
+    };
+
+    const radarConfig = {
+      type: 'radar',
+      data: radarData,
+      options: {
+        responsive: true,
+        layout: { padding: { top: 10, bottom: 0 } },
+        scales: {
+          r: {
+            min: 0,
+            max: 100, // internal normalized scale for plotting
+            ticks: { display: false }, // hide radial ticks
+            grid: { color: '#bbb' },
+            angleLines: { color: '#888' },
+            pointLabels: { font: { size: 14, weight: 'bold' } }
+          }
+        },
+        plugins: {
+          legend: { position: 'top' },
+          title: {
+            display: true,
+            text: 'Era-relative Strike Rate of Teams by Overs',
+            padding: { top: 5, bottom: 0 }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const i = context.datasetIndex;
+                const idx = context.dataIndex;
+                let value;
+                if (idx === 0) value = sr11_20[i];
+                else if (idx === 1) value = sr21_30[i];
+                else value = sr31_40[i];
+                return `${context.dataset.label} — ${context.label}: ${value.toFixed(2)}`;
+              }
+            }
+          }
+        }
+      },
+      plugins: [{
+        id: 'customAxisLabels',
+        afterDraw: (chart) => {
+          const { ctx, scales: { r } } = chart;
+          const centerX = r.xCenter;
+          const centerY = r.yCenter;
+          const radius = r.drawingArea;
+
+          ctx.save();
+          ctx.fillStyle = '#333';
+          ctx.font = '12px Arial';
+          ctx.textAlign = 'center';
+
+          // Draw axis labels for each metric
+          metrics.forEach((m, i) => {
+            const angle = (Math.PI * 2 / metrics.length) * i - Math.PI / 2;
+            const min = 0;
+            const max = Math.max(...m.data);
+            for (let j = 1; j <= 5; j++) {
+              const frac = j / 5;
+              const value = min + frac * (max - min);
+              const x = centerX + Math.cos(angle) * radius * frac;
+              const y = centerY + Math.sin(angle) * radius * frac;
+              ctx.fillText(value.toFixed(1), x, y);
+            }
+          });
+
+          ctx.restore();
+        }
+      }]
+    };
+
+    new Chart(document.getElementById('eraRadarChart'), radarConfig);
+  </script>
+</body>
+</html>
