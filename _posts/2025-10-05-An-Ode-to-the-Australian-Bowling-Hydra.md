@@ -113,7 +113,7 @@ The radar chart with phase-wise position relative stats.
 <iframe 
   src="{{ '/assets/plots/An Ode to the Australian Bowling Hydra/The radar chart with phase-wise position relative stats.html' | relative_url }}" 
   width="100%" 
-  height="859" 
+  height="850" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
