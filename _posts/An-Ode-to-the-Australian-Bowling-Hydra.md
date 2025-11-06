@@ -1,3 +1,13 @@
+---
+layout: post
+title: "An Ode to the Australian Bowling Hydra"
+comments: true
+author: "Atharv Tambade and Aadityan Ganesh "
+date: 2025-11-05
+categories: descriptive test cricket
+tags: []
+---
+
 These devils barely know what it feels like to lose a game. They have lost only 4 ODIs since winning the 2022 World Cup final until they crashed out of the World Cup, losing to India in the semifinals. It was not often they found their back against the wall, but somehow, that is where they were in many games this World Cup. But, it simply did not matter. They were 115-8 against Pakistan, before Mooney and Alana King put on a hundred run stand to take the total to something decent. Anything that resembles a semi-competitive score is all the bowling unit needs before they hunt you down, not even giving you a whiff of hope. Before the Pakistan game, they were 128-5 against New Zealand before Gardner stitched together partnerships with McGrath and Garth for the sixth and eighth wickets to post a target over 300. When they were down four wickets against England, it just felt like a routine before someone would mop up the chase, and so did Sutherland and Gardner. And when India was making steady progress against them in the run chase in the semifinal, they just knew someone would step up and get the job done for them. When Alyssa Healey and McGrath dropped dollies, and Alana King missed the simplest of run-outs, it did not matter — it was only a matter of time before someone else got the next breakthrough. It was all a well-rehearsed gallop to victory, until it wasn’t.
 
 The sheer batting depth of this team is insane. Kim Garth bats at number nine. In a previous life, she was a top order bat for the Irish women. Alana King bats at ten, with an average of over 18 striking at 96. Any of them could easily have batted in the top 7 for many other teams this World Cup. This team plays eight players who can both bat and bowl, and two out of the remaining three are wicket-keepers. And when we say all-rounders, we are not talking about Shardul Thakur’s batting or Aiden Markram’s bowling. These are genuine strike options on both sides of the ball. As an ode to this invincible team (that sadly just became vincible), we make a case for why this Australian bowling unit is the best strike bowling unit to ever play the fifty over game.
