@@ -77,18 +77,12 @@ The parallel between the Aussie women and the English men 2015-19 only runs deep
 <iframe 
   src="{{ '/assets/plots/An Ode to the Australian Bowling Hydra/% of wickets in middle overs.html' | relative_url }}" 
   width="100%" 
-  height="600" 
+  height="500" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
 <iframe 
   src="{{ '/assets/plots/An Ode to the Australian Bowling Hydra/Graphics on all 3 phases of middle over strike rate.html' | relative_url }}" 
-  width="100%" 
-  height="600" 
-  style="border:none; overflow:hidden;"
-></iframe>
-<iframe 
-  src="{{ '/assets/plots/An Ode to the Australian Bowling Hydra/Graphic on teams with the era-relative strike rates through the middle overs.html' | relative_url }}" 
   width="100%" 
   height="600" 
   style="border:none; overflow:hidden;"
@@ -99,7 +93,7 @@ The parallel between the Aussie women and the English men 2015-19 only runs deep
 <iframe 
   src="{{ '/assets/plots/An Ode to the Australian Bowling Hydra/era relative strike rate and economy in middle overs.html' | relative_url }}" 
   width="100%" 
-  height="600" 
+  height="800" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
