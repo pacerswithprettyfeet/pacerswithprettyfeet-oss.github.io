@@ -25,10 +25,11 @@
 <body>
   <canvas id="radarChart" width="500" height="500"></canvas>
   <p style="text-align:center; font-size:14px; color:#555; margin-top:2px;">
-  Opposition-relative strike rate is the difference in the rate in which a team loses wickets and takes wickets. 
-  Similarly, opposition-relative economy and average is the difference in the economy rates and the average of 
-  the opposition compared to the economy and average of the team. The two Australian women team outshine all teams 
-  from history in terms of opposition-relative economy rates. 
+  We plot the raw bowling figures of various top ODI sides from history, and it tells a fascinating story about the 
+	  Aussie women and English men. You'll see the Aussie bowling unit forms the smallest triangle, showing their 
+	  incredible dominance with the ball. England's men, however, have the largest triangle, highlighting the sheer 
+	  power of their batting order that let them dominate despite a bowling attack not at the same level as the other 
+	  teams that we consider.
   </p>
 
   <script>
@@ -111,7 +112,7 @@
           legend: { position: 'top' },
           title: {
             display: true,
-            text: 'Opposition relative strike rate, economy and average of select teams',
+            text: 'Comparing the economy, strike rate and average of Aussie women 2022-25 with the English men 2015-19',
             padding: { top: 5, bottom: 0 },
           },
           tooltip: {
@@ -165,3 +166,4 @@
   </script>
 </body>
 </html>
+
