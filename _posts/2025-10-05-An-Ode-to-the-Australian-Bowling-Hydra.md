@@ -101,7 +101,7 @@ These two Australian women's sides are truly miles ahead of any other team in hi
 <iframe 
   src="{{ '/assets/plots/An Ode to the Australian Bowling Hydra/opposition_relative_average_eco_strike_compa.html' | relative_url }}" 
   width="100%" 
-  height="850" 
+  height="860" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
