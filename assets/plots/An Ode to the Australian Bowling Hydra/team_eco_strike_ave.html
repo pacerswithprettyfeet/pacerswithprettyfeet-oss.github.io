@@ -6,29 +6,45 @@
   <title>Bowler Radar Chart</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      overflow-y: hidden; /* ✅ prevents vertical scroll */
+      background-color: #f4f4f4;
+    }
     body {
       font-family: Arial, sans-serif;
       max-width: 900px;
-      margin: 0px auto;
+      margin: 0 auto;
       text-align: center;
-      background-color: #f4f4f4;
     }
     canvas {
-        background: #ffffff;
-        border-radius: 15px;
-        padding: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-        margin-bottom: 0px;
+      background: #ffffff;
+      border-radius: 15px;
+      padding: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+      margin: 0 auto;
+      display: block;
+      max-width: 500px;
+      height: auto !important;
+    }
+    p {
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+      margin: 2px auto 0;
+      max-width: 90%;
     }
   </style>
 </head>
 <body>
   <canvas id="radarChart" width="500" height="500"></canvas>
-  <p style="text-align:center; font-size:14px; color:#555; margin-top:2px;">
-  Opposition-relative strike rate is the difference in the rate in which a team loses wickets and takes wickets. 
-  Similarly, opposition-relative economy and average is the difference in the economy rates and the average of 
-  the opposition compared to the economy and average of the team. The two Australian women team outshine all teams 
-  from history in terms of opposition-relative economy rates. 
+  <p>
+    Opposition-relative strike rate is the difference in the rate in which a team loses wickets and takes wickets. 
+    Similarly, opposition-relative economy and average is the difference in the economy rates and the average of 
+    the opposition compared to the economy and average of the team. The two Australian women teams outshine all teams 
+    from history in terms of opposition-relative economy rates.
   </p>
 
   <script>
@@ -41,7 +57,7 @@
       '2003–2007 Australia',
       '2011–2015 Australia'
     ];
-								
+
     const economy = [4.707692308, 4.200230592, 5.753849799, 4.712671756, 5.591523895, 4.826134655, 5.161841264];
     const strikeRate = [27.33443709, 29.99423631 , 35.02904564, 28.23275862, 31.40530973, 32.17124183, 34.37676609];
     const average = [21.44701987, 20.99711816, 33.59197787, 22.17528736, 29.26725664, 25.87712418, 29.57456829];
@@ -52,7 +68,6 @@
       { name: 'Average', data: average }
     ];
 
-    // Normalize with padding
     function normalizeWithPadding(arr, scaleMax = 90, padding = 0.1) {
       const min = Math.min(...arr);
       const max = Math.max(...arr);
@@ -62,13 +77,11 @@
       return arr.map(v => ((v - paddedMin) / (paddedMax - paddedMin)) * scaleMax);
     }
 
-    // Normalize all metrics
     const normalizedData = metrics.map(m => normalizeWithPadding(m.data));
 
     const colors = [
       '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728',
-      '#9467bd', '#8c564b', '#e377c2', '#7f7f7f',
-      '#bcbd22', '#17becf', '#9edae5'
+      '#9467bd', '#8c564b', '#e377c2'
     ];
 
     const radarData = {
@@ -90,18 +103,13 @@
       data: radarData,
       options: {
         responsive: true,
-        layout: {
-           padding: { top: 10, bottom: 0 }
-        },
+        maintainAspectRatio: true,
+        layout: { padding: { top: 5, bottom: 0 } },
         scales: {
           r: {
             min: 0,
             max: 90,
-            ticks: {
-              display: false,  // ✅ hide 0–90 tick markers
-              color: '#555',
-              backdropColor: 'transparent'
-            },
+            ticks: { display: false },
             grid: { color: 'rgba(0,0,0,0.1)' },
             angleLines: { color: '#888' },
             pointLabels: { font: { size: 14, weight: 'bold' } }
@@ -112,53 +120,10 @@
           title: {
             display: true,
             text: 'Opposition relative strike rate, economy and average of select teams',
-            padding: { top: 5, bottom: 0 },
-          },
-          tooltip: {
-            callbacks: {
-              label: function(context) {
-                const i = context.datasetIndex;
-                const idx = context.dataIndex;
-                let value;
-                if (idx === 0) value = economy[i];
-                else if (idx === 1) value = strikeRate[i];
-                else value = average[i];
-                return `${context.dataset.label} — ${context.label}: ${value.toFixed(2)}`;
-              }
-            }
+            padding: { top: 5, bottom: 0 }
           }
         }
-      },
-      plugins: [{
-        id: 'customAxisLabels',
-        afterDraw: (chart) => {
-          const { ctx, scales: { r } } = chart;
-          const centerX = r.xCenter;
-          const centerY = r.yCenter;
-          const radius = r.drawingArea;
-
-          ctx.save();
-          ctx.fillStyle = '#333';
-          ctx.font = '12px Arial';
-          ctx.textAlign = 'center';
-
-          // Draw axis labels for each metric
-          metrics.forEach((m, i) => {
-            const angle = (Math.PI * 2 / metrics.length) * i - Math.PI / 2;
-            const min = Math.min(...m.data);
-            const max = Math.max(...m.data);
-            for (let j = 1; j <= 5; j++) {
-              const frac = j / 5;
-              const value = min + frac * (max - min);
-              const x = centerX + Math.cos(angle) * radius * frac;
-              const y = centerY + Math.sin(angle) * radius * frac;
-              ctx.fillText(value.toFixed(1), x, y);
-            }
-          });
-
-          ctx.restore();
-        }
-      }]
+      }
     };
 
     new Chart(document.getElementById('radarChart'), radarConfig);
