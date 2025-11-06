@@ -41,7 +41,6 @@
 </head>
 <body>
 
-  <!-- <h2>% Wickets in Middle Overs by Team</h2> -->
   <div class="chart-container">
     <canvas id="middleOversChart"></canvas>
     <p style="text-align:center; font-size:14px; color:#555; margin-top:10px;">
@@ -78,8 +77,11 @@
       43.95348837, 43.73626374, 43.66336634, 43.52941176
     ];
 
-    const backgroundColors = middleOversPct.map(v =>
-      v >= 50 ? "rgba(54, 162, 235, 0.7)" : "rgba(75, 192, 192, 0.7)"
+    // Highlight only Australian women's teams in yellow
+    const backgroundColors = teams.map(team =>
+      team.includes("Australia") && team.includes("(women)")
+        ? "rgba(255, 215, 0, 0.8)"  // Yellow for Australian women
+        : "rgba(54, 162, 235, 0.7)" // Blue for everyone else
     );
 
     new Chart(ctx, {
