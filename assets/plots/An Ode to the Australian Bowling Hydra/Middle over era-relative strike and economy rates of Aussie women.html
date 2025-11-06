@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bowler True Middle Over Scatter Plot</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        canvas {
+            background: #f9f9f9;
+            border-radius: 15px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- <h2>Bowler True Middle Over Performance Scatter Plot</h2> -->
+    <canvas id="scatterChart" width="500" height="500"></canvas>
+
+    <script>
+        const bowlers = [
+            'D Brown', 'ML Schutt', 'JL Jonassen', 'A Sutherland',
+            'TM McGrath', 'A King', 'A Gardner', 'G Wareham',
+            'KJ Garth', 'S Molineux'
+        ];
+
+        const trueEconomy = [
+            -0.251999269, -0.455171575, 1.199684161, 1.446506114,
+            -1.456349183, -0.107092476, 0.505508874, 0.499312722,
+            -1.082217885, 1.217054107
+        ];
+
+        const trueStrikeRate = [
+            -21.97331239, 0.072989592, 8.581285483, 14.44249452,
+            -9.426864206, 6.504567273, 14.72570717, 5.540178718,
+            -22.77642138, 21.8244037
+        ];
+
+        const scatterData = {
+            datasets: [{
+                label: 'True Middle Over Performance',
+                data: bowlers.map((b, i) => ({ x: trueStrikeRate[i], y: trueEconomy[i], label: b })),
+                backgroundColor: 'gold',
+                pointRadius: 6
+            }]
+        };
+
+        const scatterConfig = {
+            type: 'scatter',
+            data: scatterData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const { label, x, y } = context.raw;
+                                return `${label}: SR = ${x.toFixed(2)}, Econ = ${y.toFixed(2)}`;
+                            }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Era-relative strike rate and economies of Australian bowlers since the 2022 World Cup'
+                    }
+                },
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Middle Over era-relative Strike Rate' },
+                        grid: {
+                            color: function(context) {
+                                return context.tick.value === 0 ? 'black' : '#ccc';
+                            },
+                            lineWidth: function(context) {
+                                return context.tick.value === 0 ? 2 : 1;
+                            }
+                        }
+                    },
+                    y: {
+                        title: { display: true, text: 'Middle Over era-relative Economy' },
+                        grid: {
+                            color: function(context) {
+                                return context.tick.value === 0 ? 'black' : '#ccc';
+                            },
+                            lineWidth: function(context) {
+                                return context.tick.value === 0 ? 2 : 1;
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [{
+                id: 'scatterLabels',
+                afterDatasetsDraw(chart) {
+                    const { ctx, data, scales: { x, y } } = chart;
+                    ctx.save();
+                    data.datasets[0].data.forEach(point => {
+                        ctx.fillStyle = 'black';
+                        ctx.font = '12px Arial';
+                        ctx.textAlign = 'left';
+                        ctx.fillText(point.label, x.getPixelForValue(point.x), y.getPixelForValue(point.y) - 6);
+                    });
+                    ctx.restore();
+                }
+            }]
+        };
+
+        new Chart(document.getElementById('scatterChart'), scatterConfig);
+    </script>
+</body>
+</html>

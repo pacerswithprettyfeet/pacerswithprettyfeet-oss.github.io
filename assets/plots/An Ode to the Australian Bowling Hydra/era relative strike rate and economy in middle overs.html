@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Middle Overs Era-relative Bowling Comparison</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #f5f5f5;
+      font-family: "Segoe UI", Arial, sans-serif;
+      overflow-x: hidden;
+    }
+
+    h2 {
+      text-align: center;
+      margin: 30px 10px;
+      color: #222;
+    }
+
+    .chart-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .chart-container {
+      box-sizing: border-box;
+      flex: 1 1 420px;
+      max-width: 900px;
+      background: #fff;
+      padding: 20px 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+    }
+
+    canvas {
+      display: block;
+      width: 100% !important;
+      height: auto !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- <h2>Middle Overs – Era-relative Bowling Comparison</h2> -->
+
+  <div class="chart-wrapper">
+    <!-- Strike Rate Chart -->
+    <div class="chart-container">
+      <canvas id="strikeChart"></canvas>
+    </div>
+
+    <!-- Economy Chart -->
+    <div class="chart-container">
+      <canvas id="economyChart"></canvas>
+    </div>
+  </div>
+
+  <script>
+    // ====== STRIKE RATE DATA ======
+    const strikeTeams = [
+      "2023–2025 Sri Lanka",
+      "2022–2025 (women) Australia",
+      "2022–2025 (women) England",
+      "2019–2023 India",
+      "2015–2019 South Africa",
+      "2011–2015 South Africa",
+      "2015–2019 India",
+      "2017–2022 (women) Australia",
+      "2007–2011 Sri Lanka",
+      "2007–2011 Australia",
+      "2011–2015 Australia",
+      "2023–2025 New Zealand",
+      "2017–2022 (women) England",
+    ];
+
+    const diffStrike = [
+      11.46693935,
+      9.744757845,
+      9.548289626,
+      9.288471232,
+      6.694538837,
+      6.264282439,
+      6.216275427,
+      6.086273684,
+      5.447793243,
+      4.866681519,
+      4.463561818,
+      4.112553708,
+      4.088655204,
+    ];
+
+    const strikeColors = strikeTeams.map(team =>
+      team.includes("Australia") ? "rgba(255, 215, 0, 0.8)" : "rgba(54, 162, 235, 0.7)"
+    );
+
+    new Chart(document.getElementById('strikeChart').getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: strikeTeams,
+        datasets: [{
+          label: 'Differential Strike Rate',
+          data: diffStrike,
+          backgroundColor: strikeColors,
+          borderColor: 'rgba(0, 0, 0, 0.3)',
+          borderWidth: 1.2,
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: 'Teams with the best era-relative strike rates (Middle Overs)',
+            color: '#333',
+            font: { size: 15, weight: 'bold' }
+          },
+          tooltip: {
+            callbacks: {
+              title: () => '',
+              label: ctx => ctx.raw.toFixed(3)
+            }
+          }
+        },
+        scales: {
+          x: {
+            title: { display: true, text: 'Era-relative Strike Rate' },
+            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+          },
+          y: {
+            title: { display: true, text: 'Team / Era' },
+            ticks: { autoSkip: false },
+            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+          }
+        }
+      }
+    });
+
+    // ====== ECONOMY DATA ======
+    const economyTeams = [
+      "2023–2025 India",
+      "2022–2025 (women) Bangladesh",
+      "2017–2022 (women) Bangladesh",
+      "2011–2015 Pakistan",
+      "2023–2025 Zimbabwe",
+      "2017–2022 (women) Australia",
+      "2022–2025 (women) England",
+      "2003–2007 Ireland",
+      "2015–2019 Bangladesh",
+      "2019–2023 Bangladesh",
+      "2022–2025 (women) Australia",
+      "2015–2019 India",
+      "2017–2022 (women) South Africa",
+      "2011–2015 Bangladesh"
+    ];
+
+    const diffEconomy = [
+      0.890641524,
+      0.728113883,   
+      0.431295255,
+      0.415438011,
+      0.414547759,
+      0.399621803,
+      0.368254882,
+      0.34150931,
+      0.262081948,
+      0.241103354,
+      0.239527174,
+      0.228551866,
+      0.219205768,
+      0.216702487
+    ];
+
+    const economyColors = economyTeams.map(team =>
+      team.includes("Australia") ? "rgba(255, 215, 0, 0.8)" : "rgba(54, 162, 235, 0.7)"
+    );
+
+    new Chart(document.getElementById('economyChart').getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: economyTeams,
+        datasets: [{
+          label: 'Differential Economy',
+          data: diffEconomy,
+          backgroundColor: economyColors,
+          borderColor: 'rgba(0, 0, 0, 0.3)',
+          borderWidth: 1.2,
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: 'Teams with the best era-relative economy rates (Middle Overs)',
+            color: '#333',
+            font: { size: 15, weight: 'bold' }
+          },
+          tooltip: {
+            callbacks: {
+              title: () => '',
+              label: ctx => ctx.raw.toFixed(3)
+            }
+          }
+        },
+        scales: {
+          x: {
+            title: { display: true, text: 'Era-relative Economy' },
+            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+          },
+          y: {
+            title: { display: true, text: 'Team / Era' },
+            ticks: { autoSkip: false },
+            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

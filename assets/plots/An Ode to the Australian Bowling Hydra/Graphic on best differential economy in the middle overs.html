@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Differential Economy (middle overs) by Team</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      width: 100%;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f5f5f5;
+    }
+
+    h2 {
+      text-align: center;
+      margin: 40px 10px 20px;
+      color: #222;
+    }
+
+    .chart-container {
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto 60px;
+      background: #fff;
+      padding: 20px 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+    }
+
+    canvas {
+      display: block;
+      width: 100% !important;
+      height: auto !important;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- <h2>Differential Economy (middle overs) by Team (Across Eras)</h2> -->
+  <div class="chart-container">
+    <canvas id="diffChart"></canvas>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('diffChart').getContext('2d');
+
+    const teams = [
+      "2023–2025 India",
+      "2022–2025 (women) Bangladesh",
+      "2017–2022 (women) Bangladesh",
+      "2011–2015 Pakistan",
+      "2023–2025 Zimbabwe",
+      "2017–2022 (women) Australia",
+      "2022–2025 (women) England",
+      "2003–2007 Ireland",
+      "2015–2019 Bangladesh",
+      "2019–2023 Bangladesh",
+      "2022–2025 (women) Australia",
+      "2015–2019 India",
+      "2017–2022 (women) South Africa",
+      "2011–2015 Bangladesh"
+    ];
+
+    const diffEconomy = [
+      0.890641524,
+      0.728113883,   
+      0.431295255,
+      0.415438011,
+      0.414547759,
+      0.399621803,
+      0.368254882,
+      0.34150931,
+      0.262081948,
+      0.241103354,
+      0.239527174,
+      0.228551866,
+      0.219205768,
+      0.216702487
+    ];
+
+    const backgroundColors = teams.map((team, i) =>
+      team.includes("Australia")
+        ? "rgba(255, 215, 0, 0.8)" // gold
+        : "rgba(54, 162, 235, 0.7)" // blue
+    );
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: teams,
+        datasets: [{
+          label: 'Differential Economy',
+          data: diffEconomy,
+          backgroundColor: backgroundColors,
+          borderColor: 'rgba(0, 0, 0, 0.3)',
+          borderWidth: 1.2,
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: 'Teams with the best era-relative economy rates in the middle overs',
+            color: '#333',
+            font: { size: 16, weight: 'bold' }
+          },
+          tooltip: {
+            callbacks: {
+              title: function() { return ''; },
+              label: function(context) {
+                return context.raw.toFixed(3);
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            title: { display: true, text: 'Era-relative Economy' },
+            beginAtZero: false,
+            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+          },
+          y: {
+            title: { display: true, text: 'Team / Era' },
+            grid: { color: 'rgba(0, 0, 0, 0.05)' },
+            ticks: { autoSkip: false }
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

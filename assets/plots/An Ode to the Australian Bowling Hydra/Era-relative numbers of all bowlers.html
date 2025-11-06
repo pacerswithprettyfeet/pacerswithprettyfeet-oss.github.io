@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bowler Differential Scatter Plot</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  max-width: 1000px;
+  margin: 50px auto;
+  text-align: center;
+}
+canvas {
+  background: #f9f9f9;
+  border-radius: 15px;
+  padding: 20px;
+}
+.checkbox-container {
+  margin: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+.checkbox-container label {
+  margin-left: 5px;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<!-- <h2>Bowler Differential Performance Scatter Plot</h2> -->
+<div class="checkbox-container" id="checkboxContainer"></div>
+<canvas id="scatterChart" width="700" height="500"></canvas>
+<p style="text-align:center; font-size:14px; color:#555; margin-top:2px;">
+  Era-relative numbers of all bowlers: Clicking through teams from different bowling 
+  units toggles the stats of their bowlers on and off 
+</p>
+
+
+   
+<script>
+// Team data
+const teams = {
+  Australia1: {
+    display: "2022–2025 (women) Australia",
+    color: "rgba(255, 206, 86, 0.7)",
+    bowlers: [
+      { name: "ML Schutt", diffSR: 0.039392665, diffEcon: 0.193375461 },
+      { name: "D Brown", diffSR: -4.434455674, diffEcon: -0.523123597 },
+      { name: "JL Jonassen", diffSR: 7.101404091, diffEcon: 0.984043932 },
+      { name: "A Sutherland", diffSR: 5.727840704, diffEcon: 0.102718696 },
+      { name: "A King", diffSR: 11.69959629, diffEcon: 0.262404957 },
+      { name: "A Gardner", diffSR: 9.214694699, diffEcon: 0.455826139 },
+      { name: "G Wareham", diffSR: 0.615637215, diffEcon: 0.168816707 },
+      { name: "KJ Garth", diffSR: 10.79319435, diffEcon: 0.547038852},
+      { name: "S Molineux", diffSR: 9.46859684, diffEcon: 0.352927618},
+    ]
+  },
+  Australia2: {
+    display: "2017–2022 (women) Australia",
+    color: "rgba(75, 192, 192, 0.7)",   // teal/cyan,
+    bowlers: [
+      { name: "ML Schutt", diffSR: -7.066873295, diffEcon: -0.15235906 },
+      { name: "HL Ferling", diffSR: 4.719567124, diffEcon: 0.378841315 },
+      { name: "KM Beams", diffSR: -6.282409097, diffEcon: -0.481230406 },
+      { name: "EA Perry", diffSR: -1.59383138, diffEcon: 0.2681761 },
+      { name: "GM Harris", diffSR: -10.4079255, diffEcon: -0.888771293 },
+      { name: "JL Jonassen", diffSR: -1.782739803, diffEcon: -0.483908695 },
+        { name: "RM Farrell", diffSR: 51.04403226, diffEcon: 0.181255881 },
+        { name: "A Wellington", diffSR: -1.035462755, diffEcon: 0.599419522 },
+        { name: "EA Osborne", diffSR: -3.697237417, diffEcon: -0.111790351 },
+        { name: "L Cheatle", diffSR: 3.885064161, diffEcon: 1.318048943 },
+        { name: "TM McGrath", diffSR: 2.746642978, diffEcon: 0.158786075 },
+        { name: "NJ Carey", diffSR: -0.671316847, diffEcon: -0.510839543 },
+        { name: "G Wareham", diffSR: -2.280427485, diffEcon: -0.05044567 },
+        { name: "S Molineux", diffSR: -13.28713495, diffEcon: -1.424377703 },
+        { name: "TJ Vlaeminck", diffSR: 18.63981598, diffEcon: 0.062026021 },
+        { name: "A Sutherland", diffSR: -8.181118819, diffEcon: 0.118361134 },
+        { name: "A King", diffSR: 1.615430134, diffEcon: -1.212268382 },
+        { name: "SJ Coyte", diffSR: 19.11584748, diffEcon: -0.018863923 },
+        { name: "JL Hunter", diffSR: 6.566058651, diffEcon: -0.18391264 }
+    ]
+  },
+  England1: {
+    display: "2022–2025 (women) England",
+    color: "rgba(153, 102, 255, 0.7)" , // purple",
+    bowlers: [
+        { name: "A Shrubsole", diffSR: -8.154665233, diffEcon: -0.083683584 },
+        { name: "KH Brunt", diffSR: 28.89753804, diffEcon: -0.192848018 },
+        { name: "NR Sciver-Brunt", diffSR: 21.50109349, diffEcon: -0.181812563 },
+        { name: "KL Cross", diffSR: 4.931514949, diffEcon: -0.056878829 },
+        { name: "S Ecclestone", diffSR: -9.808725472, diffEcon: -1.281077366 },
+        { name: "CE Dean", diffSR: -10.61617648, diffEcon: -0.120264133 },
+        { name: "LK Bell", diffSR: -5.277873419, diffEcon: 0.696450316 },
+        { name: "IECM Wong", diffSR: -7.522514919, diffEcon: 1.794976123 },
+        { name: "AN Davidson-Richards", diffSR: -11.55960243, diffEcon: 0.815035699 },
+        { name: "FG Kemp", diffSR: -11.72943979, diffEcon: 0.911189043 },
+        { name: "S Glenn", diffSR: -9.733064746, diffEcon: -0.27255442 },
+        { name: "L Filer", diffSR: -9.809994946, diffEcon: 0.568555021 },
+        { name: "HL Baker", diffSR: -4.114806246, diffEcon: 1.20349398 },
+        { name: "MK Villiers", diffSR: -18.26049317, diffEcon: 0.526350559 },
+        { name: "LCN Smith", diffSR: -14.17376928, diffEcon: -1.025768002 }
+    ]
+  },
+  India: {
+    display: "2019–2023 India",
+    color:  "rgba(54, 162, 235, 0.7)",   // bluish,
+    bowlers: [
+        { name: "Mohammed Shami", diffSR: -8.88264446, diffEcon: 0.265434107 },
+        { name: "DL Chahar", diffSR: -4.422577905, diffEcon: 0.34964144 },
+        { name: "Kuldeep Yadav", diffSR: -5.42351442, diffEcon: -0.400213258 },
+        { name: "S Dube", diffSR: -3.66114973, diffEcon: 0.428090773 },
+        { name: "RA Jadeja", diffSR: 1.770450891, diffEcon: -0.648616722 },
+        { name: "SN Thakur", diffSR: -6.433694901, diffEcon: 0.663676115 },
+        { name: "Navdeep Saini", diffSR: 36.57106291, diffEcon: 1.00898812 },
+        { name: "JJ Bumrah", diffSR: 4.656606049, diffEcon: -0.885801053 },
+        { name: "YS Chahal", diffSR: -4.923735232, diffEcon: 0.091010299 },
+        { name: "HH Pandya", diffSR: -6.856782885, diffEcon: 0.173082521 },
+        { name: "T Natarajan", diffSR: -5.599950517, diffEcon: 1.026364138 },
+        { name: "M Prasidh Krishna", diffSR: -6.266496664, diffEcon: 0.058081105 },
+        { name: "KH Pandya", diffSR: 27.93506394, diffEcon: 0.347874899 },
+        { name: "Mohammed Siraj", diffSR: -7.645412595, diffEcon: -0.468430799 },
+        { name: "R Ashwin", diffSR: -6.888506691, diffEcon: -0.348034391 },
+        { name: "Washington Sundar", diffSR: -2.186971742, diffEcon: -0.710705339 },
+        { name: "AR Patel", diffSR: 8.672990707, diffEcon: -0.864085298 },
+        { name: "Avesh Khan", diffSR: 13.93169766, diffEcon: -0.043320146 },
+        { name: "Arshdeep Singh", diffSR: -11.06688429, diffEcon: -0.302656526 },
+        { name: "Umran Malik", diffSR: -9.302591263, diffEcon: 1.094234766 },
+        { name: "Mukesh Kumar", diffSR: -0.742944271, diffEcon: 0.659666783 },
+        { name: "Harshit Rana", diffSR: -10.97218754, diffEcon: -0.073296823 },
+        { name: "CV Varun", diffSR: -2.218341502, diffEcon: -1.185303257 }
+    ]
+  },
+  Australia3: {
+    display: "2003–2007 Australia",
+    color: "rgba(255, 99, 132, 0.7)",   // reddish",
+    bowlers: [
+        { name: "JN Gillespie", diffSR: -1.918024134, diffEcon: -0.695906769 },
+        { name: "GD McGrath", diffSR: -5.51656519, diffEcon: -0.908643501 },
+        { name: "MS Kasprowicz", diffSR: 5.663265441, diffEcon: -0.711012966 },
+        { name: "GB Hogg", diffSR: -4.087153859, diffEcon: -0.162189181 },
+        { name: "MJ Clarke", diffSR: 2.169585924, diffEcon: 0.145024469 },
+        { name: "MEK Hussey", diffSR: 10.13655328, diffEcon: 0.285694842 },
+        { name: "B Lee", diffSR: -10.94402425, diffEcon: 0.013249656 },
+        { name: "SR Watson", diffSR: 1.576363557, diffEcon: 0.389092111 },
+        { name: "A Symonds", diffSR: 6.151646347, diffEcon: 0.310010391 },
+        { name: "NW Bracken", diffSR: -7.057059626, diffEcon: -0.504448189 },
+        { name: "SR Clark", diffSR: -1.452222782, diffEcon: 0.590835904 },
+        { name: "JR Hopes", diffSR: 8.472181188, diffEcon: 0.326665871 },
+        { name: "BR Dorey", diffSR: 6.404679267, diffEcon: 0.603434072 },
+        { name: "ML Lewis", diffSR: 18.48007985, diffEcon: 1.870920959 },
+        { name: "MG Johnson", diffSR: -8.700195614, diffEcon: 0.282828867 },
+        { name: "SW Tait", diffSR: -12.34608741, diffEcon: 0.837894676 },
+        { name: "AJ Bichel", diffSR: 14.28501657, diffEcon: -0.217015297 },
+        { name: "IJ Harvey", diffSR: -2.780133694, diffEcon: -0.098222813 },
+        { name: "BA Williams", diffSR: -7.569341848, diffEcon: -0.696023906 }
+    ]
+
+  },
+  NewZealand: {
+  display: "2015–2019 New Zealand",
+  color: "rgba(75, 192, 192, 0.7)", // teal
+  bowlers: [
+    { name: "TA Boult", diffSR: -10.90494942, diffEcon: -0.29647605 },
+    { name: "MJ Henry", diffSR: -3.70336075, diffEcon: 0.115614578 },
+    { name: "LH Ferguson", diffSR: -8.892184809, diffEcon: -0.139717748 },
+    { name: "C de Grandhomme", diffSR: 6.421116816, diffEcon: -0.309363671 },
+    { name: "MJ Santner", diffSR: 6.29036611, diffEcon: -0.66818943 },
+    { name: "JDS Neesham", diffSR: -1.669069743, diffEcon: 0.633308641 },
+    { name: "TG Southee", diffSR: 10.44695985, diffEcon: 0.293701279 },
+    { name: "KS Williamson", diffSR: -2.315783294, diffEcon: -0.538152187 },
+    { name: "C Munro", diffSR: 72.31839386, diffEcon: -0.338402966 },
+    { name: "JS Patel", diffSR: -16.67196319, diffEcon: -0.220155578 },
+    { name: "IS Sodhi", diffSR: -1.967114885, diffEcon: 0.072720839 },
+    { name: "AF Milne", diffSR: 8.380144533, diffEcon: -0.191702894 },
+    { name: "CJ Anderson", diffSR: -2.13611641, diffEcon: -0.295723947 },
+    { name: "DAJ Bracewell", diffSR: -3.492594292, diffEcon: -0.359264093 },
+    { name: "TD Astle", diffSR: -17.39600929, diffEcon: -0.101624052 },
+    { name: "NL McCullum", diffSR: -2.421475815, diffEcon: 1.294527011 },
+    { name: "MJ McClenaghan", diffSR: -3.780475863, diffEcon: 0.523410783 },
+    { name: "GD Elliott", diffSR: 14.30686354, diffEcon: 0.223435445 },
+    { name: "BM Wheeler", diffSR: 5.615593944, diffEcon: 0.818997641 }
+  ]
+ },
+ England2: {
+  display: "2015–2019 England",
+  color: "rgba(255, 159, 64, 0.7)", // orange
+  bowlers: [
+    { name: "MA Wood", diffSR: 2.904740318, diffEcon: -0.02652181 },
+    { name: "CR Woakes", diffSR: -7.209081913, diffEcon: -0.174024579 },
+    { name: "JT Ball", diffSR: 33.52398628, diffEcon: 0.666425729 },
+    { name: "BA Stokes", diffSR: 8.972251128, diffEcon: 0.457659774 },
+    { name: "LE Plunkett", diffSR: -6.324427047, diffEcon: 0.283019481 },
+    { name: "MM Ali", diffSR: 8.188761284, diffEcon: 0.075514064 },
+    { name: "JE Root", diffSR: 15.63921737, diffEcon: 0.475046093 },
+    { name: "AU Rashid", diffSR: -2.260207136, diffEcon: 0.144588852 },
+    { name: "ST Finn", diffSR: 5.372013167, diffEcon: -0.120257465 },
+    { name: "DJ Willey", diffSR: -3.056829423, diffEcon: 0.15584601 },
+    { name: "TK Curran", diffSR: -10.12884953, diffEcon: 0.414154349 },
+    { name: "LA Dawson", diffSR: -11.54241316, diffEcon: 1.253665952 },
+    { name: "CJ Jordan", diffSR: 25.41178981, diffEcon: 1.473316232 },
+    { name: "RJW Topley", diffSR: -8.526399277, diffEcon: -0.259295827 }
+  ]
+}
+
+
+};
+
+// Create datasets
+// Create datasets dynamically using the display label
+const datasets = Object.keys(teams).map((teamName) => ({
+  label: teams[teamName].display,       // <-- use display here
+  data: teams[teamName].bowlers.map(b => ({ x: b.diffSR, y: b.diffEcon, label: b.name })),
+  backgroundColor: teams[teamName].color,
+  pointRadius: 6,
+  hidden: false
+}));
+
+
+
+// Calculate global axis limits
+const allX = datasets.flatMap(ds => ds.data.map(p => p.x));
+const allY = datasets.flatMap(ds => ds.data.map(p => p.y));
+const xMin = Math.min(...allX) - 2;
+const xMax = Math.max(...allX) + 2;
+const yMin = Math.min(...allY) - 0.5;
+const yMax = Math.max(...allY) + 0.5;
+
+// Scatter chart config
+const scatterConfig = {
+  type: 'scatter',
+  data: { datasets },
+  options: {
+    responsive: true,
+    animation: false,
+    plugins: {
+      legend: { display: false }, // remove Chart.js legend
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            const { label, x, y } = ctx.raw;
+            return `${label}: SR Diff = ${x.toFixed(2)}, Econ Diff = ${y.toFixed(2)}`;
+          }
+        }
+      },
+      title: {
+        display: true,
+        text: "Era-relative strike rate and economy of bowling units from various eras"
+      }
+    },
+    scales: {
+        x: {
+            title: { display: true, text: "Era-relative Strike Rate" },
+            min: xMin - 4,
+            max: xMax + 4,
+            grid: {
+            color: function(ctx) {
+                return ctx.tick.value === 0 ? "black" : "#ccc"; // bold X=0 line
+            },
+            lineWidth: function(ctx) {
+                return ctx.tick.value === 0 ? 2 : 1;
+            }
+            }
+        },
+        y: {
+            title: { display: true, text: "Era-relative Economy" },
+            min: yMin,
+            max: yMax,
+            grid: {
+            color: function(ctx) {
+                return ctx.tick.value === 0 ? "black" : "#ccc"; // bold Y=0 line
+            },
+            lineWidth: function(ctx) {
+                return ctx.tick.value === 0 ? 2 : 1;
+            }
+            }
+        }
+    }
+
+  },
+  plugins: [
+    {
+      id: 'scatterLabels',
+      afterDatasetsDraw(chart) {
+        const { ctx, data } = chart;
+        ctx.save();
+        data.datasets.forEach((dataset, i) => {
+          if (!dataset.hidden) { // check dataset.hidden, not meta.hidden
+            const meta = chart.getDatasetMeta(i);
+            dataset.data.forEach((point, idx) => {
+              const px = meta.data[idx].x;
+              const py = meta.data[idx].y;
+              ctx.fillStyle = "black";
+              ctx.font = "12px Arial";
+              ctx.textAlign = "left";
+              ctx.fillText(point.label, px + 6, py - 6);
+            });
+          }
+        });
+        ctx.restore();
+      }
+    }
+  ]
+};
+
+const scatterChart = new Chart(document.getElementById('scatterChart'), scatterConfig);
+
+// Create checkboxes
+const checkboxContainer = document.getElementById('checkboxContainer');
+Object.keys(teams).forEach((teamName, index) => {
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.checked = true;
+  checkbox.id = `team-${index}`;
+  checkbox.dataset.datasetIndex = index;
+
+  const label = document.createElement('label');
+  label.htmlFor = checkbox.id;
+  label.innerText = teams[teamName].display;
+  label.style.color = teams[teamName].color.replace("0.7", "1");
+
+  checkbox.addEventListener('change', () => {
+    const datasetIndex = checkbox.dataset.datasetIndex;
+    scatterChart.data.datasets[datasetIndex].hidden = !checkbox.checked; // hide points & labels
+    scatterChart.update();
+  });
+
+  const container = document.createElement('div');
+  container.appendChild(checkbox);
+  container.appendChild(label);
+  checkboxContainer.appendChild(container);
+});
+</script>
+
+</body>
+</html>

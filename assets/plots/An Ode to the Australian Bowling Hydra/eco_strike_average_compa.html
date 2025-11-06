@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Interactive Team Radar Chart - Fixed Axis Labels</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: 40px auto;
+      text-align: center;
+      background-color: #f4f4f4;
+    }
+    canvas {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.15);
+      max-width: 700px;
+      margin: 10px auto 30px;
+    }
+    select { margin-bottom: 14px; padding: 6px 10px; font-size: 15px; }
+  </style>
+</head>
+<body>
+
+  <h2>Interactive Team Bowling Radar Chart</h2>
+
+  <label for="teamSelect"><b>Select Team:</b></label>
+  <select id="teamSelect">
+    <option value="Australia (women) 2022–2025">Australia (women) 2022–2025</option>
+    <option value="Australia (women) 2017–2022">Australia (women) 2017–2022</option>
+    <option value="England 2015–2019">England 2015–2019</option>
+    <option value="England (women) 2022–2025">England (women) 2022–2025</option>
+    <option value="India 2019–2023">India 2019–2023</option>
+    <option value="Australia 2003–2007">Australia 2003–2007</option>
+    <option value="Australia 2011–2015">Australia 2011–2015</option>
+  </select>
+
+  <canvas id="radarChart" width="680" height="600"></canvas>
+
+<script>
+const teamData = {
+  "Australia (women) 2022–2025": {
+    bowlers: ['ML Schutt','D Brown','JL Jonassen','A Sutherland','EA Perry','TM McGrath','A King','A Gardner','G Wareham','KJ Garth','S Molineux'],
+    economy: [4.59,5.21,4.30,4.82,4.99,5.74,4.67,4.45,4.72,4.09,4.53],
+    strikeRate: [35.93,38.53,22.67,26.09,38,40.12,24.12,25.37,32.92,26.30,23.17],
+    average: [27.5,33.47,16.26,20.96,31.58,38.41,18.77,18.84,25.92,17.93,17.5]
+  },
+  "Australia (women) 2017–2022": {
+    bowlers: ["ML Schutt","KM Beams","EA Perry","JL Jonassen","RM Farrell","A Gardner","TM McGrath","NJ Carey","G Wareham","S Molineux","A Sutherland","SJ Coyte"],
+    economy: [4.31,3.97,4.61,4.03,4.67,4.17,4.73,4.12,4.38,3.16,4.55,4.47],
+    strikeRate:[29.34,30.39,36.69,26.42,47.92,37.49,27.09,36.26,37.44,25.59,24.00,37.00],
+    average:[21.06,20.13,28.21,17.76,37.31,26.02,21.36,24.89,27.36,13.47,18.20,27.56]
+  },
+  "England 2015–2019": {
+    bowlers: ["CR Woakes","MA Wood","JT Ball","BA Stokes","LE Plunkett","MM Ali","AU Rashid","ST Finn","DJ Willey","TK Curran","JC Archer","RJW Topley"],
+    economy: [5.48,5.69,6.31,6.14,5.91,5.48,5.65,5.44,5.80,6.47,4.85,5.44],
+    strikeRate:[26.95,40.41,39.46,43.10,27.69,50.20,31.88,36.00,34.13,25.40,32.52,27.24],
+    average: [24.62,38.30,41.50,44.12,27.28,45.89,30.04,32.61,32.96,27.40,26.29,24.71]
+  },
+  "England (women) 2022–2025": {
+    bowlers:["KH Brunt","A Shrubsole","NR Sciver","KL Cross","S Ecclestone","CE Dean","LK Bell","NR Sciver-Brunt","S Glenn","A Capsey","L Filer","LCN Smith"],
+    economy:[4.53,4.84,5.15,4.71,3.65,4.70,5.63,4.37,4.55,4.57,5.37,3.98],
+    strikeRate:[36.67,21.23,40.73,26.92,15.70,20.75,29.00,28.05,22.50,22.13,24.03,14.25],
+    average:[48.56,26.31,47.45,34.30,25.82,26.51,30.90,38.47,29.67,29.07,26.86,21.50]
+  },
+  "India 2019–2023": {
+    bowlers: ['Mohammed Shami','Kuldeep Yadav','RA Jadeja','SN Thakur','JJ Bumrah','YS Chahal','M Prasidh Krishna','Mohammed Siraj','AR Patel','Avesh Khan','Arshdeep Singh','Umran Malik','Harshit Rana','CV Varun'],
+    economy: [5.97,5.17,4.84,6.35,5.06,5.79,5.71,5.17,4.69,5.56,5.36,6.68,5.72,4.75],
+    strikeRate:[21.25,32.67,40.09,28.22,35.54,29.53,26.47,26.4,44.96,39.56,23.31,28.15,19.82,24],
+    average:[21.14,28.14,32.37,29.85,29.98,28.53,25.2,22.73,35.14,36.67,20.81,31.38,18.91,19]
+  }
+};
+
+function normalizeWithPadding(arr, scaleMax = 90, padding = 0.1) {
+  const min = Math.min(...arr);
+  const max = Math.max(...arr);
+  const range = max - min || 1;
+  const paddedMin = min - range * padding;
+  const paddedMax = max + range * padding;
+  return arr.map(v => ((v - paddedMin) / (paddedMax - paddedMin)) * scaleMax);
+}
+
+let radarChart = null;
+
+function createRadarChart(teamName) {
+  const team = teamData[teamName];
+  if (!team) return;
+
+  const metrics = [
+    { name: 'Economy', data: team.economy },
+    { name: 'Strike Rate', data: team.strikeRate },
+    { name: 'Average', data: team.average }
+  ];
+
+  const normalizedCols = metrics.map(m => normalizeWithPadding(m.data));
+  const normalizedByBowler = team.bowlers.map((_, i) => normalizedCols.map(col => col[i]));
+
+  const colors = ['#1f77b4','#ff7f0e','#2ca02c','#d62728','#9467bd','#8c564b','#17becf','#e377c2','#7f7f7f'];
+
+  const radarData = {
+    labels: metrics.map(m => m.name),
+    datasets: team.bowlers.map((b, i) => ({
+      label: b,
+      data: normalizedByBowler[i],
+      fill: true,
+      backgroundColor: (colors[i % colors.length]) + '44',
+      borderColor: colors[i % colors.length],
+      borderWidth: 2,
+      pointRadius: 4,
+      pointBackgroundColor: colors[i % colors.length]
+    }))
+  };
+
+  if (radarChart) radarChart.destroy();
+
+  const customAxisLabels = {
+    id: 'customAxisLabels',
+    afterDraw(chart) {
+      const { ctx, scales: { r } } = chart;
+      const centerX = r.xCenter;
+      const centerY = r.yCenter;
+      const radius = r.drawingArea;
+
+      ctx.save();
+      ctx.fillStyle = '#333';
+      ctx.font = '11px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      metrics.forEach((metric, i) => {
+        const angle = (Math.PI * 2 / metrics.length) * i - Math.PI/2;
+        const rawValues = metric.data;
+        const min = Math.min(...rawValues);
+        const max = Math.max(...rawValues);
+
+        for (let j = 1; j <= 5; j++) {
+          const frac = j / 5;
+          const value = min + frac * (max - min);
+          const x = centerX + Math.cos(angle) * radius * frac;
+          const y = centerY + Math.sin(angle) * radius * frac;
+          const offset = 10;
+          ctx.fillText(value.toFixed(2), x + Math.cos(angle) * offset, y + Math.sin(angle) * offset);
+        }
+      });
+      ctx.restore();
+    }
+  };
+
+  const ctx = document.getElementById('radarChart').getContext('2d');
+  radarChart = new Chart(ctx, {
+    type: 'radar',
+    data: radarData,
+    options: {
+      scales: {
+        r: {
+          min: 0,
+          max: 90,
+          ticks: { display: false },
+          grid: { color: '#ddd' },
+          angleLines: { color: '#bbb' },
+          pointLabels: { font: { size: 13, weight: 'bold' } }
+        }
+      },
+      plugins: {
+        legend: { position: 'top' },
+        title: { display: true, text: `${teamName} — Bowler Performance` },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const idx = context.dataIndex;
+              const rawValues = [team.economy[context.datasetIndex], team.strikeRate[context.datasetIndex], team.average[context.datasetIndex]];
+              return `${context.dataset.label} — ${metrics[idx].name}: ${rawValues[idx]}`;
+            }
+          }
+        }
+      }
+    },
+    plugins: [customAxisLabels]
+  });
+}
+
+document.getElementById('teamSelect').addEventListener('change', e => createRadarChart(e.target.value));
+createRadarChart(document.getElementById('teamSelect').value);
+
+</script>
+</body>
+</html>

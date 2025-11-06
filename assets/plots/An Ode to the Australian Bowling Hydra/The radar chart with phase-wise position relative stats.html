@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phasewise bowling comparision best teams Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: 50px auto;
+      text-align: center;
+      background-color: #f4f4f4;
+    }
+    canvas {
+      background: #ffffff;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <!-- <h2>Team Bowling Phase Radar Chart (Differential Metrics)</h2> -->
+  <canvas id="radarChart" width="600" height="600"></canvas>
+  <p style="text-align:center; font-size:14px; color:#555; margin-top:2px;">
+  Note the sheer dominance of the Australian women 2017-22 and 2022-25 once the fielding 
+  restrictions were lifted. Clicking through the teams toggles their stats on and off. 
+ 
+  </p>
+
+  <script>
+    // Labels in consecutive Powerplay → Middle → Death order
+    const metrics = [
+      "Powerplay Economy",
+      "Middle Strike Rate",
+      "Middle Economy",
+      "Death Strike Rate",
+      "Death Economy",
+      "Powerplay Strike Rate"
+    ];
+
+    // Convert all values to positive (multiply by -1)
+    const teams = [
+      "2022–2025 (women) Australia",
+      "2017–2022 (women) Australia",
+      "2015–2019 England",
+      "2022–2025 (women) England",
+      "2019–2023 India",
+      "2003–2007 Australia",
+      "2011–2015 Australia"
+    ];
+
+    const dataMatrix = [
+      [0.778701264, 13.76297356, 1.048214564, 5.433449074, 1.90158476, 11.52005013],
+      [0.543327207, 23.16220096, 1.33755663, 7.197363465, 2.006974924, 28.42597822],
+      [0.557799773, 7.826691633, 0.404289303, 1.098008952, 0.79204535, 4.669444444],
+      [0.580665997, 8.398693985, 1.029779374, 2.240131579, 0.85760819, 14.01948052],
+      [0.583690185, 15.61691484, 0.274247986, 0.082331731, 0.326600065, 15.96607143],
+      [1.358088126, 12.77860297, 0.266074748, 4.619833666, 0.594591789, 20.26907254],
+      [0.235863923, 7.581706408, 0.097570097, 0.498235294, 0.64516783, 3.433552092]
+      ];
+
+    // Normalize with padding for each metric (so all metrics scale comparably)
+    function normalizeWithPadding(arr, scaleMax = 90, padding = 0.1) {
+      const min = Math.min(...arr);
+      const max = Math.max(...arr);
+      const range = max - min;
+      const paddedMin = min - range * padding;
+      const paddedMax = max + range * padding;
+      return arr.map(v => ((v - paddedMin) / (paddedMax - paddedMin)) * scaleMax);
+    }
+
+    // Transpose matrix so each metric column is normalized
+    const transposed = metrics.map((_, colIdx) => dataMatrix.map(row => row[colIdx]));
+    const normalizedTransposed = transposed.map(col => normalizeWithPadding(col));
+
+    // Reconstruct normalized dataset per team
+    const normalizedData = teams.map((_, rowIdx) => normalizedTransposed.map(col => col[rowIdx]));
+
+    const colors = [
+      '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728',
+      '#9467bd', '#8c564b', '#17becf'
+    ];
+
+    const radarData = {
+      labels: metrics,
+      datasets: teams.map((team, i) => ({
+        label: team,
+        data: normalizedData[i],
+        fill: true,
+        backgroundColor: colors[i] + '40',
+        borderColor: colors[i],
+        borderWidth: 2,
+        pointRadius: 4,
+        pointBackgroundColor: colors[i]
+      }))
+    };
+    const customAxisLabels = {
+        id: 'customAxisLabels',
+        afterDraw(chart) {
+            const { ctx, scales: { r } } = chart;
+            const centerX = r.xCenter;
+            const centerY = r.yCenter;
+            const radius = r.drawingArea;
+
+            ctx.save();
+            ctx.fillStyle = '#333';
+            ctx.font = '11px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // Loop through each metric axis
+            metrics.forEach((metric, i) => {
+            const angle = (Math.PI * 2 / metrics.length) * i - Math.PI / 2;
+
+            // Collect original (unnormalized) data values for this metric
+            const rawValues = dataMatrix.map(row => row[i]);
+            const min = Math.min(...rawValues);
+            const max = Math.max(...rawValues);
+
+            // Draw 5 tick values evenly spaced along the axis
+            for (let j = 1; j <= 5; j++) {
+                const frac = j / 5;
+                const value = min + frac * (max - min);
+                const x = centerX + Math.cos(angle) * radius * frac;
+                const y = centerY + Math.sin(angle) * radius * frac;
+
+                // Position labels slightly offset to avoid overlap with the grid
+                const offset = 10;
+                ctx.fillText(value.toFixed(2), x + Math.cos(angle) * offset, y + Math.sin(angle) * offset);
+            }
+            });
+
+            ctx.restore();
+        }
+        };
+
+
+    const radarConfig = {
+      type: 'radar',
+      data: radarData,
+      options: {
+        scales: {
+          r: {
+            min: 0,
+            max: 90,
+            ticks: {
+              display: false,
+              stepSize: 15,
+              color: '#555',
+              backdropColor: 'transparent'
+            },
+            grid: { color: '#bbb' },
+            angleLines: { color: '#888' },
+            pointLabels: {
+              font: { size: 13, weight: 'bold' },
+              color: (context) => (context.index % 2 === 1 ? '#d64b4b' : '#1f6f3f'),
+              padding: 25, // 👈 pushes labels slightly outward from the grid
+              callback: function(label, index) {
+                // Optional: fine-tune individual offsets if some labels still clash
+                const offsetLabels = {
+                  "Powerplay Economy": "Powerplay Economy  ",  // add spaces after to shift a bit
+                  "Middle Economy": "Middle Economy ",
+                  "Death Economy": "Death Economy ",
+                  "Powerplay Strike Rate": "  Powerplay Strike Rate" // spaces before to shift slightly left
+                };
+                return offsetLabels[label] || label;
+              }
+            }
+          }
+        },
+        plugins: {
+          legend: { position: 'top' },
+          title: {
+            display: true,
+            text: 'Opposition relative strike rate, economy and average of select teams'
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const raw = dataMatrix[context.datasetIndex][context.dataIndex];
+                return `${context.dataset.label} — ${context.label}: ${raw.toFixed(3)}`;
+              }
+            }
+          }
+        }
+      },
+      plugins: [customAxisLabels]
+    };
+
+    new Chart(document.getElementById('radarChart'), radarConfig);
+  </script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bowler Differential Scatter Plot</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        canvas {
+            background: #f9f9f9;
+            border-radius: 15px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Bowler Differential Performance Scatter Plot</h2>
+    <canvas id="scatterChart" width="500" height="500"></canvas>
+
+    <script>
+        const bowlers = [
+            'ML Schutt', 'D Brown', 'JL Jonassen', 'A Sutherland', 
+            'A King', 'A Gardner', 
+            'G Wareham', 'KJ Garth', 'S Molineux'
+        ];
+
+
+        const diffEconomy = [0.193375461,-0.523123597,0.984043932,0.102718696,0.262404957,0.455826139,0.168816707,0.547038852,0.352927618];
+        const diffStrikeRate = [0.039392665,-4.434455674,7.101404091,5.727840704,11.69959629,9.214694699,0.615637215,10.79319435,9.46859684];
+
+        const scatterData = {
+            datasets: [{
+                label: 'Bowler Differential Performance',
+                data: bowlers.map((b, i) => ({ x: diffStrikeRate[i], y: diffEconomy[i], label: b })),
+                backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                pointRadius: 6
+            }]
+        };
+
+        const scatterConfig = {
+            type: 'scatter',
+            data: scatterData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const { label, x, y } = context.raw;
+                                return `${label}: SR Diff = ${x.toFixed(2)}, Econ Diff = ${y.toFixed(2)}`;
+                            }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Differential Strike Rate vs Differential Economy'
+                    }
+                },
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Differential Strike Rate' },
+                        grid: {
+                            color: function(context) {
+                                return context.tick.value === 0 ? 'black' : '#ccc';
+                            },
+                            lineWidth: function(context) {
+                                return context.tick.value === 0 ? 2 : 1;
+                            }
+                        }
+                    },
+                    y: {
+                        title: { display: true, text: 'Differential Economy' },
+                        grid: {
+                            color: function(context) {
+                                return context.tick.value === 0 ? 'black' : '#ccc';
+                            },
+                            lineWidth: function(context) {
+                                return context.tick.value === 0 ? 2 : 1;
+                            }
+                        }
+                    }
+                }
+            },
+            plugins: [{
+                id: 'scatterLabels',
+                afterDatasetsDraw(chart) {
+                    const { ctx, data, scales: { x, y } } = chart;
+                    ctx.save();
+                    data.datasets[0].data.forEach(point => {
+                        ctx.fillStyle = 'black';
+                        ctx.font = '12px Arial';
+                        ctx.textAlign = 'left';
+                        ctx.fillText(point.label, x.getPixelForValue(point.x) + 6, y.getPixelForValue(point.y) - 6);
+                    });
+                    ctx.restore();
+                }
+            }]
+        };
+
+        new Chart(document.getElementById('scatterChart'), scatterConfig);
+    </script>
+</body>
+</html>
