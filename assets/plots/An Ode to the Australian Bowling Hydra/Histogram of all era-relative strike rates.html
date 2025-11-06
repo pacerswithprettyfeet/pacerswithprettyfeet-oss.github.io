@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Differential Strike Rate by Team</title>
+  <title>Universal Chart Template</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     html, body {
@@ -14,119 +14,116 @@
       background: #f5f5f5;
     }
 
-    h2 {
-      text-align: center;
-      margin: 40px 10px 20px;
-      color: #222;
-    }
-
     .chart-container {
       box-sizing: border-box;
       width: 100%;
       max-width: 900px;
-      margin: 0 auto 60px;
+      margin: 0 auto 20px;
       background: #fff;
-      padding: 20px 30px;
+      padding: 20px 20px 10px 20px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       border-radius: 12px;
+      text-align: center;
     }
 
     canvas {
       display: block;
       width: 100% !important;
       height: auto !important;
-      max-width: 100%;
+    }
+
+    p.caption {
+      font-size: 14px;
+      color: #555;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
 
-  <!-- <h2>Differential Strike Rate by Team (Across Eras)</h2> -->
   <div class="chart-container">
-    <canvas id="diffChart"></canvas>
-    <p style="text-align:center; font-size:14px; color:#555; margin-top:10px;">
-    highest era-relative strike rates.
+    <canvas id="universalChart"></canvas>
+    <p class="caption">
+      Caption describing the chart goes here.
     </p>
   </div>
 
   <script>
-    const ctx = document.getElementById('diffChart').getContext('2d');
-
-    const teams = [
-      "2022–2025 Australia (women)",
-      "2017–2022 Australia (women)",
-      "2022–2025 England (women)",
-      "2023–2025 Sri Lanka (men)",
-      "2005–2009 South Africa (women)",
-      "2003–2007 Australia (men)",
-      "2011–2015 South Africa (men)",
-      "2007–2011 Australia (men)",
-      "2019–2023 India (men)",
-      "2015–2019 India (men)",
-      "2015–2019 New Zealand (men)",
-      "2015–2019 South Africa (men)"
+    // ---------- Example scatter chart data ----------
+    const players = [
+      "Player A", "Player B", "Player C", "Player D"
     ];
 
-    const diffStrike = [
-      6.771902914, 5.912993689, 5.873581379,
-      5.800921579, 4.822586522, 4.80926817, 4.330495719, 3.833268747, 
-      3.471050265, 3.388645498, 3.366428788, 3.34412377
-    ];
+    const xValues = [0.5, -0.2, 0.8, -0.5]; // e.g., era-relative economy
+    const yValues = [10, -5, 20, -15];      // e.g., era-relative strike rate
 
-    const backgroundColors = diffStrike.map(v =>
-      v < -5 ? "rgba(255, 99, 132, 0.7)" : "rgba(54, 162, 235, 0.7)"
+    const dataPoints = players.map((name, i) => ({
+      x: xValues[i],
+      y: yValues[i],
+      name
+    }));
+
+    const pointColors = players.map(name =>
+      ["Player C", "Player D"].includes(name) ? 'gold' : 'royalblue'
     );
 
-    new Chart(ctx, {
-      type: 'bar',
+    const canvas = document.getElementById('universalChart');
+    const ctx = canvas.getContext('2d');
+
+    // Dynamically calculate canvas height based on points
+    // You can adjust minHeight for scatter/radar
+    const minHeight = 400; 
+    canvas.height = Math.max(minHeight, dataPoints.length * 40);
+
+    // Chart.js config
+    const config = {
+      type: 'scatter', // or 'radar'
       data: {
-        labels: teams,
         datasets: [{
-          label: 'Era-relative Strike Rate',
-          data: diffStrike,
-          backgroundColor: backgroundColors,
-          borderColor: 'rgba(0, 0, 0, 0.3)',
-          borderWidth: 1.2,
-          borderRadius: 6
+          label: '',
+          data: dataPoints,
+          pointRadius: 6,
+          pointBackgroundColor: pointColors,
+          pointBorderColor: 'black',
+          pointHoverRadius: 8
         }]
       },
       options: {
-        indexAxis: 'y',
         responsive: true,
-        maintainAspectRatio: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: { display: false },
           title: {
             display: true,
-            text: 'Histogram of all era-relative strike rates',
+            text: 'Example Scatter Chart',
             color: '#333',
             font: { size: 16, weight: 'bold' }
-          },
-          tooltip: {
-            callbacks: {
-              title: function() { return ''; }, // removes team name title
-              label: function(context) {
-                return context.raw.toFixed(2);
-              }
-            }
           }
-
         },
         scales: {
           x: {
-            title: { display: true, text: 'Era-relative Strike Rate' },
-            beginAtZero: true,
-            grid: { color: 'rgba(0, 0, 0, 0.05)' }
+            title: { display: true, text: 'X-axis' },
+            grid: { color: 'rgba(0,0,0,0.05)' },
+            min: Math.min(...xValues) - 1,
+            max: Math.max(...xValues) + 1
           },
           y: {
-            title: { display: true, text: 'Team' },
-            grid: { color: 'rgba(0, 0, 0, 0.05)' },
-            ticks: { autoSkip: false }
+            title: { display: true, text: 'Y-axis' },
+            grid: { color: 'rgba(0,0,0,0.05)' },
+            min: Math.min(...yValues) - 5,
+            max: Math.max(...yValues) + 5
           }
         }
       }
+    };
+
+    new Chart(ctx, config);
+
+    // ---------- Send height to parent for iframe ----------
+    window.addEventListener('load', () => {
+      const totalHeight = document.documentElement.scrollHeight;
+      window.parent.postMessage({ type: 'setHeight', height: totalHeight }, '*');
     });
   </script>
-
 </body>
 </html>
