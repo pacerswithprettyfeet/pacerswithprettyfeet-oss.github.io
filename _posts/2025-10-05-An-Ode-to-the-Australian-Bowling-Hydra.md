@@ -46,7 +46,7 @@ England's men's team from 2015-19 operated with a simple, audacious philosophy: 
 <iframe 
   src="{{ '/assets/plots/An Ode to the Australian Bowling Hydra/team_eco_strike_ave.html' | relative_url }}" 
   width="100%" 
-  height="600" 
+  height="800" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
@@ -55,7 +55,7 @@ Jess Jonassen, once holding a strong claim to be the best bowler in the world, p
 <iframe 
   src="{{ '/assets/plots/An Ode to the Australian Bowling Hydra/Aussie actual numbers.html' | relative_url }}" 
   width="100%" 
-  height="600" 
+  height="800" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
@@ -66,7 +66,7 @@ The great Australian men’s unit 2003-07 and Indian men 2019-23 had a rich buff
 <iframe 
   src="{{ '/assets/plots/An Ode to the Australian Bowling Hydra/Era-relative numbers of all bowlers.html' | relative_url }}" 
   width="100%" 
-  height="600" 
+  height="800" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
@@ -77,14 +77,14 @@ The parallel between the Aussie women and the English men 2015-19 only runs deep
 <iframe 
   src="{{ '/assets/plots/An Ode to the Australian Bowling Hydra/% of wickets in middle overs.html' | relative_url }}" 
   width="100%" 
-  height="500" 
+  height="550" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
 <iframe 
   src="{{ '/assets/plots/An Ode to the Australian Bowling Hydra/Graphics on all 3 phases of middle over strike rate.html' | relative_url }}" 
   width="100%" 
-  height="600" 
+  height="800" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
@@ -101,7 +101,7 @@ The parallel between the Aussie women and the English men 2015-19 only runs deep
 <iframe 
   src="{{ '/assets/plots/An Ode to the Australian Bowling Hydra/Middle over era-relative strike and economy rates of Aussie women.html' | relative_url }}" 
   width="100%" 
-  height="600" 
+  height="800" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
@@ -112,7 +112,7 @@ These two Australian women's sides are truly miles ahead of any other team in hi
 <iframe 
   src="{{ '/assets/plots/An Ode to the Australian Bowling Hydra/opposition_relative_average_eco_strike_compa.html' | relative_url }}" 
   width="100%" 
-  height="600" 
+  height="800" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
@@ -124,7 +124,7 @@ The radar chart with phase-wise position relative stats.
 <iframe 
   src="{{ '/assets/plots/An Ode to the Australian Bowling Hydra/The radar chart with phase-wise position relative stats.html' | relative_url }}" 
   width="100%" 
-  height="600" 
+  height="900" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
