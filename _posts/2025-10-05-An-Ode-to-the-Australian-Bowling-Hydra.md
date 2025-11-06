@@ -37,22 +37,20 @@ Moreover, extending your batting or bowling depth would probably mean playing a 
 England's men's team from 2015-19 operated with a simple, audacious philosophy: out-bat the opposition. They hammered out, on average, 33 more runs per 50 overs than a typical team of their era — a record difference since we have ball-by-ball data. Their credo? Defensive cricket is only for wussies. Beyond the relatively 'anchoring' middle-order trio of Root, Morgan, and Stokes (all of whom still struck at over 90, with Morgan himself just a whisker shy of 100), the rest of the team consistently attacked at over a run-a-ball. Add to that their previously mentioned endless batting depth, and it becomes clear: the only real way to contain that English side was to take all ten wickets. Now, here's the kicker: the current Aussie women are essentially the English men, but with the ball. Since their 2022 World Cup triumph, this Australian team has taken a wicket a staggering 6.77 balls quicker than an average ODI bowler—the highest strike rate relative to their era ever recorded. And, perhaps just to rub it in, the second-highest era-relative strike rate? That would be the previous iteration of the Aussie women (2017-2022) at 5.91! Destroying teams for 5 years and winning the world cup at the end of the cycle was not sufficient — they had to get a software upgrade that installed a virtual pet T-rex that wrecks some carnage on the side when they aren’t leading the massacre themselves.
 
 <iframe 
-  src="{{ '/assets/plots/An Ode to the Australian Bowling Hydra/Histogram of all era-relative strike rates.html' | relative_url }}" 
+  src="/path/to/chart.html" 
   width="100%" 
-  style="border:none; overflow:hidden;"
-></iframe>
+  style="border:none; overflow:hidden;">
+</iframe>
 
 <script>
   window.addEventListener('message', (event) => {
     if (event.data.type === 'setHeight') {
-      const iframes = document.querySelectorAll('iframe');
-      iframes.forEach(iframe => {
-        // optional: only adjust specific iframe if needed
-        iframe.style.height = event.data.height + 'px';
-      });
+      const iframe = document.querySelector('iframe[src="/path/to/chart.html"]');
+      if (iframe) iframe.style.height = event.data.height + 'px';
     }
   });
 </script>
+
 
 
 <iframe 
