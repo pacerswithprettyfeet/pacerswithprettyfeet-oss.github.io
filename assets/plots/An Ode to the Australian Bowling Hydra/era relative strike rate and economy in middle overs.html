@@ -46,8 +46,6 @@
 </head>
 <body>
 
-  <!-- <h2>Middle Overs – Era-relative Bowling Comparison</h2> -->
-
   <div class="chart-wrapper">
     <!-- Strike Rate Chart -->
     <div class="chart-container">
@@ -95,7 +93,9 @@
     ];
 
     const strikeColors = strikeTeams.map(team =>
-      team.includes("Australia") ? "rgba(255, 215, 0, 0.8)" : "rgba(54, 162, 235, 0.7)"
+      team.includes("Australia") && team.includes("(women)") 
+        ? "rgba(255, 215, 0, 0.8)"  // Australian women's team
+        : "rgba(54, 162, 235, 0.7)" // all others
     );
 
     new Chart(document.getElementById('strikeChart').getContext('2d'), {
@@ -178,7 +178,9 @@
     ];
 
     const economyColors = economyTeams.map(team =>
-      team.includes("Australia") ? "rgba(255, 215, 0, 0.8)" : "rgba(54, 162, 235, 0.7)"
+      team.includes("Australia") && team.includes("(women)") 
+        ? "rgba(255, 215, 0, 0.8)"  // Australian women's team
+        : "rgba(54, 162, 235, 0.7)" // all others
     );
 
     new Chart(document.getElementById('economyChart').getContext('2d'), {
