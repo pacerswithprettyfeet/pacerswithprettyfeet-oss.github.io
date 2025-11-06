@@ -143,13 +143,15 @@
 
 </body>
 <script>
-  function sendHeightToParent() {
-    const height = document.documentElement.scrollHeight;
-    window.parent.postMessage({ type: 'setHeight', height }, '*');
-  }
+function sendHeightToParent() {
+  const height = document.documentElement.scrollHeight;
+  window.parent.postMessage({ type: 'setHeight', height }, '*');
+}
 
-  window.addEventListener('load', sendHeightToParent);
-  window.addEventListener('resize', sendHeightToParent);
+// Only on load, not resize
+window.addEventListener('load', sendHeightToParent);
 </script>
+
 </html>
+
 
