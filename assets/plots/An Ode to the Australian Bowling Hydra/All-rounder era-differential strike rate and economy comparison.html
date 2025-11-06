@@ -1,45 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      overflow-x: hidden;
-      background: #fafafa;
-    }
-    .chart-container {
-      width: 100%;
-      max-width: 800px;
-      margin: 0 auto;
-      text-align: center;
-    }
-    canvas {
-      width: 100% !important;
-      height: auto !important;
-      display: block;
-    }
-  </style>
   <meta charset="utf-8">
   <title>All Rounders Comparison (Era-relative Economy & Strike Rate)(Chart.js)</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<script>
-  // Adjust iframe height dynamically when the content loads
-  function sendHeightToParent() {
-    const height = document.documentElement.scrollHeight;
-    window.parent.postMessage({ type: 'setHeight', height }, '*');
-  }
-
-  // Trigger once the chart and text are rendered
-  window.addEventListener('load', sendHeightToParent);
-  window.addEventListener('resize', sendHeightToParent);
-</script>
-
 <body style="background:#fafafa;">
   <!-- <h2 style="text-align:center;">All Rounders Comparison (Era-relative Economy & Strike Rate)</h2> -->
-  <div class="chart-container">
-    <canvas id="scatterChart"></canvas>
+  <div style="width:800px;margin:auto;">
+    <canvas id="scatterChart" width="800" height="600"></canvas>
     <p style="text-align:center; font-size:14px; color:#555; margin-top:10px;">
     Amongst all-rounders who bat primarily in the top 7, only Hardik Pandya, Nat Sciver-Brunt 
     and Marizanne Kapp have a positive era-differential strike rate (how more frequently does 
@@ -122,8 +91,6 @@
       type: 'scatter',
       data,
       options: {
-        responsive: true,
-        maintainAspectRatio: true,
         plugins: { legend: { display: false },
                    title: {
                       display: true,
@@ -152,5 +119,3 @@
   </script>
 </body>
 </html>
-
-
