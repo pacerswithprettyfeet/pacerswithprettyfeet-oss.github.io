@@ -5,41 +5,46 @@
   <title>All Rounders Comparison (Era-relative Economy & Strike Rate)(Chart.js)</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    body {
+    html, body {
       background: #fafafa;
       margin: 0;
-      overflow-x: hidden; /* Prevent horizontal scroll */
+      padding: 0;
+      overflow-x: hidden; /* no horizontal scroll ever */
     }
     .chart-container {
       max-width: 800px;
-      width: 95%; /* responsive */
-      margin: auto;
+      width: 95%;
+      margin: 0 auto;
+      overflow: hidden; /* hides any pixel overflow by canvas */
     }
     canvas {
-      width: 100% !important; /* scales the chart within container */
+      display: block; /* removes inline spacing */
+      width: 100% !important;
       height: auto !important;
     }
     p {
       text-align: center;
       font-size: 14px;
       color: #555;
-      margin-top: 10px;
+      margin: 10px auto;
+      max-width: 800px;
+      padding: 0 10px; /* prevent text overflow on small screens */
     }
   </style>
 </head>
 <body>
   <div class="chart-container">
     <canvas id="scatterChart"></canvas>
-    <p>
-      Amongst all-rounders who bat primarily in the top 7, only Hardik Pandya, Nat Sciver-Brunt 
-      and Marizanne Kapp have a positive era-differential strike rate (how more frequently does 
-      a bowler strike compared to the typical strike rate of the era and the phase of the game they 
-      typically bowl in; lots of wickets fall in the death overs — so we downgrade the strike rate 
-      of wickets taken in the death) other than the Aussie duo of Sutherland and Gardner. Out of them, 
-      only the two Australians and the exceptional Kapp also have a positive era-relative economy rate 
-      (how many runs a bowler gives compared to the era economy rate weighted by the phases of the game they bowl in).
-    </p>
   </div>
+  <p>
+    Amongst all-rounders who bat primarily in the top 7, only Hardik Pandya, Nat Sciver-Brunt 
+    and Marizanne Kapp have a positive era-differential strike rate (how more frequently does 
+    a bowler strike compared to the typical strike rate of the era and the phase of the game they 
+    typically bowl in; lots of wickets fall in the death overs — so we downgrade the strike rate 
+    of wickets taken in the death) other than the Aussie duo of Sutherland and Gardner. Out of them, 
+    only the two Australians and the exceptional Kapp also have a positive era-relative economy rate 
+    (how many runs a bowler gives compared to the era economy rate weighted by the phases of the game they bowl in).
+  </p>
 
   <script>
     const players = [
