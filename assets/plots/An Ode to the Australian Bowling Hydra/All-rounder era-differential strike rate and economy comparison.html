@@ -5,6 +5,18 @@
   <title>All Rounders Comparison (Era-relative Economy & Strike Rate)(Chart.js)</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+<script>
+  // Adjust iframe height dynamically when the content loads
+  function sendHeightToParent() {
+    const height = document.documentElement.scrollHeight;
+    window.parent.postMessage({ type: 'setHeight', height }, '*');
+  }
+
+  // Trigger once the chart and text are rendered
+  window.addEventListener('load', sendHeightToParent);
+  window.addEventListener('resize', sendHeightToParent);
+</script>
+
 <body style="background:#fafafa;">
   <!-- <h2 style="text-align:center;">All Rounders Comparison (Era-relative Economy & Strike Rate)</h2> -->
   <div style="width:800px;margin:auto;">
