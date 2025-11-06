@@ -19,7 +19,7 @@ Moreover, extending your batting or bowling depth would probably mean playing a 
 <iframe 
   src="{{ '/assets/plots/An Ode to the Australian Bowling Hydra/All-rounder era-differential strike rate and economy comparison.html' | relative_url }}" 
   width="100%" 
-  height="500" 
+  height="700" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
