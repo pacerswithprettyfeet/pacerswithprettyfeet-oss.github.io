@@ -4,19 +4,40 @@
   <meta charset="utf-8">
   <title>All Rounders Comparison (Era-relative Economy & Strike Rate)(Chart.js)</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background: #fafafa;
+      margin: 0;
+      overflow-x: hidden; /* Prevent horizontal scroll */
+    }
+    .chart-container {
+      max-width: 800px;
+      width: 95%; /* responsive */
+      margin: auto;
+    }
+    canvas {
+      width: 100% !important; /* scales the chart within container */
+      height: auto !important;
+    }
+    p {
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+      margin-top: 10px;
+    }
+  </style>
 </head>
-<body style="background:#fafafa;">
-  <!-- <h2 style="text-align:center;">All Rounders Comparison (Era-relative Economy & Strike Rate)</h2> -->
-  <div style="width:800px;margin:auto;">
-    <canvas id="scatterChart" width="800" height="600"></canvas>
-    <p style="text-align:center; font-size:14px; color:#555; margin-top:10px;">
-    Amongst all-rounders who bat primarily in the top 7, only Hardik Pandya, Nat Sciver-Brunt 
-    and Marizanne Kapp have a positive era-differential strike rate (how more frequently does 
-    a bowler strike compared to the typical strike rate of the era and the phase of the game they 
-    typically bowl in; lots of wickets fall in the death overs — so we downgrade the strike rate 
-    of wickets taken in the death) other than the Aussie duo of Sutherland and Gardner. Out of them, 
-    only the two Australians and the exceptional Kapp also have a positive era-relative economy rate 
-    (how many runs a bowler gives compared to the era economy rate weighted by the phases of the game they bowl in).
+<body>
+  <div class="chart-container">
+    <canvas id="scatterChart"></canvas>
+    <p>
+      Amongst all-rounders who bat primarily in the top 7, only Hardik Pandya, Nat Sciver-Brunt 
+      and Marizanne Kapp have a positive era-differential strike rate (how more frequently does 
+      a bowler strike compared to the typical strike rate of the era and the phase of the game they 
+      typically bowl in; lots of wickets fall in the death overs — so we downgrade the strike rate 
+      of wickets taken in the death) other than the Aussie duo of Sutherland and Gardner. Out of them, 
+      only the two Australians and the exceptional Kapp also have a positive era-relative economy rate 
+      (how many runs a bowler gives compared to the era economy rate weighted by the phases of the game they bowl in).
     </p>
   </div>
 
@@ -25,13 +46,12 @@
       "Glenn Maxwell", "Shane Watson", "Axar Patel",
       "Ravindra Jadeja", "Hardik Pandya",
       "Ash Gardner", "Annabel Sutherland", "Ben Stokes", 
-      "Harmanpreet", "Marizanne Kapp", "Suzie bates", "Nat Sciver-Brunt", "Tahlia McGrath"
+      "Harmanpreet", "Marizanne Kapp", "Suzie bates", "Nat Sciver-Brunt", "Tahlia McGrath"
     ];
 
-    const trueEconomy = [-0.297261904, 0.009931099, 0.864085298, 0.648616722, -0.173082521, 0.455826139, 0.102718696, -0.457659774, -0.627719395, 0.510766491, -0.441877568, 	-0.123332572, -0.843315369];
+    const trueEconomy = [-0.297261904, 0.009931099, 0.864085298, 0.648616722, -0.173082521, 0.455826139, 0.102718696, -0.457659774, -0.627719395, 0.510766491, -0.441877568, -0.123332572, -0.843315369];
     const trueStrikeRate = [-37.81407373, -20.28678223, -8.672990707, -1.770450891, 6.856782885, 9.214694699, 5.727840704, -8.972251128, -12.77730753, 4.767810296, -17.44490016, 6.097140119, -46.10559218];
 
-    // Prepare Chart.js data
     const data = {
       datasets: [{
         label: '',
@@ -47,8 +67,6 @@
       }]
     };
 
-
-    // Plugin to draw quadrant lines and text labels
     const quadrantPlugin = {
       id: 'quadrantsAndLabels',
       afterDatasetsDraw(chart) {
@@ -57,21 +75,18 @@
         ctx.strokeStyle = 'rgba(0,0,0,0.5)';
         ctx.lineWidth = 1;
 
-        // Draw vertical line (x=0)
         const xZero = x.getPixelForValue(0);
         ctx.beginPath();
         ctx.moveTo(xZero, top);
         ctx.lineTo(xZero, bottom);
         ctx.stroke();
 
-        // Draw horizontal line (y=0)
         const yZero = y.getPixelForValue(0);
         ctx.beginPath();
         ctx.moveTo(left, yZero);
         ctx.lineTo(right, yZero);
         ctx.stroke();
 
-        // Draw player labels
         const dataset = chart.data.datasets[0].data;
         ctx.font = '12px sans-serif';
         ctx.fillStyle = 'black';
@@ -86,16 +101,16 @@
       }
     };
 
-    // Chart config
     const config = {
       type: 'scatter',
       data,
       options: {
-        plugins: { legend: { display: false },
-                   title: {
-                      display: true,
-                      text: 'All-rounder era-differential strike rate and economy comparison'
-                    },
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: 'All-rounder era-differential strike rate and economy comparison'
+          },
         },
         scales: {
           y: {
