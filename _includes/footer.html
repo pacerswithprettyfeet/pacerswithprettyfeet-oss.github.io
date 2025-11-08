@@ -1,35 +1,44 @@
-<ul class="social-media-list">
-  <!-- Twitter / X -->
-  <li>
-    <a href="https://twitter.com/pacerswprettyft" target="_blank" rel="noopener noreferrer">
-      <svg class="svg-icon">
-        <use xlink:href="{{ '/assets/minima-social-icons.svg#twitter' | relative_url }}"></use>
-      </svg>
-      <span class="username">@pacerswprettyft</span>
-    </a>
-  </li>
+<div class="social-section">
+  <p class="follow-text">Follow us on</p>
+  <ul class="social-media-list">
+    <li>
+      <a href="https://twitter.com/pacerswprettyft" target="_blank" rel="noopener noreferrer">
+        <svg class="svg-icon">
+          <use xlink:href="{{ '/assets/minima-social-icons.svg#twitter' | relative_url }}"></use>
+        </svg>
+        <span class="username">@pacerswprettyft</span>
+      </a>
+    </li>
+  </ul>
+</div>
 
-  <!-- RSS (optional, keep if you already have it) -->
-  <!-- {%- if site.rss -%}
-  <li>
-    <a href="{{ site.rss | relative_url }}">
-      <svg class="svg-icon">
-        <use xlink:href="{{ '/assets/minima-social-icons.svg#rss' | relative_url }}"></use>
-      </svg>
-      <span>RSS</span>
-    </a>
-  </li>
-  {%- endif -%} -->
-
-  <!-- Add any other socials below as needed -->
-  <!-- {%- if site.github_username -%}
-  <li>
-    <a href="https://github.com/{{ site.github_username }}" target="_blank" rel="noopener noreferrer">
-      <svg class="svg-icon">
-        <use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use>
-      </svg>
-      <span class="username">{{ site.github_username }}</span>
-    </a>
-  </li>
-  {%- endif -%} -->
-</ul>
+<style>
+.social-section {
+  text-align: center;
+  margin-top: 20px;
+}
+.follow-text {
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+.social-media-list {
+  display: inline-flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 10px;
+}
+.social-media-list a {
+  display: flex;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+.social-media-list a:hover {
+  color: #1DA1F2;
+}
+.username {
+  margin-left: 5px;
+}
+</style>
