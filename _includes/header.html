@@ -5,6 +5,17 @@
       {{ site.title | escape }}
     </a>
 
+    <!-- Follow us on -->
+    <div class="social-inline-header">
+      <span class="follow-text">Follow us on:</span>
+      <a href="https://twitter.com/pacerswprettyft" target="_blank" rel="noopener noreferrer" class="social-link">
+        <svg class="svg-icon">
+          <use xlink:href="{{ '/assets/minima-social-icons.svg#twitter' | relative_url }}"></use>
+        </svg>
+        <span class="username">@pacerswprettyft</span>
+      </a>
+    </div>
+
     <!-- Responsive navigation -->
     <nav class="site-nav">
       <input type="checkbox" id="nav-trigger" class="nav-trigger" />
@@ -22,7 +33,6 @@
         </span>
       </label>
 
-      <!-- Navigation links from _config.yml -->
       <div class="trigger">
         {% for link in site.nav_links %}
           <a class="page-link" href="{{ site.baseurl }}{{ link.url }}">{{ link.title }}</a>
@@ -32,5 +42,32 @@
   </div>
 </header>
 
-
-
+<style>
+.social-inline-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 0.9rem;
+}
+.social-inline-header .follow-text {
+  font-weight: 500;
+}
+.social-inline-header .social-link {
+  display: flex;
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+.social-inline-header .social-link:hover {
+  color: #1DA1F2;
+}
+.social-inline-header .svg-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+}
+.username {
+  font-weight: 500;
+}
+</style>
