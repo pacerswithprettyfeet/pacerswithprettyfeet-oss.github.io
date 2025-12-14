@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fraction of Overs as 1st Bowler</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      width: 100%;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f5f5f5;
+    }
+
+    h2 {
+      text-align: center;
+      margin: 40px 10px 20px;
+      color: #222;
+    }
+
+    .chart-container {
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto 60px;
+      background: #fff;
+      padding: 20px 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+    }
+
+    canvas {
+      display: block;
+      width: 100% !important;
+      height: auto !important;
+      max-width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="chart-container">
+  <canvas id="bowlerChart"></canvas>
+    <!-- <p style="text-align:center; font-size:14px; color:#555; margin-top:10px;">
+    Bowlers with largest fraction of deliveries bowled as the first bowler in India.
+    </p> -->
+</div>
+
+<script>
+const bowlersData = [
+  { name: "Sadashiv Shinde", frac: 0.631578947 },
+  { name: "Erapally Prasanna", frac: 0.484386673 },
+  { name: "Ramakant Desai", frac: 0.438741295 },
+  { name: "Nandlal Yadav", frac: 0.43831887 },
+  { name: "Ghulam Ahmed", frac: 0.418017456 },
+  { name: "Harbhajan Singh", frac: 0.414326917 },
+  { name: "Sunil Joshi", frac: 0.406130268 },
+  { name: "Pragyan Ojha", frac: 0.404142657 },
+  { name: "Amritsar Kripal Singh", frac: 0.389558233 },
+  { name: "Ravindra Jadeja", frac: 0.371019734 },
+  { name: "Dattaray Phadkar", frac: 0.367710049 },
+  { name: "Bhagwat Chandrasekhar", frac: 0.366575939 },
+  { name: "Dilip Doshi", frac: 0.36619469 },
+  { name: "Javagal Srinath", frac: 0.350912106 },
+  { name: "Narendra Hirwani", frac: 0.350028458 },
+  { name: "Ravichandran Ashwin", frac: 0.348960109 },
+  { name: "Murali Kartik", frac: 0.345924453 }
+];
+
+// Sort in decreasing order of fraction
+bowlersData.sort((a, b) => b.frac - a.frac);
+
+// Extract arrays for Chart.js
+const bowlers = bowlersData.map(d => d.name);
+const fractions = bowlersData.map(d => d.frac);
+
+const ctx = document.getElementById('bowlerChart').getContext('2d');
+
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: bowlers,
+    datasets: [{
+      label: 'Fraction as 2nd Bowler',
+      data: fractions,
+      backgroundColor: 'rgba(54, 162, 235, 0.7)',
+      borderColor: 'rgba(0, 0, 0, 0.3)',
+      borderWidth: 1.2,
+      borderRadius: 6
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'Indian bowlers with the largest fraction of deliveries bowled as the second bowler in India',
+        color: '#333',
+        font: { size: 16, weight: 'bold' }
+      },
+      tooltip: {
+        callbacks: {
+          title: () => '',
+          label: (context) => context.raw.toFixed(3)
+        }
+      }
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Fraction of Overs Bowled as second Bowler'
+        },
+        min: 0,
+        max: 1.0,
+        grid: { color: 'rgba(0, 0, 0, 0.05)' }
+      },
+      y: {
+        title: {
+          display: true,
+          text: ''
+        },
+        grid: { color: 'rgba(0, 0, 0, 0.05)' },
+        ticks: { autoSkip: false }
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

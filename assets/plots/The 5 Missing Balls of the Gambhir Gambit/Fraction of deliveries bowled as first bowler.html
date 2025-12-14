@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fraction of Overs as 1st Bowler</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      width: 100%;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f5f5f5;
+    }
+
+    h2 {
+      text-align: center;
+      margin: 40px 10px 20px;
+      color: #222;
+    }
+
+    .chart-container {
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto 60px;
+      background: #fff;
+      padding: 20px 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+    }
+
+    canvas {
+      display: block;
+      width: 100% !important;
+      height: auto !important;
+      max-width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="chart-container">
+  <canvas id="bowlerChart"></canvas>
+    <p style="text-align:center; font-size:14px; color:#555; margin-top:10px;">
+    Note the difference in the fraction of career overs bowled as the first bowler by Kumble, 
+    Ashwin, Jadeja and Harbhajan, and the rest.
+    </p>
+</div>
+
+<script>
+const ctx = document.getElementById('bowlerChart').getContext('2d');
+
+const bowlers = [
+  "Kumble",
+  "Ashwin",
+  "Jadeja",
+  "Harbhajan",
+  "Kuldeep",
+  "Axar",
+  "Bhuvneshwar Kumar",
+  "Bumrah",
+  "Srinath",
+  "Siraj",
+  "Shami",
+  "Umesh Yadav",
+  "Zaheer Khan",
+  "Ishant Sharma"
+];
+
+const fractions = [
+  0.695652174,
+  0.577736106,
+  0.44972089,
+  0.442874801,
+  0.344139651,
+  0.31505618,
+  0.234541578,
+  0.180451128,
+  0.161359867,
+  0.077156744,
+  0.062982402,
+  0.031114774,
+  0.024900807,
+  0.010547905
+];
+
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: bowlers,
+    datasets: [{
+      label: 'Fraction as 1st Bowler',
+      data: fractions,
+      backgroundColor: 'rgba(54, 162, 235, 0.7)',
+      borderColor: 'rgba(0, 0, 0, 0.3)',
+      borderWidth: 1.2,
+      borderRadius: 6
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'Fraction of deliveries bowled as first bowler',
+        color: '#333',
+        font: { size: 16, weight: 'bold' }
+      },
+      tooltip: {
+        callbacks: {
+          title: () => '',
+          label: (context) => context.raw.toFixed(3)
+        }
+      }
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Fraction of deliveries bowled as first bowler'
+        },
+        min: 0,
+        max: 0.75,
+        grid: { color: 'rgba(0, 0, 0, 0.05)' }
+      },
+      y: {
+        title: {
+          display: true,
+          text: ''
+        },
+        grid: { color: 'rgba(0, 0, 0, 0.05)' },
+        ticks: { autoSkip: false }
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

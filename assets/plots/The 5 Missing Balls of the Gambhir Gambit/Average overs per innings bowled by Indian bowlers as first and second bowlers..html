@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bowler Workload</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h2></h2>
+  <canvas id="workloadChart" width="800" height="400"></canvas>
+    <p style="text-align:center; font-size:14px; color:#555; margin-top:10px;"> 
+    Note the big drop in workloads of Axar, Kuldeep, and the other more recent bowlers 
+    compared to Ashwin and Jadjea. However, even Ashwin and Jadeja’s respective workloads 
+    pale in comparison to Kumble and Harbhajan’s as first and second bowlers.
+    </p>
+
+  <script>
+    const labels = ['Ashwin', 'Jadeja', 'Kuldeep', 'Siraj', 'Shami', 
+                    'Bumrah', 'Umesh', 'Axar', 'Harbhajan', 'Kumble'];
+
+    const firstBowlerData = [25, 28, 19.1, 21.1, 17, 12.5, 12.4, 19.3, 31.2, 34.5];
+    const secondBowlerData = [22.4, 20.4, 19.4, 12, 15.4, 13.3, 16.4, 22.4, 32.2, 29.2];
+
+    const averageFirst = 28.2;
+    const averageSecond = 22.5;
+
+    const data = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'overs per innings bowled as 1st bowler',
+          data: firstBowlerData,
+          backgroundColor: 'blue',
+        },
+        {
+          label: 'overs per innings bowled as 2nd bowler',
+          data: secondBowlerData,
+          backgroundColor: 'orange',
+        },
+        {
+          label: 'Average overs per innings bowled by the 1st bowler',
+          data: Array(labels.length).fill(averageFirst),
+          type: 'line',
+          borderColor: 'green',
+          borderWidth: 2,
+          pointRadius: 0,
+          fill: false,
+          borderDash: [5, 5]
+        },
+        {
+          label: 'Average overs per innings bowled by the 2nd bowler',
+          data: Array(labels.length).fill(averageSecond),
+          type: 'line',
+          borderColor: 'black',
+          borderWidth: 2,
+          pointRadius: 0,
+          fill: false,
+          borderDash: [5, 5]
+        }
+      ]
+    };
+
+    const config = {
+      type: 'bar',
+      data: data,
+      options: {
+        responsive: true,
+        scales: {
+          y: { beginAtZero: true, title: { display: true, text: 'Over per innings' } },
+          x: { stacked: false }
+        },
+        plugins: { 
+          legend: { position: 'top' },
+          title: {
+            display: true,           // <-- show the title
+            text: 'Average overs per innings bowled by Indian bowlers as first and second bowlers.', // <-- your title text
+            font: {
+              size: 16,
+              weight: 'bold'
+            },
+            color: '#333'
+          }
+        }
+      }
+    };
+
+
+    new Chart(document.getElementById('workloadChart'), config);
+  </script>
+</body>
+</html>

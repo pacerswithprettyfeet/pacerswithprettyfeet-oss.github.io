@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Workload of Bowlers in India by Era</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f5f5f5;
+      text-align: center;
+    }
+    #chart-container {
+      width: 95%;
+      max-width: 900px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+<h2></h2>
+<div id="chart-container">
+  <canvas id="cdfChart"></canvas>
+  <!-- <p style="text-align:center; font-size:14px; color:#555; margin-top:10px;">
+    Average overs per innings bowled by the first, second, third, fourth and fifth bowlers in 
+    India in tests, by era
+  </p> -->
+</div>
+
+<script>
+const bowlerNo = [1, 2, 3, 4, 5];
+
+const era1980_2000 = [30.1, 24, 18.3, 13.1, 7.1];
+const era2000_2015 = [27.2, 24.4, 18.2, 14.1, 7];
+const era2015_2025 = [24.4, 20.2, 14.4, 11.4, 6.4];
+const era2020_2025 = [23.5, 18.1, 13.2, 9.5, 6];
+
+const data = {
+  labels: bowlerNo.map(String),
+  datasets: [
+    {
+      label: "1980–2000",
+      data: era1980_2000,
+      borderColor: "red",
+      backgroundColor: "red",
+      tension: 0.2,
+      fill: false,
+      pointStyle: 'circle',
+      pointRadius: 5,
+      pointHoverRadius: 7
+    },
+    {
+      label: "2000–2015",
+      data: era2000_2015,
+      borderColor: "blue",
+      backgroundColor: "blue",
+      tension: 0.2,
+      fill: false,
+      pointStyle: 'circle',
+      pointRadius: 5,
+      pointHoverRadius: 7
+    },
+    {
+      label: "2015–2025",
+      data: era2015_2025,
+      borderColor: "green",
+      backgroundColor: "green",
+      tension: 0.2,
+      fill: false,
+      pointStyle: 'circle',
+      pointRadius: 5,
+      pointHoverRadius: 7
+    },
+    {
+      label: "2020–2025",
+      data: era2020_2025,
+      borderColor: "orange",
+      backgroundColor: "orange",
+      tension: 0.2,
+      fill: false,
+      pointStyle: 'circle',
+      pointRadius: 5,
+      pointHoverRadius: 7
+    }
+  ]
+};
+
+const config = {
+  type: "line",
+  data: data,
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+        title: { display: true, text: '' }
+      },
+      title: {
+        display: true,
+        text: "Average overs per innings bowled by the first, second, third, fourth and fifth bowlers in India in tests, by era",
+        font: { size: 18, weight: 'bold' }
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return context.parsed.y + " overs";
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        title: { display: true, text: 'Bowler Number' }
+      },
+      y: {
+        title: { display: true, text: 'Average overs bowled per innings' },
+        min: 5
+      }
+    }
+  }
+};
+
+new Chart(document.getElementById('cdfChart'), config);
+</script>
+
+</body>
+</html>
