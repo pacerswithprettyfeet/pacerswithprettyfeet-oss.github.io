@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Average overs bowled by spinners since 2000s</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3"></script>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f5f5f5;
+    }
+
+    .chart-container {
+      width: 100%;
+      max-width: 900px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="chart-container">
+  <canvas id="spinnerChart"></canvas>
+    <p style="text-align:center; font-size:14px; color:#555; margin-top:10px;">
+    We compare them against the workloads of Kumble and Harbhajan, the first and second spinners for India 
+    during the great batting era. Note the significant reduction in workloads for the Indian 
+    bowlers. We also plot the workload of a typical spinner (across countries and eras) with a 
+    bowling average of at most 32. Despite the average also including data points of spinners 
+    operating in SENA conditions, the workload of a typical  frontline spinner is more than 
+    the average workload shouldered by the Indian spinners in recent times.
+    </p>
+</div>
+
+<script>
+const ctx = document.getElementById('spinnerChart').getContext('2d');
+
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: [
+      "Ashwin",
+      "Ravindra Jadeja",
+      "Axar Patel",
+      "Kuldeep Yadav",
+      "Anil Kumble",
+      "Harbhajan Singh",
+      "Average"
+    ],
+    datasets: [{
+      data: [21.5, 19.5, 14.5, 13.5, 31.3, 28.3, 25.4],
+      backgroundColor: [
+        "steelblue",
+        "steelblue",
+        "steelblue",
+        "steelblue",
+        "green",       // Anil Kumble highlight
+        "green",
+        "orange"
+      ],
+      borderRadius: 6,
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'Average overs per innings bowled by Indian spinners at home since 2015',
+        font: { size: 16, weight: 'bold' },
+        color: '#333'
+      },
+      annotation: {
+        annotations: {
+          avgSpinLine: {
+            type: 'line',
+            yMin: 25.4,
+            yMax: 25.4,
+            borderColor: 'orange',
+            borderWidth: 2,
+            borderDash: [2, 4],
+            label: {
+              display: true,
+              content: '',
+              position: 'start',
+              color: 'orange',
+              backgroundColor: 'rgba(0,0,0,0)'
+            }
+          }
+        }
+      },
+      tooltip: {
+        callbacks: {
+          title: () => '',
+          label: (ctx) => ctx.raw
+        }
+      }
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: ''
+        },
+        grid: {
+          display: false
+        }
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'Average overs bowled per innings'
+        },
+        min: 0,
+        max: 35,   // 🔒 fixed scale
+        grid: {
+          color: 'rgba(0,0,0,0.05)'
+        }
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
