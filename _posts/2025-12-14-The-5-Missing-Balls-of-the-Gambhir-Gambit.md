@@ -61,14 +61,14 @@ Ideally, as the innings shrinks, your best bowlers should shoulder pretty much t
 <iframe 
   src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Average-overs-per-innings-bowled-by-the-first-second-third-fourth-and-fifth-bowlers-globally-in tests-by-era.html'  |relative_url }}" 
   width="100%" 
-  height="550" 
+  height="525" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
 <iframe 
   src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Average-overs-per-innings-bowled-by-the-first-second-third-fourth-and-fifth-bowlers in-India-in-tests-by-era.html'  |relative_url }}" 
   width="100%" 
-  height="550" 
+  height="525" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
