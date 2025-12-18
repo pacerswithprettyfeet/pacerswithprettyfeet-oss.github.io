@@ -16,7 +16,7 @@
 
     .chart-container {
       width: 100%;
-      max-width: 800px;       /* matched second example */
+      max-width: 900px;
       margin: 40px auto;
       background: #fff;
       padding: 20px 30px;
@@ -36,9 +36,9 @@
 
 <div class="chart-container">
   <canvas id="inningsChart"></canvas>
-  <!-- <p style="text-align:center; font-size:14px; color:#555; margin-top:10px;">
+    <!-- <p style="text-align:center; font-size:14px; color:#555; margin-top:10px;">
     Average length of an innings in tests, by era
-  </p> -->
+    </p> -->
 </div>
 
 <script>
@@ -47,12 +47,12 @@ const ctx = document.getElementById('inningsChart').getContext('2d');
 new Chart(ctx, {
   type: 'line',
   data: {
-    labels: ["1980–2000", "2000–2015", "2015–2025", "2020–2025"],
+    labels: ["1980-2000", "2000-2015", "2015-2025", "2020-2025"],
     datasets: [
       {
         label: 'Global',
         data: [89.4, 91.1, 81.5, 77.1],
-        borderColor: 'green',
+        borderColor: 'green',        // 🔵 line color
         backgroundColor: 'green',
         borderWidth: 2,
         tension: 0.3,
@@ -61,7 +61,7 @@ new Chart(ctx, {
       {
         label: 'India',
         data: [90, 96.4, 79.5, 72.3],
-        borderColor: 'blue',
+        borderColor: 'blue',        // 🔵 line color
         backgroundColor: 'blue',
         borderWidth: 2,
         tension: 0.3,
@@ -87,27 +87,28 @@ new Chart(ctx, {
       }
     },
     scales: {
-      x: {
+    x: {
         title: {
-          display: true,
-          text: 'Era'
+        display: true,
+        text: 'Era'
         },
         grid: {
-          color: 'rgba(0,0,0,0.05)'
+        color: 'rgba(0,0,0,0.05)'
         }
-      },
-      y: {
+    },
+    y: {
         title: {
-          display: true,
-          text: 'Average Length of Innings (Overs)'
+        display: true,
+        text: 'Average Length of Innings (Overs)'
         },
         min: 60,
-        max: 100,   // locked axis like second example
+        max: 100,        // 🔴 lock the axis
         grid: {
-          color: 'rgba(0,0,0,0.05)'
+        color: 'rgba(0,0,0,0.05)'
         }
-      }
     }
+    }
+
   }
 });
 </script>
