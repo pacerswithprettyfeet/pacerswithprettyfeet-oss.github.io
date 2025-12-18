@@ -16,23 +16,19 @@
 
     .chart-container {
       width: 100%;
-      max-width: 800px;
+      max-width: 900px;
       margin: 40px auto;
-      padding: 20px 30px;
       background: #fff;
+      padding: 20px 30px;
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      box-sizing: border-box;
-      height: auto;      /* let chart decide height */
-    }
-    
-    canvas {
-      display: block;
-      width: 100% !important;
-      height: 400px !important;  /* fixed chart height, independent of padding */
-      max-width: 100%;
     }
 
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+      display: block;
+    }
   </style>
 </head>
 
