@@ -17,23 +17,24 @@
     }
 
     .chart-container {
-      box-sizing: border-box;   /* include padding in width */
       width: 100%;
-      max-width: 800px;          /* reduced max width */
+      max-width: 800px;
       margin: 40px auto;
       padding: 20px 30px;
       background: #fff;
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      height: 400px;             /* fixed height for line chart */
+      box-sizing: border-box;
+      height: auto;      /* let chart decide height */
     }
-
+    
     canvas {
       display: block;
       width: 100% !important;
-      height: 100% !important;   /* fill container height */
+      height: 400px !important;  /* fixed chart height, independent of padding */
       max-width: 100%;
     }
+
   </style>
 </head>
 
@@ -56,6 +57,7 @@
           data: [89.4, 91.1, 81.5, 77.1],
           borderColor: 'green',
           backgroundColor: 'green',
+          fill: false,
           borderWidth: 2,
           tension: 0.3,
           pointRadius: 4
@@ -65,6 +67,7 @@
           data: [90, 96.4, 79.5, 72.3],
           borderColor: 'blue',
           backgroundColor: 'blue',
+          fill: false,
           borderWidth: 2,
           tension: 0.3,
           pointRadius: 4
