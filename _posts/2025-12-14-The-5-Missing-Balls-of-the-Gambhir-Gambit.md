@@ -79,14 +79,14 @@ India is just coming off a golden generation, spearheaded by the lethal triumvir
 <iframe 
   src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Average-overs-per-innings-bowled-by-Indian-spinners-at home-since-2015.html'  |relative_url }}" 
   width="100%" 
-  height="550" 
+  height="650" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
 <iframe 
   src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Average-overs-per-innings-bowled-by-Indian-pacers-at-home-since-2015.html'  |relative_url }}" 
   width="100%" 
-  height="550" 
+  height="600" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
@@ -110,42 +110,42 @@ Indeed, with Ashwin moving on, India will probably not be able to use the four b
 <iframe 
   src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Bowlers-with-largest-fraction-of-deliveries-bowled-as-the-First-bowler-in-India..html'  |relative_url }}" 
   width="100%" 
-  height="550" 
+  height="500" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
 <iframe 
   src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Fraction-of-deliveries-bowled-as-first-bowler.html'  |relative_url }}" 
   width="100%" 
-  height="550" 
+  height="500" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
 <iframe 
   src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Bowling-average-as-first-bowler.html'  |relative_url }}" 
   width="100%" 
-  height="550" 
+  height="500" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
 <iframe 
   src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Bowlers-with-largest-fraction-of-deliveries-bowled-as-the-Second-bowler-in-India.html'  |relative_url }}" 
   width="100%" 
-  height="550" 
+  height="500" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
 <iframe 
-  src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Fraction-of-deliveries-bowled-as-second-bowler.html'  |relative_url }}" 
+  src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Fraction-of-deliveries-bowled-as-Second-bowler.html'  |relative_url }}" 
   width="100%" 
-  height="550" 
+  height="500" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
 <iframe 
   src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Bowling-average-as-second-bowler.html'  |relative_url }}" 
   width="100%" 
-  height="550" 
+  height="500" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
