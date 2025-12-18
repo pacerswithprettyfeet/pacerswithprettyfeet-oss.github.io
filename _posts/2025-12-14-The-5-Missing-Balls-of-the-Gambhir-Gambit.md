@@ -41,8 +41,7 @@ finishing with a 50+ average in test cricket, it also meant shorter stints under
 put their feet up and sip on cool Gatorade (cigars and champagne if they played for Bazball England).
 
 <iframe 
-  src="{{ '/assets/plots
-/The-5-Missing-Balls-of-the-Gambhir-Gambit/Average-length-of-an-innings-in-all-tests-by-era.html'  |relative_url }}" 
+  src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Average-length-of-an-innings-in-all-tests-by-era.html'  |relative_url }}" 
   width="100%" 
   height="550" 
   style="border:none; overflow:hidden;"
@@ -61,16 +60,14 @@ However, the relief provided by these reduced workloads is not distributed unifo
 Ideally, as the innings shrinks, your best bowlers should shoulder pretty much the same load as before. We see the opposite: the first and second bowlers are the ones enjoying the biggest reduction in labor. You cannot merely stretch a spell to fit a spreadsheet; a fast bowler still requires a breather after five overs (unless their name is Neil Wagner), and spinners are rotated either because they bowled unchanged right from lunch to tea, or the batter grew comfortable facing them. Consequently, when an innings ends abruptly at 73 overs, it is the third or fourth spells of your first and second bowlers that vanish from the scorecard.
 
 <iframe 
-  src="{{ '/assets/plots
-/The-5-Missing-Balls-of-the-Gambhir-Gambit/Average-overs-per-innings-bowled-by-the-first-second-third-fourth-and-fifth-bowlers-globally-in tests-by-era.html'  |relative_url }}" 
+  src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Average-overs-per-innings-bowled-by-the-first-second-third-fourth-and-fifth-bowlers-globally-in tests-by-era.html'  |relative_url }}" 
   width="100%" 
   height="550" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
 <iframe 
-  src="{{ '/assets/plots
-/The-5-Missing-Balls-of-the-Gambhir-Gambit/Average-overs-per-innings-bowled-by-the-first-second-third-fourth-and-fifth-bowlers in-India-in-tests-by-era.html'  |relative_url }}" 
+  src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Average-overs-per-innings-bowled-by-the-first-second-third-fourth-and-fifth-bowlers in-India-in-tests-by-era.html'  |relative_url }}" 
   width="100%" 
   height="550" 
   style="border:none; overflow:hidden;"
@@ -81,16 +78,14 @@ Could India have gotten away with only 4 bowlers?
 India is just coming off a golden generation, spearheaded by the lethal triumvirate of Ashwin, Jadeja, and Bumrah. The "weakest link" in this attack was Axar Patel, who trudged around with a positively meek bowling average of 19.06 at home. While the debate is on the sixth bowling option for the current team, there is a strong case for not playing a fifth bowling option at all in the previous side. Compared to the 31 overs an innings by Kumble and 28 by Harbhajan (and remember, Harbhajan was Kumble’s second bowler more often than not) since 2000, Ashwin averages 22 overs an innings. Jadeja, Axar and Kuldeep have it even simpler — bowling 20, 15 and 14 overs each. Bumrah has bowled 29 times in India — he has bowled more than 20 overs in an innings exactly twice, once when Joe Root scored a double century in Chennai in 2021 and again in the Guwahati test against South Africa. Sharing the roughly nine overs per game usually bowled by Siraj amongst Jadeja, Axar, and Bumrah wouldn't have blunted the attack's edge. But it would have freed up space for a specialist batter — a resource the fragile Indian top order has desperately needed since 2020. Shami averaged about 13 overs a game when he was the second pacer; again, a workload that could have easily been absorbed by the rest of the pack. Ironically, India could have “Gautam-Gambhir”ed the fifth bowler instead of the sixth, potentially playing Hardik Pandya in tests, but using him only for four overs with the new ball and never bringing him anywhere close to the bowling crease every again.
 
 <iframe 
-  src="{{ '/assets/plots
-/The-5-Missing-Balls-of-the-Gambhir-Gambit/Average-overs-per-innings-bowled-by-Indian-spinners-at home-since-2015.html'  |relative_url }}" 
+  src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Average-overs-per-innings-bowled-by-Indian-spinners-at home-since-2015.html'  |relative_url }}" 
   width="100%" 
   height="550" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
 <iframe 
-  src="{{ '/assets/plots
-/The-5-Missing-Balls-of-the-Gambhir-Gambit/Average-overs-per-innings-bowled-by-Indian-pacers-at-home-since-2015.html'  |relative_url }}" 
+  src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Average-overs-per-innings-bowled-by-Indian-pacers-at-home-since-2015.html'  |relative_url }}" 
   width="100%" 
   height="550" 
   style="border:none; overflow:hidden;"
@@ -103,8 +98,7 @@ Since 2020, there have been exactly four Tests where fielding a four-man attack 
 For the most part, India could have selectively picked the fifth bowler for these specific anomalies, rather than letting a five-man attack become the default. The only other exception might have been the 2024 England tour, where India actively sought out better batting surfaces. But against the chaos of Bazball, having that extra cushion could make tactical sense. But for the rest? It was a question of how many cheetahs were needed to fell a deer.
 
 <iframe 
-  src="{{ '/assets/plots
-/The-5-Missing-Balls-of-the-Gambhir-Gambit/Distribution-of-workloads-in-home-innings.html'  |relative_url }}" 
+  src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Distribution-of-workloads-in-home-innings.html'  |relative_url }}" 
   width="100%" 
   height="550" 
   style="border:none; overflow:hidden;"
@@ -115,48 +109,42 @@ The flexibility of an extra bowling option
 Indeed, with Ashwin moving on, India will probably not be able to use the four bowler theory, at least until Washington Sundar fully matures as a bowler. However, it does make a strong case for the diminishing marginal utility of playing an extra bowler. That said, having extra bowling options gives quite a lot of flexibility. How the Indian bowling unit interoperates with each other is a prime example of this. Ashwin was the obvious “first bowler” of the previous generation — he was the first bowler in 48 of the 97 innings he bowled at home (over 49%), claiming 223 wickets at an average of 20.2. However, just by raw numbers, he is nowhere close to being the best first bowler for India — not even for his era. Bumrah and Axar average 9.5 and 9.6 for 18 and 27 wickets respectively as the first bowler (these are the best amongst any Indian bowler with 10 wickets as first bowler since 1980; only Jasubhai Patel averages lower at 8.8, but his last test was in 1960). While Bumrah has a very good claim to be the best pacer to ever play test cricket, this honour is purely a matter of self-selection. These two end up taking on a larger workload than Ashwin and Jadeja exactly on the days when they run through the opposition. The senior spin duo might be the ones bowling the dry overs on flat decks, thereby inflating their averages as first and second bowlers. Despite this rugged use, Jadeja averages 22.1 and 19.7 respectively as the first and second bowler, and Ashwin averages 21.6 as the second bowler.
 
 <iframe 
-  src="{{ '/assets/plots
-/The-5-Missing-Balls-of-the-Gambhir-Gambit/Bowlers-with-largest-fraction-of-deliveries-bowled-as-the-First-bowler-in-India..html'  |relative_url }}" 
+  src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Bowlers-with-largest-fraction-of-deliveries-bowled-as-the-First-bowler-in-India..html'  |relative_url }}" 
   width="100%" 
   height="550" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
 <iframe 
-  src="{{ '/assets/plots
-/The-5-Missing-Balls-of-the-Gambhir-Gambit/Fraction-of-deliveries-bowled-as-first-bowler.html'  |relative_url }}" 
+  src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Fraction-of-deliveries-bowled-as-first-bowler.html'  |relative_url }}" 
   width="100%" 
   height="550" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
 <iframe 
-  src="{{ '/assets/plots
-/The-5-Missing-Balls-of-the-Gambhir-Gambit/Bowling-average-as-first-bowler.html'  |relative_url }}" 
+  src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Bowling-average-as-first-bowler.html'  |relative_url }}" 
   width="100%" 
   height="550" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
 <iframe 
-  src="{{ '/assets/plots
-/The-5-Missing-Balls-of-the-Gambhir-Gambit/Bowlers-with-largest-fraction-of-deliveries-bowled-as-the-Second-bowler-in-India.html'  |relative_url }}" 
+  src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Bowlers-with-largest-fraction-of-deliveries-bowled-as-the-Second-bowler-in-India.html'  |relative_url }}" 
   width="100%" 
   height="550" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
 <iframe 
-  src="{{ '/assets/plots
-/The-5-Missing-Balls-of-the-Gambhir-Gambit/Fraction-of-deliveries-bowled-as-second-bowler.html'  |relative_url }}" 
+  src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Fraction-of-deliveries-bowled-as-second-bowler.html'  |relative_url }}" 
   width="100%" 
   height="550" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
 <iframe 
-  src="{{ '/assets/plots
-/The-5-Missing-Balls-of-the-Gambhir-Gambit/Bowling-average-as-second-bowler.html'  |relative_url }}" 
+  src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Bowling-average-as-second-bowler.html'  |relative_url }}" 
   width="100%" 
   height="550" 
   style="border:none; overflow:hidden;"
@@ -165,8 +153,7 @@ Indeed, with Ashwin moving on, India will probably not be able to use the four b
 The average workload as first and second bowlers backs the theory of selective use of Axar and Bumrah as first and second bowlers. Out of the 12741 balls Ashwin has bowled on home soil since 2015, 11685 have been as the first or second bowler spread across 81 innings — this amounts to above 24 overs an innings as the first or second bowler. In contrast, Axar bowls 20 overs an innings as the first or second bowler. The same number stands at 13 overs for Bumrah. This quite reasonably suggests that the way India used Ashwin as the first bowler is very different from how India have used Axar and Bumrah in the same role.
 
 <iframe 
-  src="{{ '/assets/plots
-/The-5-Missing-Balls-of-the-Gambhir-Gambit/Average-overs-per-innings-bowled-by-Indian-bowlers-as-first-and-second-bowlers..html'  |relative_url }}" 
+  src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Average-overs-per-innings-bowled-by-Indian-bowlers-as-first-and-second-bowlers..html'  |relative_url }}" 
   width="100%" 
   height="550" 
   style="border:none; overflow:hidden;"
