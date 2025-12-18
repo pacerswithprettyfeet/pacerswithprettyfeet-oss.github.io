@@ -86,7 +86,7 @@ India is just coming off a golden generation, spearheaded by the lethal triumvir
 <iframe 
   src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Average-overs-per-innings-bowled-by-Indian-pacers-at-home-since-2015.html'  |relative_url }}" 
   width="100%" 
-  height="600" 
+  height="700" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
