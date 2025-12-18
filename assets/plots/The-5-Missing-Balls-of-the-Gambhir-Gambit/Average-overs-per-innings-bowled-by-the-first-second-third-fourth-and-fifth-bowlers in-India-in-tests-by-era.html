@@ -24,6 +24,11 @@
       box-sizing: border-box; /* ✅ include padding in width */
       height: 450px; 
     }
+    canvas {
+    width: 100% !important;
+    height: 100% !important; /* ✅ fill container */
+    display: block;
+    }
   </style>
 </head>
 <body>
@@ -136,4 +141,5 @@ new Chart(document.getElementById('cdfChart'), config);
 
 </body>
 </html>
+
 
