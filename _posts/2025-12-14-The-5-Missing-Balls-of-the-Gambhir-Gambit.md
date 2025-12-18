@@ -23,7 +23,7 @@ Lanka and bounced like South Africa. We investigate whether the Gambhir gambit w
 Specifically, we look at the workloads on bowlers to determine whether a sixth frontline bowling option will be at all 
 useful, or did India just carry a very limited batter who does not bowl much? 
 
-\textbf{An era of decreasing bowler workloads}
+**An era of decreasing bowler workloads**
 
 The average workload on bowlers has decreased substantially in recent times, all across the world and even more 
 drastically in India. We look at data spanning three eras — the reverse swing era between 1980 and 2000, the great 
