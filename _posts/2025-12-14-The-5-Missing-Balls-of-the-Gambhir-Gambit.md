@@ -43,15 +43,14 @@ put their feet up and sip on cool Gatorade (cigars and champagne if they played 
 <iframe 
   src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Average-length-of-an-innings-in-all-tests-by-era.html'  |relative_url }}" 
   width="100%" 
-  height="550" 
+  height="450" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
 <iframe 
-  src="{{ '/assets/plots
-/The-5-Missing-Balls-of-the-Gambhir-Gambit/Average-Length-of-an-Innings-in-India-by-Innings-Number.html'  |relative_url }}" 
+  src="{{ '/assets/plots/The-5-Missing-Balls-of-the-Gambhir-Gambit/Average-Length-of-an-Innings-in-India-by-Innings-Number.html'  |relative_url }}" 
   width="100%" 
-  height="550" 
+  height="450" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
