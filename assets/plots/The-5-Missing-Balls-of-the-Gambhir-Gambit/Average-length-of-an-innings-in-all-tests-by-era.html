@@ -6,11 +6,6 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
-    /* Include padding inside width calculations */
-    * {
-      box-sizing: border-box;
-    }
-  
     html, body {
       margin: 0;
       padding: 0;
@@ -18,33 +13,32 @@
       font-family: "Segoe UI", Arial, sans-serif;
       background: #f5f5f5;
     }
-  
+
     .chart-container {
-      width: 100%;           /* full width of iframe */
-      max-width: 800px;      /* reduced max width */
-      margin: 40px auto;     
-      padding: 20px 30px;    
+      width: 100%;
+      max-width: 800px;       /* matched second example */
+      margin: 40px auto;
+      background: #fff;
+      padding: 20px 30px;
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      box-sizing: border-box; /* ensures padding does not exceed max-width */
     }
-  
+
     canvas {
-      width: 100% !important;  /* scale with container */
+      width: 100% !important;
       height: auto !important;
       display: block;
     }
   </style>
-
 </head>
 
 <body>
 
 <div class="chart-container">
   <canvas id="inningsChart"></canvas>
-    <!-- <p style="text-align:center; font-size:14px; color:#555; margin-top:10px;">
+  <!-- <p style="text-align:center; font-size:14px; color:#555; margin-top:10px;">
     Average length of an innings in tests, by era
-    </p> -->
+  </p> -->
 </div>
 
 <script>
@@ -53,12 +47,12 @@ const ctx = document.getElementById('inningsChart').getContext('2d');
 new Chart(ctx, {
   type: 'line',
   data: {
-    labels: ["1980-2000", "2000-2015", "2015-2025", "2020-2025"],
+    labels: ["1980–2000", "2000–2015", "2015–2025", "2020–2025"],
     datasets: [
       {
         label: 'Global',
         data: [89.4, 91.1, 81.5, 77.1],
-        borderColor: 'green',        // 🔵 line color
+        borderColor: 'green',
         backgroundColor: 'green',
         borderWidth: 2,
         tension: 0.3,
@@ -67,7 +61,7 @@ new Chart(ctx, {
       {
         label: 'India',
         data: [90, 96.4, 79.5, 72.3],
-        borderColor: 'blue',        // 🔵 line color
+        borderColor: 'blue',
         backgroundColor: 'blue',
         borderWidth: 2,
         tension: 0.3,
@@ -77,7 +71,7 @@ new Chart(ctx, {
   },
   options: {
     responsive: true,
-    maintainAspectRatio: false,
+    maintainAspectRatio: true,
     plugins: {
       title: {
         display: true,
@@ -93,34 +87,30 @@ new Chart(ctx, {
       }
     },
     scales: {
-    x: {
+      x: {
         title: {
-        display: true,
-        text: 'Era'
+          display: true,
+          text: 'Era'
         },
         grid: {
-        color: 'rgba(0,0,0,0.05)'
+          color: 'rgba(0,0,0,0.05)'
         }
-    },
-    y: {
+      },
+      y: {
         title: {
-        display: true,
-        text: 'Average Length of Innings (Overs)'
+          display: true,
+          text: 'Average Length of Innings (Overs)'
         },
         min: 60,
-        max: 100,        // 🔴 lock the axis
+        max: 100,   // locked axis like second example
         grid: {
-        color: 'rgba(0,0,0,0.05)'
+          color: 'rgba(0,0,0,0.05)'
         }
+      }
     }
-    }
-
   }
 });
 </script>
 
 </body>
 </html>
-
-
-
