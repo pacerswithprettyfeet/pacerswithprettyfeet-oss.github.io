@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "The 5 Missing Balls of the Gambhir Gambit: Why India Didn’t Need Six Bowlers?"
+title: "The 5 Missing Balls of the Gambhir Gambit: Why India Didn’t Need Six Bowlers"
 comments: true
 author: "Atharv Tambade and Aadityan Ganesh "
 date: 2025-11-05
