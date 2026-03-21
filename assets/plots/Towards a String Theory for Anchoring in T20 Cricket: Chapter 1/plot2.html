@@ -57,18 +57,13 @@
 </head>
 <body>
   <div class="container">
-    <h1>Best NEB in Each IPL Season</h1>
-    <div class="subtitle">
-      Season leader in Mean Chewability / NEB · minimum 7 innings
-    </div>
-
+    <h1>Seasonwise Best NEB</h1>
     <div class="chart-wrap">
       <canvas id="nebChart"></canvas>
     </div>
 
     <div class="footnote">
-      <span class="highlight">SE Marsh (2008)</span> remains the overall peak at
-      <span class="highlight">20.76</span> in 11 games.
+      *minimum 7 innings played
     </div>
   </div>
 
@@ -104,13 +99,13 @@
 
     const barColors = rawData.map(d =>
       d.Player === "SE Marsh" && d.Season === "2008"
-        ? "rgba(217, 119, 6, 0.9)"
+        ? "rgba(37, 99, 235, 0.82)"
         : "rgba(37, 99, 235, 0.82)"
     );
 
     const borderColors = rawData.map(d =>
       d.Player === "SE Marsh" && d.Season === "2008"
-        ? "rgba(146, 64, 14, 1)"
+        ? "rgba(29, 78, 216, 1)"
         : "rgba(29, 78, 216, 1)"
     );
 
@@ -187,7 +182,7 @@
             },
             title: {
               display: true,
-              text: "IPL Season",
+              text: "Season",
               font: {
                 size: 14,
                 weight: "bold"
