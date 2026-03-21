@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Highest MEB in Each IPL Season</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       margin: 0;
@@ -13,7 +14,7 @@
     }
 
     .wrap {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
       background: #ffffff;
       border-radius: 16px;
@@ -39,55 +40,13 @@
       line-height: 1.5;
     }
 
-    .table-wrap {
-      padding: 20px 28px 28px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 15px;
-    }
-
-    thead th {
-      text-align: left;
-      background: #eef2ff;
-      color: #1e3a8a;
-      padding: 12px;
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    tbody td {
-      padding: 12px;
-      border-bottom: 1px solid #e5e7eb;
-      vertical-align: middle;
-    }
-
-    tbody tr:hover {
-      background: #f9fafb;
-    }
-
-    .num {
-      text-align: right;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .season {
-      font-weight: 700;
-    }
-
-    .player {
-      font-weight: 600;
-    }
-
-    .highlight {
-      background: #fffbeb;
+    .chart-wrap {
+      padding: 24px 28px 28px;
+      height: 1100px;
     }
 
     .note {
-      margin-top: 14px;
+      padding: 0 28px 28px;
       font-size: 12px;
       color: #6b7280;
       line-height: 1.5;
@@ -98,158 +57,124 @@
 
 <div class="wrap">
   <div class="header">
-    <h1 class="title">Highest MEB in Each IPL Season</h1>
-    <div class="subtitle">
-      Batter with the highest season-level MEB in each IPL season, along with team, mean chewability, and matches played.
-    </div>
+    <h1 class="title">Season-wise Highest MEB</h1>
   </div>
 
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Season</th>
-          <th>Player</th>
-          <th>Team</th>
-          <th class="num">MEB</th>
-          <th class="num">Matches</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="highlight">
-          <td class="season">2008</td>
-          <td class="player">SE Marsh</td>
-          <td>Kings XI Punjab</td>
-          <td class="num">20.76</td>
-          <td class="num">11</td>
-        </tr>
-        <tr>
-          <td class="season">2009</td>
-          <td class="player">ML Hayden</td>
-          <td>Chennai Super Kings</td>
-          <td class="num">13.43</td>
-          <td class="num">12</td>
-        </tr>
-        <tr>
-          <td class="season">2010</td>
-          <td class="player">SR Tendulkar</td>
-          <td>Mumbai Indians</td>
-          <td class="num">9.78</td>
-          <td class="num">15</td>
-        </tr>
-        <tr>
-          <td class="season">2011</td>
-          <td class="player">S Badrinath</td>
-          <td>Chennai Super Kings</td>
-          <td class="num">10.23</td>
-          <td class="num">12</td>
-        </tr>
-        <tr>
-          <td class="season">2012</td>
-          <td class="player">CH Gayle</td>
-          <td>Royal Challengers Bangalore</td>
-          <td class="num">10.19</td>
-          <td class="num">14</td>
-        </tr>
-        <tr>
-          <td class="season">2013</td>
-          <td class="player">MEK Hussey</td>
-          <td>Chennai Super Kings</td>
-          <td class="num">13.55</td>
-          <td class="num">17</td>
-        </tr>
-        <tr>
-          <td class="season">2014</td>
-          <td class="player">LMP Simmons</td>
-          <td>Mumbai Indians</td>
-          <td class="num">12.81</td>
-          <td class="num">8</td>
-        </tr>
-        <tr>
-          <td class="season">2015</td>
-          <td class="player">LMP Simmons</td>
-          <td>Mumbai Indians</td>
-          <td class="num">12.36</td>
-          <td class="num">13</td>
-        </tr>
-        <tr>
-          <td class="season">2016</td>
-          <td class="player">V Kohli</td>
-          <td>Royal Challengers Bangalore</td>
-          <td class="num">16.45</td>
-          <td class="num">16</td>
-        </tr>
-        <tr>
-          <td class="season">2017</td>
-          <td class="player">DA Warner</td>
-          <td>Sunrisers Hyderabad</td>
-          <td class="num">10.62</td>
-          <td class="num">14</td>
-        </tr>
-        <tr>
-          <td class="season">2018</td>
-          <td class="player">KS Williamson</td>
-          <td>Sunrisers Hyderabad</td>
-          <td class="num">10.86</td>
-          <td class="num">17</td>
-        </tr>
-        <tr>
-          <td class="season">2019</td>
-          <td class="player">DA Warner</td>
-          <td>Sunrisers Hyderabad</td>
-          <td class="num">15.58</td>
-          <td class="num">12</td>
-        </tr>
-        <tr>
-          <td class="season">2020</td>
-          <td class="player">KL Rahul</td>
-          <td>Kings XI Punjab</td>
-          <td class="num">14.00</td>
-          <td class="num">14</td>
-        </tr>
-        <tr>
-          <td class="season">2021</td>
-          <td class="player">KL Rahul</td>
-          <td>Punjab Kings</td>
-          <td class="num">11.93</td>
-          <td class="num">13</td>
-        </tr>
-        <tr>
-          <td class="season">2022</td>
-          <td class="player">JC Buttler</td>
-          <td>Rajasthan Royals</td>
-          <td class="num">12.55</td>
-          <td class="num">17</td>
-        </tr>
-        <tr>
-          <td class="season">2023</td>
-          <td class="player">F du Plessis</td>
-          <td>Royal Challengers Bangalore</td>
-          <td class="num">12.30</td>
-          <td class="num">14</td>
-        </tr>
-        <tr>
-          <td class="season">2024</td>
-          <td class="player">V Kohli</td>
-          <td>Royal Challengers Bengaluru</td>
-          <td class="num">12.19</td>
-          <td class="num">15</td>
-        </tr>
-        <tr>
-          <td class="season">2025</td>
-          <td class="player">B Sai Sudharsan</td>
-          <td>Gujarat Titans</td>
-          <td class="num">10.96</td>
-          <td class="num">15</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="note">
-      2008 Shaun Marsh is highlighted because it remains the standout season in the list.
-    </div>
+  <div class="chart-wrap">
+    <canvas id="mebChart"></canvas>
   </div>
+
 </div>
+
+<script>
+const seasonData = [
+  { season: "2008", player: "SE Marsh", meb: 20.76 },
+  { season: "2009", player: "ML Hayden", meb: 13.43 },
+  { season: "2010", player: "SR Tendulkar", meb: 9.78 },
+  { season: "2011", player: "S Badrinath", meb: 10.23 },
+  { season: "2012", player: "CH Gayle", meb: 10.19 },
+  { season: "2013", player: "MEK Hussey", meb: 13.55 },
+  { season: "2014", player: "LMP Simmons", meb: 12.81 },
+  { season: "2015", player: "LMP Simmons", meb: 12.36 },
+  { season: "2016", player: "V Kohli", meb: 16.45 },
+  { season: "2017", player: "DA Warner", meb: 10.62 },
+  { season: "2018", player: "KS Williamson", meb: 10.86 },
+  { season: "2019", player: "DA Warner", meb: 15.58 },
+  { season: "2020", player: "KL Rahul", meb: 14.00 },
+  { season: "2021", player: "KL Rahul", meb: 11.93 },
+  { season: "2022", player: "JC Buttler", meb: 12.55 },
+  { season: "2023", player: "F du Plessis", meb: 12.30 },
+  { season: "2024", player: "V Kohli", meb: 12.19 },
+  { season: "2025", player: "B Sai Sudharsan", meb: 10.96 }
+];
+
+const labels = seasonData.map(d => `${d.season} — ${d.player}`);
+const values = seasonData.map(d => d.meb);
+
+const valueLabelPlugin = {
+  id: "valueLabelPlugin",
+  afterDatasetsDraw(chart) {
+    const { ctx } = chart;
+    const meta = chart.getDatasetMeta(0);
+
+    ctx.save();
+    ctx.font = "12px Arial";
+    ctx.fillStyle = "#111827";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "middle";
+
+    meta.data.forEach((bar, i) => {
+      ctx.fillText(values[i].toFixed(2), bar.x + 8, bar.y);
+    });
+
+    ctx.restore();
+  }
+};
+
+new Chart(document.getElementById("mebChart"), {
+  type: "bar",
+  data: {
+    labels: labels,
+    datasets: [{
+      label: "MEB",
+      data: values,
+      backgroundColor: labels.map(() => "rgba(59, 130, 246, 0.85)"),
+      borderRadius: 6,
+      barPercentage: 0.72,
+      categoryPercentage: 0.84
+    }]
+  },
+  options: {
+    indexAxis: "y",
+    responsive: true,
+    maintainAspectRatio: false,
+    layout: {
+      padding: {
+        right: 50
+      }
+    },
+    plugins: {
+      legend: {
+        display: false
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return `MEB: ${context.parsed.x.toFixed(2)}`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: "MEB",
+          font: {
+            size: 14,
+            weight: "bold"
+          }
+        },
+        grid: {
+          color: "rgba(0,0,0,0.08)"
+        }
+      },
+      y: {
+        grid: {
+          display: false
+        },
+        ticks: {
+          font: {
+            size: 12
+          }
+        }
+      }
+    }
+  },
+  plugins: [valueLabelPlugin]
+});
+</script>
 
 </body>
 </html>

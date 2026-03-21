@@ -15,52 +15,60 @@
 
 <script>
 const deathData = [
-  { player: "AD Russell", neb: 1.101576751, trueSR: 30.28 },
-  { player: "HH Pandya", neb: 1.137062855, trueSR: 1.23 },
-  { player: "KA Pollard", neb: 1.447257933, trueSR: 7.56 },
-  { player: "MP Stoinis", neb: 0.86351033, trueSR: 4.11 },
-  { player: "MS Dhoni", neb: 3.977290172, trueSR: -0.11 },
-  { player: "R Tewatia", neb: 1.035971224, trueSR: -12.71 },
-  { player: "SO Hetmyer", neb: 1.11944858, trueSR: 1.06 },
-  { player: "TH David", neb: 1.99324246, trueSR: 16.22 },
-  { player: "V Shankar", neb: 1.04909539, trueSR: -16.04 },
-  { player: "RK Singh", neb: 1.693061153, trueSR: -5.26 },
-  { player: "BJ Hodge", neb: 2.97873553, trueSR: 1.65 },
-  { player: "DA Miller", neb: 2.6608647, trueSR: 0.27 }
+  { player: "AD Russell", neb: 1.101576751, trueSR: 30.28, category: "Itchy Hands" },
+  { player: "HH Pandya", neb: 1.137062855, trueSR: 1.23, category: "Conventional Anchors" },
+  { player: "KA Pollard", neb: 1.447257933, trueSR: 7.56, category: "Itchy Hands" },
+  { player: "MP Stoinis", neb: 0.86351033, trueSR: 4.11, category: "Conventional Anchors" },
+  { player: "MS Dhoni", neb: 3.977290172, trueSR: -0.11, category: "Safe Houses" },
+  { player: "R Tewatia", neb: 1.035971224, trueSR: -12.71, category: "Conventional Anchors" },
+  { player: "SO Hetmyer", neb: 1.11944858, trueSR: 1.06, category: "Conventional Anchors" },
+  { player: "TH David", neb: 1.99324246, trueSR: 16.22, category: "Itchy Hands" },
+  { player: "V Shankar", neb: 1.04909539, trueSR: -16.04, category: "Conventional Anchors" },
+  { player: "RK Singh", neb: 1.693061153, trueSR: -5.26, category: "Conventional Anchors" },
+  { player: "BJ Hodge", neb: 2.97873553, trueSR: 1.65, category: "Conventional Anchors" },
+  { player: "DA Miller", neb: 2.6608647, trueSR: 0.27, category: "Conventional Anchors" }
 ];
+
+const categoryStyles = {
+  "Itchy Hands": {
+    color: "rgba(55, 126, 184, 1)",
+    fill: "rgba(55, 126, 184, 0.35)"
+  },
+  "Conventional Anchors": {
+    color: "rgba(77, 175, 74, 1)",
+    fill: "rgba(77, 175, 74, 0.35)"
+  },
+  "Safe Houses": {
+    color: "rgba(255, 127, 0, 1)",
+    fill: "rgba(255, 127, 0, 0.35)"
+  }
+};
 
 const playerTrace = {
   x: deathData.map(d => d.neb),
   y: deathData.map(d => d.trueSR),
   text: deathData.map(d => d.player),
+  customdata: deathData.map(d => d.category),
   mode: "markers+text",
   type: "scatter",
   name: "Players",
   textposition: "top center",
   marker: {
     size: 10,
-    color: "#1f77b4"
+    color: deathData.map(d => categoryStyles[d.category].fill),
+    line: {
+      color: deathData.map(d => categoryStyles[d.category].color),
+      width: 2
+    }
   },
   hovertemplate:
     "<b>%{text}</b><br>" +
     "NEB: %{x:.3f}<br>" +
-    "True SR: %{y:.2f}<extra></extra>"
+    "True SR: %{y:.2f}<br>" +
+    "Category: %{customdata}<extra></extra>"
 };
 
-// Same color mapping as earlier
 const legendTraces = [
-  {
-    x: [null], y: [null],
-    mode: "markers",
-    type: "scatter",
-    name: "Ultimate Anchors",
-    marker: {
-      size: 14,
-      color: "rgba(228, 26, 28, 0.35)",
-      line: { color: "rgba(228, 26, 28, 1)", width: 2 }
-    },
-    hoverinfo: "skip"
-  },
   {
     x: [null], y: [null],
     mode: "markers",
@@ -89,18 +97,6 @@ const legendTraces = [
     x: [null], y: [null],
     mode: "markers",
     type: "scatter",
-    name: "Quick Anchors",
-    marker: {
-      size: 14,
-      color: "rgba(152, 78, 163, 0.35)",
-      line: { color: "rgba(152, 78, 163, 1)", width: 2 }
-    },
-    hoverinfo: "skip"
-  },
-  {
-    x: [null], y: [null],
-    mode: "markers",
-    type: "scatter",
     name: "Safe Houses",
     marker: {
       size: 14,
@@ -108,37 +104,25 @@ const legendTraces = [
       line: { color: "rgba(255, 127, 0, 1)", width: 2 }
     },
     hoverinfo: "skip"
-  },
-  {
-    x: [null], y: [null],
-    mode: "markers",
-    type: "scatter",
-    name: "Plus Anchors",
-    marker: {
-      size: 14,
-      color: "rgba(0, 0, 0, 0.22)",
-      line: { color: "rgba(0, 0, 0, 1)", width: 2 }
-    },
-    hoverinfo: "skip"
   }
 ];
 
 const layout = {
-  title: "Death Overs: NEB vs True SR",
+  title: "Death Overs: NEB vs TSR",
   template: "plotly_white",
   width: 1400,
   height: 760,
   hovermode: "closest",
   xaxis: {
-    title: "NEB (Net Effective Balls)",
+    title: "NEB",
     range: [0.7, 4.2]
   },
   yaxis: {
-    title: "True SR",
+    title: "TSR",
     range: [-19.5, 32.5]
   },
   shapes: [
-    // Itchy Hands - Russell zone
+    // Itchy Hands - Russell / Pollard / David zone
     {
       type: "rect",
       xref: "x",
@@ -147,34 +131,21 @@ const layout = {
       x1: 2.20,
       y0: 6.7,
       y1: 32.2,
-      line: { color: "rgba(228, 26, 28, 1)", width: 4 },
-      fillcolor: "rgba(228, 26, 28, 0.18)"
+      line: { color: "rgba(55, 126, 184, 1)", width: 4 },
+      fillcolor: "rgba(55, 126, 184, 0.18)"
     },
 
-    // Conventional Anchors - Stoinis zone
+    // Conventional Anchors - includes Stoinis, Miller, Hodge zone
     {
       type: "rect",
       xref: "x",
       yref: "y",
       x0: 0.72,
-      x1: 1.93,
+      x1: 3.14,
       y0: -8.3,
       y1: 6.0,
       line: { color: "rgba(77, 175, 74, 1)", width: 4 },
       fillcolor: "rgba(77, 175, 74, 0.18)"
-    },
-
-    // Plus Anchors - Miller zone
-    {
-      type: "rect",
-      xref: "x",
-      yref: "y",
-      x0: 2.52,
-      x1: 3.14,
-      y0: -3.3,
-      y1: 5.4,
-      line: { color: "rgba(0, 0, 0, 1)", width: 4 },
-      fillcolor: "rgba(0, 0, 0, 0.10)"
     },
 
     // Safe Houses - Dhoni zone

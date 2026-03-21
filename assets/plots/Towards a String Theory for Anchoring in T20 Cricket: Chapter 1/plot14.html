@@ -57,20 +57,14 @@
 <body>
   <div class="wrap">
     <div class="header">
-      <h1 class="title">Empirical CDF of Match Chewability</h1>
+      <h1 class="title">Distribution of Warner's and Buttler's NEBs</h1>
       <div class="subtitle">
-        Comparison of the pooled positive-mean player distribution against CH Gayle and B Sai Sudharsan.
-        Replace the placeholder arrays below with the actual ECDF output from Python.
+        Probability that the batter's NEB falls below x in an innings. Benchmark: average NEB profile of batters with a positive NEB
       </div>
     </div>
 
     <div class="chart-wrap">
       <canvas id="cdfChart"></canvas>
-    </div>
-
-    <div class="note">
-      To use this properly, compute ECDF points in Python and paste them into the arrays below as
-      <code>{x: value, y: value}</code> pairs.
     </div>
   </div>
 
@@ -4068,7 +4062,7 @@ const daWarner = [
             type: 'linear',
             title: {
               display: true,
-              text: 'Match Chewability'
+              text: 'Innings-wise NEB'
             },
             grid: {
               color: 'rgba(0,0,0,0.08)'

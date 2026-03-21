@@ -53,7 +53,8 @@ const trace = {
 const legend = [
   { name: "Ultimate Anchors", color: "rgba(228,26,28,0.35)" },
   { name: "Itchy Hands", color: "rgba(55,126,184,0.35)" },
-  { name: "Quick Anchors", color: "rgba(152,78,163,0.35)" }
+  { name: "Plus Anchors", color: "rgba(152,78,163,0.35)" },
+  { name: "Safe Houses", color: "rgba(255, 127, 0, 0.35)" }
 ].map(z => ({
   x: [null], y: [null],
   mode: "markers",
@@ -63,10 +64,10 @@ const legend = [
 }));
 
 const layout = {
-  title: "Middle Order: NEB vs True SR",
+  title: "Middle Order: NEB vs TSR",
   template: "plotly_white",
   xaxis: { title: "NEB" },
-  yaxis: { title: "True SR" },
+  yaxis: { title: "TSR" },
   width: 1300,
   height: 760,
 
@@ -103,8 +104,8 @@ const layout = {
       type: "rect",
       x0: 3.6, x1: 4.7,
       y0: -8.5, y1: 1,
-      line: { color: "rgba(55,126,184,1)", width: 4 },
-      fillcolor: "rgba(55,126,184,0.12)"
+      line: { color: "rgba(255, 127, 0, 1)", width: 4 },
+      fillcolor: "rgba(255, 127, 0, 0.18)"
     }
   ],
 

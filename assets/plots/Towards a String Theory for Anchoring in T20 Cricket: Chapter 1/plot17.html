@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Highest Career MEB</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 32px;
+      background: #f5f7fb;
+      font-family: Arial, sans-serif;
+    }
+
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      padding: 24px 28px 28px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 26px;
+    }
+
+    .sub {
+      color: #6b7280;
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    .chart-wrap {
+      height: 420px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+  <h1>Highest Career MEB</h1>
+
+
+  <div class="chart-wrap">
+    <canvas id="chart"></canvas>
+  </div>
+</div>
+
+<script>
+const data = [
+  ["LMP Simmons", -4.73],
+  ["B Sai Sudharsan", -6.00],
+  ["KL Rahul", -7.08],
+  ["DP Conway", -7.18],
+  ["SE Marsh", -7.63],
+  ["MEK Hussey", -9.55],
+  ["DA Warner", -9.62],
+  ["RD Gaikwad", -9.72],
+  ["ML Hayden", -9.72],
+  ["V Kohli", -9.81]
+];
+
+const labels = data.map(d => d[0]);
+const values = data.map(d => Math.abs(d[1])); // plot as positive
+const original = data.map(d => d[1]);
+
+const valueLabelPlugin = {
+  id: "valueLabelPlugin",
+  afterDatasetsDraw(chart) {
+    const { ctx } = chart;
+    const meta = chart.getDatasetMeta(0);
+
+    ctx.save();
+    ctx.font = "12px Arial";
+    ctx.fillStyle = "#111827";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "middle";
+
+    meta.data.forEach((bar, i) => {
+      ctx.fillText(original[i].toFixed(2), bar.x + 6, bar.y);
+    });
+
+    ctx.restore();
+  }
+};
+
+new Chart(document.getElementById("chart"), {
+  type: "bar",
+  data: {
+    labels,
+    datasets: [{
+      data: values,
+      backgroundColor: labels.map(() => "rgba(59, 130, 246, 0.85)"),
+      borderRadius: 6,
+      barThickness: 10
+    }]
+  },
+  options: {
+    indexAxis: "y",
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => `MEB: ${original[ctx.dataIndex].toFixed(2)}`
+        }
+      }
+    },
+    scales: {
+      x: {
+        beginAtZero: true,
+        grid: { color: "rgba(0,0,0,0.08)" },
+        title: {
+          display: true,
+          text: "MEB "
+        }
+      },
+      y: {
+        grid: { display: false }
+      }
+    }
+  },
+  plugins: [valueLabelPlugin]
+});
+</script>
+
+</body>
+</html>
