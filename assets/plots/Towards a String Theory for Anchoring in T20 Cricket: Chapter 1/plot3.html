@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anchors: NEB and TSR</title>
+  <title>TSR of Selected Batters</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       margin: 0;
@@ -14,7 +15,7 @@
     }
 
     .wrap {
-      max-width: 900px;
+      max-width: 1000px;
       margin: 0 auto;
       background: #ffffff;
       border-radius: 16px;
@@ -29,58 +30,19 @@
 
     .title {
       margin: 0;
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 700;
     }
 
     .subtitle {
-      margin: 8px 0 0;
+      margin-top: 8px;
       font-size: 14px;
       color: #6b7280;
     }
 
-    .table-wrap {
-      padding: 20px 28px 28px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 15px;
-    }
-
-    thead th {
-      text-align: left;
-      background: #eef2ff;
-      color: #1e3a8a;
-      padding: 12px;
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    tbody td {
-      padding: 12px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    tbody tr:hover {
-      background: #f9fafb;
-    }
-
-    .num {
-      text-align: right;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .player {
-      font-weight: 600;
-    }
-
-    .note {
-      margin-top: 14px;
-      font-size: 12px;
-      color: #6b7280;
+    .chart-wrap {
+      padding: 24px 28px 28px;
+      height: 700px;
     }
   </style>
 </head>
@@ -88,85 +50,135 @@
 
 <div class="wrap">
   <div class="header">
-    <h1 class="title">Anchors and Ultimate Anchors: NEB and TSR</h1>
-    <div class="subtitle">
-      Placeholder innings — replace with final values later
-    </div>
+    <h1 class="title">TSR of Selected Batters</h1>
   </div>
 
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Player</th>
-          <th class="num">NEB</th>
-          <th class="num">TSR</th>
-          <th class="num">Innings</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="player">KL Rahul</td>
-          <td class="num">2.88</td>
-          <td class="num">5.00</td>
-          <td class="num">150</td>
-        </tr>
-        <tr>
-          <td class="player">CH Gayle</td>
-          <td class="num">2.88</td>
-          <td class="num">31.24</td>
-          <td class="num">140</td>
-        </tr>
-        <tr>
-          <td class="player">DA Warner</td>
-          <td class="num">4.38</td>
-          <td class="num">20.00</td>
-          <td class="num">180</td>
-        </tr>
-        <tr>
-          <td class="player">AB de Villiers</td>
-          <td class="num">3.80</td>
-          <td class="num">28.00</td>
-          <td class="num">170</td>
-        </tr>
-        <tr>
-          <td class="player">H Klaasen</td>
-          <td class="num">4.02</td>
-          <td class="num">25.00</td>
-          <td class="num">60</td>
-        </tr>
-        <tr>
-          <td class="player">SA Yadav (SKY)</td>
-          <td class="num">3.50</td>
-          <td class="num">30.00</td>
-          <td class="num">120</td>
-        </tr>
-        <tr>
-          <td class="player">JC Buttler</td>
-          <td class="num">3.62</td>
-          <td class="num">27.00</td>
-          <td class="num">130</td>
-        </tr>
-        <tr>
-          <td class="player">Shubman Gill</td>
-          <td class="num">4.35</td>
-          <td class="num">9.03</td>
-          <td class="num">110</td>
-        </tr>
-        <tr>
-          <td class="player">V Kohli</td>
-          <td class="num">5.68</td>
-          <td class="num">6.45</td>
-          <td class="num">250</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="note">
-      Note: NEB and TSR values are based on discussion context; innings are placeholders.
-    </div>
+  <div class="chart-wrap">
+    <canvas id="tsrChart"></canvas>
   </div>
 </div>
+
+<script>
+  const rawData = [
+    { player: "V Sehwag", tsr: 45.67, innings: 104 },
+    { player: "CH Gayle", tsr: 31.24, innings: 141 },
+    { player: "H Klaasen", tsr: 26.47, innings: 45 },
+    { player: "DA Warner", tsr: 19.20, innings: 184 },
+    { player: "AB de Villiers", tsr: 19.00, innings: 170 },
+    { player: "JC Buttler", tsr: 16.58, innings: 119 },
+    { player: "SA Yadav", tsr: 14.96, innings: 151 },
+    { player: "S Raina", tsr: 11.45, innings: 200 },
+    { player: "Shubman Gill", tsr: 4.50, innings: 114 },
+    { player: "KL Rahul", tsr: 4.49, innings: 135 },
+    { player: "V Kohli", tsr: 2.79, innings: 259 }
+  ];
+
+  rawData.sort((a, b) => b.tsr - a.tsr);
+
+  const labels = rawData.map(d => d.player);
+  const values = rawData.map(d => d.tsr);
+  const innings = rawData.map(d => d.innings);
+
+  const colors = rawData.map(d => {
+    return "rgba(37, 99, 235, 0.82)";
+  });
+
+  const borderColors = rawData.map(d => {
+    return "rgba(29, 78, 216, 1)";
+  });
+
+  const valueLabelPlugin = {
+    id: "valueLabelPlugin",
+    afterDatasetsDraw(chart) {
+      const { ctx } = chart;
+      const meta = chart.getDatasetMeta(0);
+
+      ctx.save();
+      ctx.font = "12px Arial";
+      ctx.fillStyle = "#1f2937";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "middle";
+
+      meta.data.forEach((bar, i) => {
+        ctx.fillText(values[i].toFixed(2), bar.x + 8, bar.y);
+      });
+
+      ctx.restore();
+    }
+  };
+
+  new Chart(document.getElementById("tsrChart"), {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{
+        data: values,
+        backgroundColor: colors,
+        borderColor: borderColors,
+        borderWidth: 1.5,
+        borderRadius: 6,
+        barPercentage: 0.72,
+        categoryPercentage: 0.84
+      }]
+    },
+    options: {
+      indexAxis: "y",
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: {
+        padding: {
+          right: 40
+        }
+      },
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          callbacks: {
+            title: function(context) {
+              return context[0].label;
+            },
+            label: function(context) {
+              const i = context.dataIndex;
+              return [
+                "TSR: " + values[i].toFixed(2),
+                "Innings: " + innings[i]
+              ];
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          beginAtZero: true,
+          grid: {
+            color: "rgba(0,0,0,0.08)"
+          },
+          title: {
+            display: true,
+            text: "TSR",
+            font: {
+              size: 14,
+              weight: "bold"
+            }
+          }
+        },
+        y: {
+          grid: {
+            display: false
+          },
+          ticks: {
+            font: {
+              size: 13
+            }
+          }
+        }
+      }
+    },
+    plugins: [valueLabelPlugin]
+  });
+</script>
 
 </body>
 </html>
