@@ -6,7 +6,7 @@
   <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
   <style>
     body { font-family: Arial; margin: 24px; }
-    #chart { width: 100%; height: 760px; }
+    #chart { width: 100%; height: 100%; }
     .note { margin-top: 10px; font-size: 14px; color: #444; }
   </style>
 </head>
@@ -68,7 +68,7 @@ const layout = {
   template: "plotly_white",
   xaxis: { title: "NEB" },
   yaxis: { title: "TSR" },
-  width: 1300,
+  autosize: true,
   height: 760,
 
   shapes: [
