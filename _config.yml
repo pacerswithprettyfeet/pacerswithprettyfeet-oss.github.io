@@ -13,7 +13,8 @@ nav_links:
   # - title: "About Site"
   #   url: /about-site/
 
-
+private_mode: true
+site_password: "varun_aaron"
 
 # Welcome to Jekyll!
 #
