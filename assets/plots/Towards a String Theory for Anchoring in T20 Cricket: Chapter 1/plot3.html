@@ -28,7 +28,7 @@
     }
 
     .chart-wrap {
-      height: 700px;
+      height: 350px;
     }
 
     canvas {
@@ -91,10 +91,11 @@
     data: {
       labels: labels,
       datasets: [{
-        label: "TSR",
         data: values,
         backgroundColor: "rgba(70,130,180,0.8)",
-        borderRadius: 6
+        borderRadius: 6,
+        barThickness: 18,
+        maxBarThickness: 18
       }]
     },
     options: {
