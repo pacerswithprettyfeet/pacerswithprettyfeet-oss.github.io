@@ -7,22 +7,23 @@
 
     {% if site.private_mode %}
     <script>
-      const password = "{{ site.site_password }}";
-      const user = prompt("Enter password:");
+      (function () {
+        const password = "{{ site.site_password }}";
+        const okKey = "pwpf_authorized";
 
-      if (user !== password) {
-        document.open();
-        document.write(`
-          <!DOCTYPE html>
-          <html>
-            <head><title>Access denied</title></head>
-            <body>
-              <h1>Access denied</h1>
-            </body>
-          </html>
-        `);
-        document.close();
-      }
+        if (sessionStorage.getItem(okKey) === "true") {
+          return;
+        }
+
+        const user = prompt("Enter password:");
+
+        if (user === password) {
+          sessionStorage.setItem(okKey, "true");
+          return;
+        }
+
+        window.location.replace("about:blank");
+      })();
     </script>
     {% endif %}
 
