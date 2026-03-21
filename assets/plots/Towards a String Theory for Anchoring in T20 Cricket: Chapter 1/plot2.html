@@ -7,206 +7,159 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: #f3f4f6;
-      color: #111827;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 40px;
     }
 
     .container {
-      max-width: 1400px;
-      margin: 28px auto;
-      background: #ffffff;
-      padding: 28px 28px 18px;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
-    h1 {
-      margin: 0;
+    h2 {
       text-align: center;
-      font-size: 30px;
-      font-weight: 700;
-    }
-
-    .subtitle {
-      margin-top: 8px;
-      margin-bottom: 24px;
-      text-align: center;
-      color: #6b7280;
-      font-size: 15px;
+      margin-bottom: 10px;
     }
 
     .chart-wrap {
-      position: relative;
-      height: 720px;
+      height: 1100px;
     }
 
     .footnote {
-      margin-top: 14px;
+      margin-top: 12px;
       text-align: center;
-      font-size: 13px;
+      font-size: 12px;
       color: #6b7280;
-    }
-
-    .highlight {
-      font-weight: 700;
-      color: #92400e;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Seasonwise Best NEB</h1>
-    <div class="chart-wrap">
-      <canvas id="nebChart"></canvas>
-    </div>
 
-    <div class="footnote">
-      *minimum 7 innings played
-    </div>
+<div class="container">
+  <h2>Seasonwise Best NEB</h2>
+  <div class="chart-wrap">
+    <canvas id="nebChart"></canvas>
   </div>
+  <div class="footnote">
+    *minimum 7 innings played
+  </div>
+</div>
 
-  <script>
-    const rawData = [
-      { Season: "2008", Player: "SE Marsh", Team: "Kings XI Punjab", MeanChewability: 20.763497, MatchesPlayed: 11 },
-      { Season: "2009", Player: "ML Hayden", Team: "Chennai Super Kings", MeanChewability: 13.428838, MatchesPlayed: 12 },
-      { Season: "2010", Player: "SR Tendulkar", Team: "Mumbai Indians", MeanChewability: 9.783249, MatchesPlayed: 15 },
-      { Season: "2011", Player: "S Badrinath", Team: "Chennai Super Kings", MeanChewability: 10.229101, MatchesPlayed: 12 },
-      { Season: "2012", Player: "CH Gayle", Team: "Royal Challengers Bangalore", MeanChewability: 10.194343, MatchesPlayed: 14 },
-      { Season: "2013", Player: "MEK Hussey", Team: "Chennai Super Kings", MeanChewability: 13.551773, MatchesPlayed: 17 },
-      { Season: "2014", Player: "LMP Simmons", Team: "Mumbai Indians", MeanChewability: 12.810840, MatchesPlayed: 8 },
-      { Season: "2015", Player: "LMP Simmons", Team: "Mumbai Indians", MeanChewability: 12.357405, MatchesPlayed: 13 },
-      { Season: "2016", Player: "V Kohli", Team: "Royal Challengers Bangalore", MeanChewability: 16.452314, MatchesPlayed: 16 },
-      { Season: "2017", Player: "DA Warner", Team: "Sunrisers Hyderabad", MeanChewability: 10.623943, MatchesPlayed: 14 },
-      { Season: "2018", Player: "KS Williamson", Team: "Sunrisers Hyderabad", MeanChewability: 10.863851, MatchesPlayed: 17 },
-      { Season: "2019", Player: "DA Warner", Team: "Sunrisers Hyderabad", MeanChewability: 15.580183, MatchesPlayed: 12 },
-      { Season: "2020", Player: "KL Rahul", Team: "Kings XI Punjab", MeanChewability: 14.001532, MatchesPlayed: 14 },
-      { Season: "2021", Player: "KL Rahul", Team: "Punjab Kings", MeanChewability: 11.929820, MatchesPlayed: 13 },
-      { Season: "2022", Player: "JC Buttler", Team: "Rajasthan Royals", MeanChewability: 12.553579, MatchesPlayed: 17 },
-      { Season: "2023", Player: "F du Plessis", Team: "Royal Challengers Bangalore", MeanChewability: 12.296935, MatchesPlayed: 14 },
-      { Season: "2024", Player: "V Kohli", Team: "Royal Challengers Bengaluru", MeanChewability: 12.185839, MatchesPlayed: 15 },
-      { Season: "2025", Player: "B Sai Sudharsan", Team: "Gujarat Titans", MeanChewability: 10.960752, MatchesPlayed: 15 }
-    ];
+<script>
+const rawData = [
+  { Season: "2008", Player: "SE Marsh", Team: "Kings XI Punjab", MeanChewability: 20.763497, MatchesPlayed: 11 },
+  { Season: "2009", Player: "ML Hayden", Team: "Chennai Super Kings", MeanChewability: 13.428838, MatchesPlayed: 12 },
+  { Season: "2010", Player: "SR Tendulkar", Team: "Mumbai Indians", MeanChewability: 9.783249, MatchesPlayed: 15 },
+  { Season: "2011", Player: "S Badrinath", Team: "Chennai Super Kings", MeanChewability: 10.229101, MatchesPlayed: 12 },
+  { Season: "2012", Player: "CH Gayle", Team: "Royal Challengers Bangalore", MeanChewability: 10.194343, MatchesPlayed: 14 },
+  { Season: "2013", Player: "MEK Hussey", Team: "Chennai Super Kings", MeanChewability: 13.551773, MatchesPlayed: 17 },
+  { Season: "2014", Player: "LMP Simmons", Team: "Mumbai Indians", MeanChewability: 12.810840, MatchesPlayed: 8 },
+  { Season: "2015", Player: "LMP Simmons", Team: "Mumbai Indians", MeanChewability: 12.357405, MatchesPlayed: 13 },
+  { Season: "2016", Player: "V Kohli", Team: "Royal Challengers Bangalore", MeanChewability: 16.452314, MatchesPlayed: 16 },
+  { Season: "2017", Player: "DA Warner", Team: "Sunrisers Hyderabad", MeanChewability: 10.623943, MatchesPlayed: 14 },
+  { Season: "2018", Player: "KS Williamson", Team: "Sunrisers Hyderabad", MeanChewability: 10.863851, MatchesPlayed: 17 },
+  { Season: "2019", Player: "DA Warner", Team: "Sunrisers Hyderabad", MeanChewability: 15.580183, MatchesPlayed: 12 },
+  { Season: "2020", Player: "KL Rahul", Team: "Kings XI Punjab", MeanChewability: 14.001532, MatchesPlayed: 14 },
+  { Season: "2021", Player: "KL Rahul", Team: "Punjab Kings", MeanChewability: 11.929820, MatchesPlayed: 13 },
+  { Season: "2022", Player: "JC Buttler", Team: "Rajasthan Royals", MeanChewability: 12.553579, MatchesPlayed: 17 },
+  { Season: "2023", Player: "F du Plessis", Team: "Royal Challengers Bangalore", MeanChewability: 12.296935, MatchesPlayed: 14 },
+  { Season: "2024", Player: "V Kohli", Team: "Royal Challengers Bengaluru", MeanChewability: 12.185839, MatchesPlayed: 15 },
+  { Season: "2025", Player: "B Sai Sudharsan", Team: "Gujarat Titans", MeanChewability: 10.960752, MatchesPlayed: 15 }
+];
 
-    rawData.sort((a, b) => Number(a.Season) - Number(b.Season));
+rawData.sort((a, b) => Number(a.Season) - Number(b.Season));
 
-    const labels = rawData.map(d => d.Season);
-    const values = rawData.map(d => d.MeanChewability);
-    const players = rawData.map(d => d.Player);
-    const teams = rawData.map(d => d.Team);
-    const matches = rawData.map(d => d.MatchesPlayed);
+const labels = rawData.map(d => `${d.Season} — ${d.Player}`);
+const values = rawData.map(d => d.MeanChewability);
+const teams = rawData.map(d => d.Team);
+const matches = rawData.map(d => d.MatchesPlayed);
 
-    const barColors = rawData.map(d =>
-      d.Player === "SE Marsh" && d.Season === "2008"
-        ? "rgba(37, 99, 235, 0.82)"
-        : "rgba(37, 99, 235, 0.82)"
-    );
+const valueLabelPlugin = {
+  id: "valueLabelPlugin",
+  afterDatasetsDraw(chart) {
+    const { ctx } = chart;
+    const meta = chart.getDatasetMeta(0);
 
-    const borderColors = rawData.map(d =>
-      d.Player === "SE Marsh" && d.Season === "2008"
-        ? "rgba(29, 78, 216, 1)"
-        : "rgba(29, 78, 216, 1)"
-    );
+    ctx.save();
+    ctx.font = "12px Arial";
+    ctx.fillStyle = "#1f2937";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "middle";
 
-    const labelPlugin = {
-      id: "labelPlugin",
-      afterDatasetsDraw(chart) {
-        const { ctx } = chart;
-        const meta = chart.getDatasetMeta(0);
+    meta.data.forEach((bar, i) => {
+      ctx.fillText(values[i].toFixed(2), bar.x + 8, bar.y);
+    });
 
-        ctx.save();
-        ctx.font = "12px Arial";
-        ctx.fillStyle = "#1f2937";
-        ctx.textAlign = "center";
+    ctx.restore();
+  }
+};
 
-        meta.data.forEach((bar, i) => {
-          ctx.fillText(players[i], bar.x, bar.y - 18);
-          ctx.fillText(values[i].toFixed(2), bar.x, bar.y - 4);
-        });
-
-        ctx.restore();
+new Chart(document.getElementById("nebChart"), {
+  type: "bar",
+  data: {
+    labels: labels,
+    datasets: [{
+      data: values,
+      backgroundColor: "rgba(70,130,180,0.8)",
+      borderRadius: 6
+    }]
+  },
+  options: {
+    indexAxis: "y",
+    responsive: true,
+    maintainAspectRatio: false,
+    layout: {
+      padding: {
+        right: 50
       }
-    };
-
-    new Chart(document.getElementById("nebChart"), {
-      type: "bar",
-      data: {
-        labels: labels,
-        datasets: [{
-          data: values,
-          backgroundColor: barColors,
-          borderColor: borderColors,
-          borderWidth: 1.5,
-          borderRadius: 6,
-          barPercentage: 0.72,
-          categoryPercentage: 0.84
-        }]
+    },
+    plugins: {
+      legend: {
+        display: false
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        layout: {
-          padding: {
-            top: 50,
-            right: 8,
-            left: 8,
-            bottom: 8
-          }
-        },
-        plugins: {
-          legend: {
-            display: false
+      tooltip: {
+        callbacks: {
+          title: function(context) {
+            return context[0].label;
           },
-          tooltip: {
-            callbacks: {
-              title: function(context) {
-                return "Season: " + context[0].label;
-              },
-              label: function(context) {
-                const i = context.dataIndex;
-                return [
-                  "Player: " + players[i],
-                  "Team: " + teams[i],
-                  "NEB: " + values[i].toFixed(2),
-                  "Matches: " + matches[i]
-                ];
-              }
-            }
-          }
-        },
-        scales: {
-          x: {
-            grid: {
-              display: false
-            },
-            title: {
-              display: true,
-              text: "Season",
-              font: {
-                size: 14,
-                weight: "bold"
-              }
-            }
-          },
-          y: {
-            beginAtZero: true,
-            grid: {
-              color: "rgba(0,0,0,0.08)"
-            },
-            title: {
-              display: true,
-              text: "Season-Best NEB",
-              font: {
-                size: 14,
-                weight: "bold"
-              }
-            }
+          label: function(context) {
+            const i = context.dataIndex;
+            return [
+              "Team: " + teams[i],
+              "NEB: " + values[i].toFixed(2),
+              "Matches: " + matches[i]
+            ];
           }
         }
+      }
+    },
+    scales: {
+      x: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: "Season-Best NEB"
+        },
+        grid: {
+          color: "rgba(0,0,0,0.1)"
+        }
       },
-      plugins: [labelPlugin]
-    });
-  </script>
+      y: {
+        grid: {
+          display: false
+        }
+      }
+    }
+  },
+  plugins: [valueLabelPlugin]
+});
+</script>
+
 </body>
 </html>
