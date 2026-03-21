@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Finishers: NEB and TSR</title>
+  <title>Finishers by TSR</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       margin: 0;
@@ -14,7 +15,7 @@
     }
 
     .wrap {
-      max-width: 800px;
+      max-width: 1000px;
       margin: 0 auto;
       background: #ffffff;
       border-radius: 16px;
@@ -29,58 +30,19 @@
 
     .title {
       margin: 0;
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 700;
     }
 
     .subtitle {
-      margin: 8px 0 0;
+      margin-top: 8px;
       font-size: 14px;
       color: #6b7280;
     }
 
-    .table-wrap {
-      padding: 20px 28px 28px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 15px;
-    }
-
-    thead th {
-      text-align: left;
-      background: #eef2ff;
-      color: #1e3a8a;
-      padding: 12px;
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    tbody td {
-      padding: 12px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    tbody tr:hover {
-      background: #f9fafb;
-    }
-
-    .num {
-      text-align: right;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .player {
-      font-weight: 600;
-    }
-
-    .note {
-      margin-top: 14px;
-      font-size: 12px;
-      color: #6b7280;
+    .chart-wrap {
+      padding: 24px 28px 28px;
+      height: 520px;
     }
   </style>
 </head>
@@ -88,49 +50,121 @@
 
 <div class="wrap">
   <div class="header">
-    <h1 class="title">Finishers: NEB and TSR</h1>
-    <div class="subtitle">
-      Placeholder innings — replace with final values later
-    </div>
+    <h1 class="title">Finishers by TSR</h1>
   </div>
 
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Player</th>
-          <th class="num">NEB</th>
-          <th class="num">TSR</th>
-          <th class="num">Innings</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="player">MS Dhoni</td>
-          <td class="num">3.98</td>
-          <td class="num">-0.11</td>
-          <td class="num">180</td>
-        </tr>
-        <tr>
-          <td class="player">DA Miller</td>
-          <td class="num">2.66</td>
-          <td class="num">0.27</td>
-          <td class="num">125</td>
-        </tr>
-        <tr>
-          <td class="player">KA Pollard</td>
-          <td class="num">1.44</td>
-          <td class="num">7.56</td>
-          <td class="num">150</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div class="note">
-      Note: Innings values are placeholders.
-    </div>
+  <div class="chart-wrap">
+    <canvas id="tsrChart"></canvas>
   </div>
 </div>
+
+<script>
+  const rawData = [
+    { player: "A Russell", tsr: 30.28 },
+    { player: "YK Pathan", tsr: 16.03 },
+    { player: "Jitesh Sharma", tsr: 11.87 },
+    { player: "KA Pollard", tsr: 7.56 },
+    { player: "HH Pandya", tsr: 1.23 },
+    { player: "S Hetmyer", tsr: 1.06 },
+    { player: "DA Miller", tsr: 0.27 },
+    { player: "MS Dhoni", tsr: -0.11 }
+  ];
+
+  rawData.sort((a, b) => b.tsr - a.tsr);
+
+  const labels = rawData.map(d => d.player);
+  const values = rawData.map(d => d.tsr);
+
+  const valueLabelPlugin = {
+    id: "valueLabelPlugin",
+    afterDatasetsDraw(chart) {
+      const { ctx } = chart;
+      const meta = chart.getDatasetMeta(0);
+
+      ctx.save();
+      ctx.font = "12px Arial";
+      ctx.fillStyle = "#1f2937";
+      ctx.textBaseline = "middle";
+
+      meta.data.forEach((bar, i) => {
+        const val = values[i];
+        const xPos = val >= 0 ? bar.x + 8 : bar.x - 8;
+        ctx.textAlign = val >= 0 ? "left" : "right";
+        ctx.fillText(val.toFixed(2), xPos, bar.y);
+      });
+
+      ctx.restore();
+    }
+  };
+
+  new Chart(document.getElementById("tsrChart"), {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{
+        data: values,
+        backgroundColor: "rgba(37, 99, 235, 0.82)",
+        borderColor: "rgba(29, 78, 216, 1)",
+        borderWidth: 1.5,
+        borderRadius: 6,
+        barPercentage: 0.72,
+        categoryPercentage: 0.84
+      }]
+    },
+    options: {
+      indexAxis: "y",
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: {
+        padding: {
+          right: 40,
+          left: 20
+        }
+      },
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          callbacks: {
+            title: function(context) {
+              return context[0].label;
+            },
+            label: function(context) {
+              return "TSR: " + context.parsed.x.toFixed(2);
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: {
+            color: "rgba(0,0,0,0.08)"
+          },
+          title: {
+            display: true,
+            text: "TSR",
+            font: {
+              size: 14,
+              weight: "bold"
+            }
+          }
+        },
+        y: {
+          grid: {
+            display: false
+          },
+          ticks: {
+            font: {
+              size: 13
+            }
+          }
+        }
+      }
+    },
+    plugins: [valueLabelPlugin]
+  });
+</script>
 
 </body>
 </html>
