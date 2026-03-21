@@ -3,13 +3,28 @@
 
   {%- include head.html -%}
 
-  <body>
+  <body style="display:none;">
 
     <script>
       const password = "varun_aaron";
       const user = prompt("Enter password:");
-      if (user !== password) {
-        document.body.innerHTML = "Access denied";
+
+      if (user === password) {
+        document.body.style.display = "block";
+      } else {
+        document.open();
+        document.write(`
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <title>Access denied</title>
+            </head>
+            <body>
+              <h1>Access denied</h1>
+            </body>
+          </html>
+        `);
+        document.close();
       }
     </script>
 
