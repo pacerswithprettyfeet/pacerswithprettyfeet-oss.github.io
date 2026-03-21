@@ -3,56 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TSR of Selected Batters</title>
+  <title>TSR of Select Batters</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
-      margin: 0;
-      padding: 32px;
-      background: #f5f7fb;
       font-family: Arial, sans-serif;
-      color: #1f2937;
-    }
-
-    .wrap {
-      max-width: 1000px;
-      margin: 0 auto;
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-      overflow: hidden;
-    }
-
-    .header {
-      padding: 24px 28px 14px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    .title {
+      background: #f5f5f5;
       margin: 0;
-      font-size: 28px;
-      font-weight: 700;
+      padding: 40px;
     }
 
-    .subtitle {
-      margin-top: 8px;
-      font-size: 14px;
-      color: #6b7280;
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
     }
 
     .chart-wrap {
-      padding: 24px 28px 28px;
       height: 700px;
+    }
+
+    canvas {
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
 
-<div class="wrap">
-  <div class="header">
-    <h1 class="title">TSR of Selected Batters</h1>
-  </div>
-
+<div class="container">
+  <h2>TSR of Selected Batters</h2>
   <div class="chart-wrap">
     <canvas id="tsrChart"></canvas>
   </div>
@@ -79,14 +66,6 @@
   const values = rawData.map(d => d.tsr);
   const innings = rawData.map(d => d.innings);
 
-  const colors = rawData.map(d => {
-    return "rgba(37, 99, 235, 0.82)";
-  });
-
-  const borderColors = rawData.map(d => {
-    return "rgba(29, 78, 216, 1)";
-  });
-
   const valueLabelPlugin = {
     id: "valueLabelPlugin",
     afterDatasetsDraw(chart) {
@@ -112,15 +91,10 @@
     data: {
       labels: labels,
       datasets: [{
+        label: "TSR",
         data: values,
-        backgroundColor: "rgba(37, 99, 235, 0.82)",
-        borderColor: "rgba(29, 78, 216, 1)",
-        borderWidth: 1.5,
-        borderRadius: 6,
-      
-        barThickness: 14,          // 👈 controls bar size directly
-        categoryPercentage: 0.65,  // 👈 reduces vertical spacing
-        barPercentage: 0.9         // 👈 makes bars fill category nicely
+        backgroundColor: "rgba(70,130,180,0.8)",
+        borderRadius: 6
       }]
     },
     options: {
@@ -143,10 +117,7 @@
             },
             label: function(context) {
               const i = context.dataIndex;
-              return [
-                "TSR: " + values[i].toFixed(2),
-                "Innings: " + innings[i]
-              ];
+              return `TSR: ${values[i].toFixed(2)} | Innings: ${innings[i]}`;
             }
           }
         }
@@ -154,26 +125,17 @@
       scales: {
         x: {
           beginAtZero: true,
-          grid: {
-            color: "rgba(0,0,0,0.08)"
-          },
           title: {
             display: true,
-            text: "TSR",
-            font: {
-              size: 14,
-              weight: "bold"
-            }
+            text: "TSR"
+          },
+          grid: {
+            color: "rgba(0,0,0,0.1)"
           }
         },
         y: {
           grid: {
             display: false
-          },
-          ticks: {
-            font: {
-              size: 13
-            }
           }
         }
       }
