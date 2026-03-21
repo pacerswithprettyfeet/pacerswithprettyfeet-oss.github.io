@@ -5,9 +5,22 @@
   <title>Middle Order: NEB vs True SR</title>
   <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
   <style>
-    body { font-family: Arial; margin: 24px; }
-    #chart { width: 100%; height: 100%; }
-    .note { margin-top: 10px; font-size: 14px; color: #444; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      color: #111;
+    }
+  
+    #chart {
+      width: 100%;
+      height: min(75vh, 760px);
+    }
   </style>
 </head>
 <body>
@@ -69,8 +82,6 @@ const layout = {
   xaxis: { title: "NEB" },
   yaxis: { title: "TSR" },
   autosize: true,
-  height: 760,
-
   shapes: [
     // Pooran - Itchy Hands (BLUE)
     {
@@ -114,7 +125,7 @@ const layout = {
     y: 1
   },
 
-  margin: { l: 80, r: 200, t: 80, b: 80 }
+  margin: { l: 80, r: 120, t: 80, b: 80 }
 };
 
 Plotly.newPlot("chart", [trace, ...legend], layout);
