@@ -6,64 +6,42 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
-      margin: 0;
-      padding: 32px;
-      background: #f5f7fb;
       font-family: Arial, sans-serif;
-      color: #1f2937;
-    }
-
-    .wrap {
-      max-width: 1200px;
-      margin: 0 auto;
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-      overflow: hidden;
-    }
-
-    .header {
-      padding: 24px 28px 14px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    .title {
+      background: #f5f5f5;
       margin: 0;
-      font-size: 28px;
-      font-weight: 700;
+      padding: 40px;
     }
 
-    .subtitle {
-      margin-top: 8px;
-      font-size: 14px;
-      color: #6b7280;
-      line-height: 1.5;
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
     }
 
     .chart-wrap {
-      padding: 24px 28px 28px;
       height: 1100px;
     }
 
-    .note {
-      padding: 0 28px 28px;
-      font-size: 12px;
-      color: #6b7280;
-      line-height: 1.5;
+    canvas {
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
 
-<div class="wrap">
-  <div class="header">
-    <h1 class="title">Season-wise Highest MEB</h1>
-  </div>
-
+<div class="container">
+  <h2>Season-wise Highest MEB</h2>
   <div class="chart-wrap">
     <canvas id="mebChart"></canvas>
   </div>
-
 </div>
 
 <script>
@@ -99,7 +77,7 @@ const valueLabelPlugin = {
 
     ctx.save();
     ctx.font = "12px Arial";
-    ctx.fillStyle = "#111827";
+    ctx.fillStyle = "#1f2937";
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
 
@@ -118,10 +96,8 @@ new Chart(document.getElementById("mebChart"), {
     datasets: [{
       label: "MEB",
       data: values,
-      backgroundColor: labels.map(() => "rgba(59, 130, 246, 0.85)"),
-      borderRadius: 6,
-      barPercentage: 0.72,
-      categoryPercentage: 0.84
+      backgroundColor: "rgba(70,130,180,0.8)",
+      borderRadius: 6
     }]
   },
   options: {
@@ -150,24 +126,15 @@ new Chart(document.getElementById("mebChart"), {
         beginAtZero: true,
         title: {
           display: true,
-          text: "MEB",
-          font: {
-            size: 14,
-            weight: "bold"
-          }
+          text: "MEB"
         },
         grid: {
-          color: "rgba(0,0,0,0.08)"
+          color: "rgba(0,0,0,0.1)"
         }
       },
       y: {
         grid: {
           display: false
-        },
-        ticks: {
-          font: {
-            size: 12
-          }
         }
       }
     }
