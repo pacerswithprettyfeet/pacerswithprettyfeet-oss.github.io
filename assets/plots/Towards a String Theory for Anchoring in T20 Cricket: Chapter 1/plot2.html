@@ -66,7 +66,7 @@
       <canvas id="nebChart"></canvas>
     </div>
 
-    <div class="footnote"> 
+    <div class="footnote">
       <span class="highlight">SE Marsh (2008)</span> remains the overall peak at
       <span class="highlight">20.76</span> in 11 games.
     </div>
@@ -75,35 +75,23 @@
   <script>
     const rawData = [
       { Season: "2008", Player: "SE Marsh", Team: "Kings XI Punjab", MeanChewability: 20.763497, MatchesPlayed: 11 },
-
-      // Fill these from your Python result_df output
-      // { Season: "2009", Player: "...", Team: "...", MeanChewability: ..., MatchesPlayed: ... },
-      // { Season: "2010", Player: "...", Team: "...", MeanChewability: ..., MatchesPlayed: ... },
-
-      { Season: "2011", Player: "S Badrinath", Team: "Chennai Super Kings", MeanChewability: 3.962999916, MatchesPlayed: 7 },
-
-      // { Season: "2012", Player: "...", Team: "...", MeanChewability: ..., MatchesPlayed: ... },
-      // { Season: "2013", Player: "...", Team: "...", MeanChewability: ..., MatchesPlayed: ... },
-
-      { Season: "2014", Player: "LMP Simmons", Team: "Mumbai Indians", MeanChewability: 7.407666611, MatchesPlayed: 7 },
-      { Season: "2015", Player: "LMP Simmons", Team: "Mumbai Indians", MeanChewability: 7.407666611, MatchesPlayed: 7 },
-
-      { Season: "2016", Player: "V Kohli", Team: "Royal Challengers Bangalore", MeanChewability: 5.678291615, MatchesPlayed: 7 },
-      { Season: "2017", Player: "DA Warner", Team: "Sunrisers Hyderabad", MeanChewability: 4.375136325, MatchesPlayed: 7 },
-
-      // { Season: "2018", Player: "...", Team: "...", MeanChewability: ..., MatchesPlayed: ... },
-
-      { Season: "2019", Player: "DA Warner", Team: "Sunrisers Hyderabad", MeanChewability: 4.375136325, MatchesPlayed: 7 },
-      { Season: "2020", Player: "KL Rahul", Team: "Kings XI Punjab", MeanChewability: 8.184117573, MatchesPlayed: 7 },
-      { Season: "2021", Player: "KL Rahul", Team: "Punjab Kings", MeanChewability: 8.184117573, MatchesPlayed: 7 },
-
-      // { Season: "2022", Player: "...", Team: "...", MeanChewability: ..., MatchesPlayed: ... },
-      // { Season: "2023", Player: "...", Team: "...", MeanChewability: ..., MatchesPlayed: ... },
-
-      { Season: "2024", Player: "V Kohli", Team: "Royal Challengers Bengaluru", MeanChewability: 5.678291615, MatchesPlayed: 7 }
-
-      // Add 2025 too if your files include it
-      // { Season: "2025", Player: "...", Team: "...", MeanChewability: ..., MatchesPlayed: ... }
+      { Season: "2009", Player: "ML Hayden", Team: "Chennai Super Kings", MeanChewability: 13.428838, MatchesPlayed: 12 },
+      { Season: "2010", Player: "SR Tendulkar", Team: "Mumbai Indians", MeanChewability: 9.783249, MatchesPlayed: 15 },
+      { Season: "2011", Player: "S Badrinath", Team: "Chennai Super Kings", MeanChewability: 10.229101, MatchesPlayed: 12 },
+      { Season: "2012", Player: "CH Gayle", Team: "Royal Challengers Bangalore", MeanChewability: 10.194343, MatchesPlayed: 14 },
+      { Season: "2013", Player: "MEK Hussey", Team: "Chennai Super Kings", MeanChewability: 13.551773, MatchesPlayed: 17 },
+      { Season: "2014", Player: "LMP Simmons", Team: "Mumbai Indians", MeanChewability: 12.810840, MatchesPlayed: 8 },
+      { Season: "2015", Player: "LMP Simmons", Team: "Mumbai Indians", MeanChewability: 12.357405, MatchesPlayed: 13 },
+      { Season: "2016", Player: "V Kohli", Team: "Royal Challengers Bangalore", MeanChewability: 16.452314, MatchesPlayed: 16 },
+      { Season: "2017", Player: "DA Warner", Team: "Sunrisers Hyderabad", MeanChewability: 10.623943, MatchesPlayed: 14 },
+      { Season: "2018", Player: "KS Williamson", Team: "Sunrisers Hyderabad", MeanChewability: 10.863851, MatchesPlayed: 17 },
+      { Season: "2019", Player: "DA Warner", Team: "Sunrisers Hyderabad", MeanChewability: 15.580183, MatchesPlayed: 12 },
+      { Season: "2020", Player: "KL Rahul", Team: "Kings XI Punjab", MeanChewability: 14.001532, MatchesPlayed: 14 },
+      { Season: "2021", Player: "KL Rahul", Team: "Punjab Kings", MeanChewability: 11.929820, MatchesPlayed: 13 },
+      { Season: "2022", Player: "JC Buttler", Team: "Rajasthan Royals", MeanChewability: 12.553579, MatchesPlayed: 17 },
+      { Season: "2023", Player: "F du Plessis", Team: "Royal Challengers Bangalore", MeanChewability: 12.296935, MatchesPlayed: 14 },
+      { Season: "2024", Player: "V Kohli", Team: "Royal Challengers Bengaluru", MeanChewability: 12.185839, MatchesPlayed: 15 },
+      { Season: "2025", Player: "B Sai Sudharsan", Team: "Gujarat Titans", MeanChewability: 10.960752, MatchesPlayed: 15 }
     ];
 
     rawData.sort((a, b) => Number(a.Season) - Number(b.Season));
@@ -114,19 +102,17 @@
     const teams = rawData.map(d => d.Team);
     const matches = rawData.map(d => d.MatchesPlayed);
 
-    const maxVal = Math.max(...values);
+    const barColors = rawData.map(d =>
+      d.Player === "SE Marsh" && d.Season === "2008"
+        ? "rgba(217, 119, 6, 0.9)"
+        : "rgba(37, 99, 235, 0.82)"
+    );
 
-    const barColors = rawData.map(d => {
-      if (d.Season === "2008") return "rgba(217, 119, 6, 0.9)";
-      if (d.Player === "S Badrinath") return "rgba(5, 150, 105, 0.85)";
-      return "rgba(37, 99, 235, 0.82)";
-    });
-
-    const borderColors = rawData.map(d => {
-      if (d.Season === "2008") return "rgba(146, 64, 14, 1)";
-      if (d.Player === "S Badrinath") return "rgba(4, 120, 87, 1)";
-      return "rgba(29, 78, 216, 1)";
-    });
+    const borderColors = rawData.map(d =>
+      d.Player === "SE Marsh" && d.Season === "2008"
+        ? "rgba(146, 64, 14, 1)"
+        : "rgba(29, 78, 216, 1)"
+    );
 
     const labelPlugin = {
       id: "labelPlugin",
