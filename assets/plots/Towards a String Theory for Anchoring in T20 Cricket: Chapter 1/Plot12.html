@@ -7,188 +7,154 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
-      margin: 0;
-      padding: 32px;
       font-family: Arial, sans-serif;
-      background: #f5f7fb;
-      color: #1f2937;
-    }
-
-    .wrap {
-      max-width: 1200px;
-      margin: 0 auto;
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-      overflow: hidden;
-    }
-
-    .header {
-      padding: 24px 28px 12px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    .title {
+      background: #f5f5f5;
       margin: 0;
-      font-size: 30px;
-      font-weight: 700;
-      color: #111827;
+      padding: 40px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
     }
 
     .subtitle {
-      margin-top: 8px;
+      text-align: center;
+      margin-top: -8px;
+      margin-bottom: 18px;
       font-size: 14px;
-      line-height: 1.5;
       color: #6b7280;
     }
 
     .chart-wrap {
-      padding: 20px 28px 28px;
       height: 900px;
     }
 
-    .note {
-      padding: 0 28px 24px;
-      font-size: 12px;
-      color: #6b7280;
-      line-height: 1.5;
+    canvas {
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="header">
-      <h1 class="title">Pessimist’s Prediction (PsP): Selected Batters</h1>
-      <div class="subtitle">
-        Higher (less negative) values indicate greater consistency
-      </div>
-    </div>
 
-    <div class="chart-wrap">
-      <canvas id="pspChart"></canvas>
-    </div>
-
+<div class="container">
+  <h2>Pessimist’s Prediction (PsP): Selected Batters</h2>
+  <div class="subtitle">Higher (less negative) values indicate greater consistency</div>
+  <div class="chart-wrap">
+    <canvas id="pspChart"></canvas>
   </div>
+</div>
 
-  <script>
-    const rawData = [
-      { player: "B Sai Sudharsan", psp: -3.360090325 },
-      { player: "MS Dhoni", psp: -4.382756729 },
-      { player: "Tilak Varma", psp: -5.495417904 },
-      { player: "KA Pollard", psp: -6.530340158 },
-      { player: "DA Miller", psp: -6.709958658 },
-      { player: "RK Singh", psp: -6.595899158 },
-      { player: "AD Russell", psp: -6.797922634 },
-      { player: "S Badrinath", psp: -7.745937261 },
-      { player: "SPD Smith", psp: -8.493379914 },
-      { player: "KL Rahul", psp: -9.114726825 },
-      { player: "R Dravid", psp: -9.121850071 },
-      { player: "AB de Villiers", psp: -9.599582324 },
-      { player: "V Kohli", psp: -10.11832204 },
-      { player: "CH Gayle", psp: -13.58895236 },
-      { player: "DA Warner", psp: -12.75401082 },
-      { player: "JC Buttler", psp: -12.82768705 },
-      { player: "AM Rahane", psp: -13.44036983 },
-      { player: "MR Marsh", psp: -13.47310166 }
-    ];
+<script>
+  const rawData = [
+    { player: "B Sai Sudharsan", psp: -3.360090325 },
+    { player: "MS Dhoni", psp: -4.382756729 },
+    { player: "Tilak Varma", psp: -5.495417904 },
+    { player: "KA Pollard", psp: -6.530340158 },
+    { player: "DA Miller", psp: -6.709958658 },
+    { player: "RK Singh", psp: -6.595899158 },
+    { player: "AD Russell", psp: -6.797922634 },
+    { player: "S Badrinath", psp: -7.745937261 },
+    { player: "SPD Smith", psp: -8.493379914 },
+    { player: "KL Rahul", psp: -9.114726825 },
+    { player: "R Dravid", psp: -9.121850071 },
+    { player: "AB de Villiers", psp: -9.599582324 },
+    { player: "V Kohli", psp: -10.11832204 },
+    { player: "DA Warner", psp: -12.75401082 },
+    { player: "JC Buttler", psp: -12.82768705 },
+    { player: "AM Rahane", psp: -13.44036983 },
+    { player: "CH Gayle", psp: -13.58895236 },
+    { player: "MR Marsh", psp: -13.47310166 }
+  ];
 
-    rawData.sort((a, b) => b.psp - a.psp);
+  rawData.sort((a, b) => b.psp - a.psp);
 
-    const labels = rawData.map(d => d.player);
+  const labels = rawData.map(d => d.player);
+  const values = rawData.map(d => Math.abs(d.psp));
+  const originalValues = rawData.map(d => d.psp);
 
-    // 👉 Use absolute values for plotting
-    const values = rawData.map(d => Math.abs(d.psp));
+  const valueLabelPlugin = {
+    id: "valueLabelPlugin",
+    afterDatasetsDraw(chart) {
+      const { ctx } = chart;
+      const meta = chart.getDatasetMeta(0);
 
-    // 👉 Keep original values separately for labels
-    const originalValues = rawData.map(d => d.psp);
+      ctx.save();
+      ctx.font = "12px Arial";
+      ctx.fillStyle = "#1f2937";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "middle";
 
-  // 👉 Single uniform color for all bars
-    const colors = rawData.map(() => "rgba(99, 102, 241, 0.86)");
+      meta.data.forEach((bar, i) => {
+        ctx.fillText(originalValues[i].toFixed(2), bar.x + 8, bar.y);
+      });
 
-    const valueLabelPlugin = {
-      id: 'valueLabelPlugin',
-      afterDatasetsDraw(chart) {
-        const { ctx } = chart;
-        const meta = chart.getDatasetMeta(0);
+      ctx.restore();
+    }
+  };
 
-        ctx.save();
-        ctx.font = "12px Arial";
-        ctx.fillStyle = "#111827";
-        ctx.textAlign = "left";
-        ctx.textBaseline = "middle";
-
-        meta.data.forEach((bar, i) => {
-          // 👉 Show original negative value
-          ctx.fillText(originalValues[i].toFixed(2), bar.x + 8, bar.y);
-        });
-
-        ctx.restore();
-      }
-    };
-
-    new Chart(document.getElementById("pspChart"), {
-      type: "bar",
-      data: {
-        labels: labels,
-        datasets: [{
-          label: "Pessimist's Prediction",
-          data: values,
-          backgroundColor: colors,
-          borderRadius: 6,
-          barPercentage: 0.72,
-          categoryPercentage: 0.84
-        }]
+  new Chart(document.getElementById("pspChart"), {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Pessimist's Prediction",
+        data: values,
+        backgroundColor: "rgba(70,130,180,0.8)",
+        borderRadius: 6
+      }]
+    },
+    options: {
+      indexAxis: "y",
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: {
+        padding: {
+          right: 50
+        }
       },
-      options: {
-        indexAxis: "y",
-        responsive: true,
-        maintainAspectRatio: false,
-        layout: {
-          padding: {
-            right: 50
-          }
+      plugins: {
+        legend: {
+          display: false
         },
-        plugins: {
-          legend: {
-            display: false
-          },
-          tooltip: {
-            callbacks: {
-              label: function(context) {
-                // 👉 Show original negative value in tooltip
-                return `PsP: ${originalValues[context.dataIndex].toFixed(3)}`;
-              }
-            }
-          }
-        },
-        scales: {
-          x: {
-            title: {
-              display: true,
-              text: "Pessimist’s Prediction",
-              font: {
-                size: 14,
-                weight: "bold"
-              }
-            },
-            grid: {
-              color: "rgba(0,0,0,0.08)"
-            }
-          },
-          y: {
-            grid: {
-              display: false
-            },
-            ticks: {
-              font: {
-                size: 13
-              }
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return `PsP: ${originalValues[context.dataIndex].toFixed(3)}`;
             }
           }
         }
       },
-      plugins: [valueLabelPlugin]
-    });
-  </script>
+      scales: {
+        x: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: "Pessimist’s Prediction"
+          },
+          grid: {
+            color: "rgba(0,0,0,0.1)"
+          }
+        },
+        y: {
+          grid: {
+            display: false
+          }
+        }
+      }
+    },
+    plugins: [valueLabelPlugin]
+  });
+</script>
+
 </body>
 </html>
