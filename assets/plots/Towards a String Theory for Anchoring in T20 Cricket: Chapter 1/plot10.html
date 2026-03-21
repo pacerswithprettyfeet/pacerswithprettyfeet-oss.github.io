@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Death Overs: NEB vs True SR</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; }
+    #chart { width: 100%; height: 760px; }
+  </style>
+</head>
+<body>
+
+<div id="chart"></div>
+
+<script>
+const deathData = [
+  { player: "AD Russell", neb: 1.101576751, trueSR: 30.28 },
+  { player: "HH Pandya", neb: 1.137062855, trueSR: 1.23 },
+  { player: "KA Pollard", neb: 1.447257933, trueSR: 7.56 },
+  { player: "MP Stoinis", neb: 0.86351033, trueSR: 4.11 },
+  { player: "MS Dhoni", neb: 3.977290172, trueSR: -0.11 },
+  { player: "R Tewatia", neb: 1.035971224, trueSR: -12.71 },
+  { player: "SO Hetmyer", neb: 1.11944858, trueSR: 1.06 },
+  { player: "TH David", neb: 1.99324246, trueSR: 16.22 },
+  { player: "V Shankar", neb: 1.04909539, trueSR: -16.04 },
+  { player: "RK Singh", neb: 1.693061153, trueSR: -5.26 },
+  { player: "BJ Hodge", neb: 2.97873553, trueSR: 1.65 },
+  { player: "DA Miller", neb: 2.6608647, trueSR: 0.27 }
+];
+
+const playerTrace = {
+  x: deathData.map(d => d.neb),
+  y: deathData.map(d => d.trueSR),
+  text: deathData.map(d => d.player),
+  mode: "markers+text",
+  type: "scatter",
+  name: "Players",
+  textposition: "top center",
+  marker: {
+    size: 10,
+    color: "#1f77b4"
+  },
+  hovertemplate:
+    "<b>%{text}</b><br>" +
+    "NEB: %{x:.3f}<br>" +
+    "True SR: %{y:.2f}<extra></extra>"
+};
+
+// Same color mapping as earlier
+const legendTraces = [
+  {
+    x: [null], y: [null],
+    mode: "markers",
+    type: "scatter",
+    name: "Ultimate Anchors",
+    marker: {
+      size: 14,
+      color: "rgba(228, 26, 28, 0.35)",
+      line: { color: "rgba(228, 26, 28, 1)", width: 2 }
+    },
+    hoverinfo: "skip"
+  },
+  {
+    x: [null], y: [null],
+    mode: "markers",
+    type: "scatter",
+    name: "Itchy Hands",
+    marker: {
+      size: 14,
+      color: "rgba(55, 126, 184, 0.35)",
+      line: { color: "rgba(55, 126, 184, 1)", width: 2 }
+    },
+    hoverinfo: "skip"
+  },
+  {
+    x: [null], y: [null],
+    mode: "markers",
+    type: "scatter",
+    name: "Conventional Anchors",
+    marker: {
+      size: 14,
+      color: "rgba(77, 175, 74, 0.35)",
+      line: { color: "rgba(77, 175, 74, 1)", width: 2 }
+    },
+    hoverinfo: "skip"
+  },
+  {
+    x: [null], y: [null],
+    mode: "markers",
+    type: "scatter",
+    name: "Quick Anchors",
+    marker: {
+      size: 14,
+      color: "rgba(152, 78, 163, 0.35)",
+      line: { color: "rgba(152, 78, 163, 1)", width: 2 }
+    },
+    hoverinfo: "skip"
+  },
+  {
+    x: [null], y: [null],
+    mode: "markers",
+    type: "scatter",
+    name: "Safe Houses",
+    marker: {
+      size: 14,
+      color: "rgba(255, 127, 0, 0.35)",
+      line: { color: "rgba(255, 127, 0, 1)", width: 2 }
+    },
+    hoverinfo: "skip"
+  },
+  {
+    x: [null], y: [null],
+    mode: "markers",
+    type: "scatter",
+    name: "Plus Anchors",
+    marker: {
+      size: 14,
+      color: "rgba(0, 0, 0, 0.22)",
+      line: { color: "rgba(0, 0, 0, 1)", width: 2 }
+    },
+    hoverinfo: "skip"
+  }
+];
+
+const layout = {
+  title: "Death Overs: NEB vs True SR",
+  template: "plotly_white",
+  width: 1400,
+  height: 760,
+  hovermode: "closest",
+  xaxis: {
+    title: "NEB (Net Effective Balls)",
+    range: [0.7, 4.2]
+  },
+  yaxis: {
+    title: "True SR",
+    range: [-19.5, 32.5]
+  },
+  shapes: [
+    // Itchy Hands - Russell zone
+    {
+      type: "rect",
+      xref: "x",
+      yref: "y",
+      x0: 0.93,
+      x1: 2.20,
+      y0: 6.7,
+      y1: 32.2,
+      line: { color: "rgba(228, 26, 28, 1)", width: 4 },
+      fillcolor: "rgba(228, 26, 28, 0.18)"
+    },
+
+    // Conventional Anchors - Stoinis zone
+    {
+      type: "rect",
+      xref: "x",
+      yref: "y",
+      x0: 0.72,
+      x1: 1.93,
+      y0: -8.3,
+      y1: 6.0,
+      line: { color: "rgba(77, 175, 74, 1)", width: 4 },
+      fillcolor: "rgba(77, 175, 74, 0.18)"
+    },
+
+    // Plus Anchors - Miller zone
+    {
+      type: "rect",
+      xref: "x",
+      yref: "y",
+      x0: 2.52,
+      x1: 3.14,
+      y0: -3.3,
+      y1: 5.4,
+      line: { color: "rgba(0, 0, 0, 1)", width: 4 },
+      fillcolor: "rgba(0, 0, 0, 0.10)"
+    },
+
+    // Safe Houses - Dhoni zone
+    {
+      type: "rect",
+      xref: "x",
+      yref: "y",
+      x0: 3.78,
+      x1: 4.17,
+      y0: -4.7,
+      y1: 3.3,
+      line: { color: "rgba(255, 127, 0, 1)", width: 4 },
+      fillcolor: "rgba(255, 127, 0, 0.18)"
+    }
+  ],
+  legend: {
+    x: 1.02,
+    y: 1,
+    xanchor: "left",
+    yanchor: "top",
+    bgcolor: "rgba(255,255,255,0.85)",
+    bordercolor: "rgba(0,0,0,0.15)",
+    borderwidth: 1,
+    font: { size: 14 }
+  },
+  margin: { l: 80, r: 220, t: 80, b: 80 }
+};
+
+Plotly.newPlot(
+  "chart",
+  [playerTrace, ...legendTraces],
+  layout,
+  { responsive: true }
+);
+</script>
+
+</body>
+</html>

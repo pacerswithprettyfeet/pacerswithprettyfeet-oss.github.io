@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Top-Order Batters: NEB vs True SR</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 24px;
+      background: #ffffff;
+      color: #111;
+    }
+    #chart {
+      width: 100%;
+      height: 760px;
+    }
+  </style>
+</head>
+<body>
+  <div id="chart"></div>
+
+  <script>
+    const topData = [
+      { player: "AK Markram", neb: 1.986940784, trueSR: -5.32 },
+      { player: "AM Rahane", neb: 1.668753134, trueSR: -0.61 },
+      { player: "B Sai Sudharsan", neb: 10.16093449, trueSR: 0.78 },
+      { player: "CA Lynn", neb: 1.96851324, trueSR: 12.34 },
+      { player: "CH Gayle", neb: 2.883454432, trueSR: 31.24 },
+      { player: "DA Warner", neb: 4.375136325, trueSR: 19.20 },
+      { player: "DR Smith", neb: 0.755721971, trueSR: 11.82 },
+      { player: "F du Plessis", neb: 3.344016554, trueSR: 9.07 },
+      { player: "G Gambhir", neb: 2.268268065, trueSR: 4.79 },
+      { player: "JC Buttler", neb: 3.617152511, trueSR: 16.58 },
+      { player: "JH Kallis", neb: 3.384832854, trueSR: -4.83 },
+      { player: "JM Bairstow", neb: 1.323580247, trueSR: 20.64 },
+      { player: "KL Rahul", neb: 8.184117573, trueSR: 4.49 },
+      { player: "MEK Hussey", neb: 7.068602429, trueSR: 4.72 },
+      { player: "MK Pandey", neb: 2.02533065, trueSR: -4.42 },
+      { player: "MR Marsh", neb: 1.080138773, trueSR: 8.08 },
+      { player: "Q de Kock", neb: 0.194437297, trueSR: 10.36 },
+      { player: "RD Gaikwad", neb: 5.018699835, trueSR: 11.68 },
+      { player: "RG Sharma", neb: 0.7526621, trueSR: 3.92 },
+      { player: "RV Uthappa", neb: 0.518601027, trueSR: 10.28 },
+      { player: "S Dhawan", neb: 3.006050082, trueSR: 4.30 },
+      { player: "SC Ganguly", neb: 2.205493801, trueSR: -6.93 },
+      { player: "SE Marsh", neb: 7.065272881, trueSR: 8.82 },
+      { player: "SK Raina", neb: 1.205146376, trueSR: 11.45 },
+      { player: "SR Tendulkar", neb: 4.290487354, trueSR: 7.19 },
+      { player: "SR Watson", neb: 1.059709113, trueSR: 17.81 },
+      { player: "SV Samson", neb: 0.919573043, trueSR: 8.07 },
+      { player: "S Gill", neb: 4.35098973, trueSR: 4.5 },
+      { player: "V Kohli", neb: 5.678291615, trueSR: 2.79 },
+      { player: "SPD Smith", neb: 3.615016299, trueSR: 2.20 },
+      { player: "VR Iyer", neb: 0.810177019, trueSR: 0.68 }
+    ];
+
+    // Main player trace
+    const playerTrace = {
+      x: topData.map(d => d.neb),
+      y: topData.map(d => d.trueSR),
+      text: topData.map(d => d.player),
+      mode: "markers+text",
+      type: "scatter",
+      name: "Players",
+      textposition: "top center",
+      marker: {
+        size: 10,
+        color: "#1f77b4"
+      },
+      hovertemplate:
+        "<b>%{text}</b><br>" +
+        "NEB: %{x:.3f}<br>" +
+        "True SR: %{y:.2f}<extra></extra>"
+    };
+
+    // Dummy traces only for legend
+    const legendTraces = [
+      {
+        x: [null], y: [null],
+        mode: "markers",
+        type: "scatter",
+        name: "Ultimate Anchors",
+        marker: { size: 14, color: "rgba(228, 26, 28, 0.35)", line: { color: "rgba(228, 26, 28, 1)", width: 2 } },
+        hoverinfo: "skip"
+      },
+      {
+        x: [null], y: [null],
+        mode: "markers",
+        type: "scatter",
+        name: "Itchy Hands",
+        marker: { size: 14, color: "rgba(55, 126, 184, 0.35)", line: { color: "rgba(55, 126, 184, 1)", width: 2 } },
+        hoverinfo: "skip"
+      },
+      {
+        x: [null], y: [null],
+        mode: "markers",
+        type: "scatter",
+        name: "Conventional Anchors",
+        marker: { size: 14, color: "rgba(77, 175, 74, 0.35)", line: { color: "rgba(77, 175, 74, 1)", width: 2 } },
+        hoverinfo: "skip"
+      },
+      {
+        x: [null], y: [null],
+        mode: "markers",
+        type: "scatter",
+        name: "Quick Anchors",
+        marker: { size: 14, color: "rgba(152, 78, 163, 0.35)", line: { color: "rgba(152, 78, 163, 1)", width: 2 } },
+        hoverinfo: "skip"
+      },
+      {
+        x: [null], y: [null],
+        mode: "markers",
+        type: "scatter",
+        name: "Safe Houses",
+        marker: { size: 14, color: "rgba(255, 127, 0, 0.35)", line: { color: "rgba(255, 127, 0, 1)", width: 2 } },
+        hoverinfo: "skip"
+      }
+    ];
+
+    const layout = {
+      title: "Top-Order Batters: NEB vs True SR",
+      template: "plotly_white",
+      width: 1400,
+      height: 760,
+      hovermode: "closest",
+      xaxis: {
+        title: "NEB (Net Effective Balls)",
+        range: [-0.2, 10.8]
+      },
+      yaxis: {
+        title: "True SR",
+        range: [-9.5, 33]
+      },
+      shapes: [
+        // Itchy Hands - Watson zone
+        {
+          type: "rect",
+          xref: "x",
+          yref: "y",
+          x0: -0.12,
+          x1: 2.33,
+          y0: 7.4,
+          y1: 23.8,
+          line: { color: "rgba(55, 126, 184, 1)", width: 4 },
+          fillcolor: "rgba(55, 126, 184, 0.18)"
+        },
+
+        // Ultimate Anchors - Gayle zone
+        {
+          type: "rect",
+          xref: "x",
+          yref: "y",
+          x0: 2.40,
+          x1: 4.85,
+          y0: 14.8,
+          y1: 32.8,
+          line: { color: "rgba(228, 26, 28, 1)", width: 4 },
+          fillcolor: "rgba(228, 26, 28, 0.18)"
+        },
+
+        // Conventional Anchors - Gambhir zone
+        {
+          type: "rect",
+          xref: "x",
+          yref: "y",
+          x0: 1.75,
+          x1: 4.08,
+          y0: 1.4,
+          y1: 6.4,
+          line: { color: "rgba(77, 175, 74, 1)", width: 4 },
+          fillcolor: "rgba(77, 175, 74, 0.18)"
+        },
+
+        // Quick Anchors - Tendulkar zone
+        {
+          type: "rect",
+          xref: "x",
+          yref: "y",
+          x0: 2.60,
+          x1: 8.35,
+          y0: 6.0,
+          y1: 13.9,
+          line: { color: "rgba(152, 78, 163, 1)", width: 4 },
+          fillcolor: "rgba(152, 78, 163, 0.18)"
+        },
+
+        // Safe Houses - Kohli zone
+        {
+          type: "rect",
+          xref: "x",
+          yref: "y",
+          x0: 4.10,
+          x1: 10.95,
+          y0: -0.1,
+          y1: 6.45,
+          line: { color: "rgba(255, 127, 0, 1)", width: 4 },
+          fillcolor: "rgba(255, 127, 0, 0.18)"
+        }
+      ],
+      legend: {
+        x: 1.02,
+        y: 1,
+        xanchor: "left",
+        yanchor: "top",
+        bgcolor: "rgba(255,255,255,0.85)",
+        bordercolor: "rgba(0,0,0,0.15)",
+        borderwidth: 1,
+        font: { size: 14 }
+      },
+      margin: { l: 80, r: 220, t: 80, b: 80 }
+    };
+
+    Plotly.newPlot(
+      "chart",
+      [playerTrace, ...legendTraces],
+      layout,
+      { responsive: true }
+    );
+  </script>
+</body>
+</html>

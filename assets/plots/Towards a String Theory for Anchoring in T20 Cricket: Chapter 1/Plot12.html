@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pessimist's Prediction (PsP) — Selected Batters</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 32px;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #1f2937;
+    }
+
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 28px 12px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #6b7280;
+    }
+
+    .chart-wrap {
+      padding: 20px 28px 28px;
+      height: 900px;
+    }
+
+    .note {
+      padding: 0 28px 24px;
+      font-size: 12px;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <h1 class="title">Pessimist’s Prediction (PsP): Selected Batters</h1>
+      <div class="subtitle">
+        Higher (less negative) is better. Selection includes names highlighted in the write-up, plus a few famous batters for context.
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="pspChart"></canvas>
+    </div>
+
+    <div class="note">
+      Values hardcoded from your supplied table. Bars closer to zero indicate a stronger pessimistic floor.
+    </div>
+  </div>
+
+  <script>
+    const rawData = [
+      { player: "B Sai Sudharsan", psp: -3.360090325 },
+      { player: "MS Dhoni", psp: -4.382756729 },
+      { player: "Tilak Varma", psp: -5.495417904 },
+      { player: "KA Pollard", psp: -6.530340158 },
+      { player: "DA Miller", psp: -6.709958658 },
+      { player: "RK Singh", psp: -6.595899158 },
+      { player: "AD Russell", psp: -6.797922634 },
+      { player: "S Badrinath", psp: -7.745937261 },
+      { player: "SPD Smith", psp: -8.493379914 },
+      { player: "KL Rahul", psp: -9.114726825 },
+      { player: "R Dravid", psp: -9.121850071 },
+      { player: "AB de Villiers", psp: -9.599582324 },
+      { player: "V Kohli", psp: -10.11832204 },
+      { player: "CH Gayle", psp: -13.58895236 },
+      { player: "DA Warner", psp: -12.75401082 },
+      { player: "JC Buttler", psp: -12.82768705 },
+      { player: "AM Rahane", psp: -13.44036983 },
+      { player: "MR Marsh", psp: -13.47310166 }
+    ];
+
+    rawData.sort((a, b) => b.psp - a.psp);
+
+    const labels = rawData.map(d => d.player);
+    const values = rawData.map(d => d.psp);
+
+    const colors = rawData.map(d => {
+      if (d.player === "B Sai Sudharsan") return "rgba(16, 185, 129, 0.90)";
+      if (d.player === "Tilak Varma") return "rgba(59, 130, 246, 0.88)";
+      if (d.player === "MR Marsh") return "rgba(239, 68, 68, 0.88)";
+      if (d.player === "AM Rahane") return "rgba(245, 158, 11, 0.88)";
+      if (d.player === "MS Dhoni" || d.player === "KA Pollard" || d.player === "DA Miller" || d.player === "RK Singh") {
+        return "rgba(99, 102, 241, 0.86)";
+      }
+      return "rgba(107, 114, 128, 0.82)";
+    });
+
+    const valueLabelPlugin = {
+      id: 'valueLabelPlugin',
+      afterDatasetsDraw(chart) {
+        const { ctx } = chart;
+        const meta = chart.getDatasetMeta(0);
+
+        ctx.save();
+        ctx.font = "12px Arial";
+        ctx.fillStyle = "#111827";
+        ctx.textAlign = "left";
+        ctx.textBaseline = "middle";
+
+        meta.data.forEach((bar, i) => {
+          ctx.fillText(values[i].toFixed(2), bar.x + 8, bar.y);
+        });
+
+        ctx.restore();
+      }
+    };
+
+    new Chart(document.getElementById("pspChart"), {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Pessimist's Prediction",
+          data: values,
+          backgroundColor: colors,
+          borderRadius: 6,
+          barPercentage: 0.72,
+          categoryPercentage: 0.84
+        }]
+      },
+      options: {
+        indexAxis: "y",
+        responsive: true,
+        maintainAspectRatio: false,
+        layout: {
+          padding: {
+            right: 50
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return `PsP: ${context.parsed.x.toFixed(3)}`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: "Pessimist’s Prediction (higher / less negative is better)",
+              font: {
+                size: 14,
+                weight: "bold"
+              }
+            },
+            grid: {
+              color: "rgba(0,0,0,0.08)"
+            }
+          },
+          y: {
+            grid: {
+              display: false
+            },
+            ticks: {
+              font: {
+                size: 13
+              }
+            }
+          }
+        }
+      },
+      plugins: [valueLabelPlugin]
+    });
+  </script>
+</body>
+</html>

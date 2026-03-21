@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PsP by Entry Phase</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 28px;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #1f2937;
+    }
+    .page {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .hero, .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      margin-bottom: 22px;
+      overflow: hidden;
+    }
+    .hero {
+      padding: 24px 28px;
+    }
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 30px;
+    }
+    .sub {
+      color: #6b7280;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .claims {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .claim {
+      background: #f9fafb;
+      border-left: 4px solid #3b82f6;
+      padding: 12px 14px;
+      line-height: 1.45;
+      font-size: 14px;
+    }
+    .claim strong {
+      color: #111827;
+    }
+    .phase-head {
+      padding: 18px 22px 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .phase-title {
+      margin: 0;
+      font-size: 24px;
+    }
+    .phase-note {
+      margin-top: 6px;
+      color: #6b7280;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    .tables {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      padding: 18px 22px 22px;
+    }
+    .table-box h3 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: #eef2ff;
+      color: #1e3a8a;
+      text-align: left;
+      padding: 10px 10px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    tbody td {
+      padding: 10px 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    tbody tr:hover {
+      background: #f9fafb;
+    }
+    .num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    .highlight-blue {
+      background: #eff6ff;
+      font-weight: 700;
+    }
+    .highlight-green {
+      background: #ecfdf5;
+      font-weight: 700;
+    }
+    .highlight-amber {
+      background: #fffbeb;
+      font-weight: 700;
+    }
+    .highlight-red {
+      background: #fef2f2;
+      font-weight: 700;
+    }
+    .foot {
+      padding: 0 28px 28px;
+      color: #6b7280;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    @media (max-width: 900px) {
+      .tables {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <h1>Pessimist’s Prediction by Entry Phase</h1>
+    <div class="sub">
+      Higher PsP (that is, less negative) indicates a stronger pessimistic floor. These tables are built from the phase-wise PsP values you supplied.
+      I have only justified claims that are directly supported by those values.
+    </div>
+
+    <div class="claims">
+      <div class="claim">
+        <strong>Opening phase (1–3):</strong> among the openers shown, <strong>R Dravid (-8.10)</strong> and <strong>KL Rahul (-8.47)</strong> are clearly among the more reliable names, second only to <strong>B Sai Sudharsan (-4.94)</strong> in the supplied table.
+      </div>
+      <div class="claim">
+        <strong>Late powerplay (4–6):</strong> <strong>S Badrinath (-3.22)</strong> does rate very highly, which supports the “pinch-blocker” claim. Only <strong>Sai Sudharsan (+3.27)</strong> and <strong>Tilak Varma (-3.01)</strong> are above him in the provided table.
+      </div>
+      <div class="claim">
+        <strong>Middle overs (7–9):</strong> <strong>SPD Smith (-1.90)</strong> is indeed much more reliable here than in the powerplay, where he sits at <strong>-14.40</strong>. That directly supports your “chaos agent in the powerplay, more reliable in the middle overs” line.
+      </div>
+      <div class="claim">
+        <strong>10–12 overs:</strong> <strong>MS Dhoni (-3.49)</strong> sits above <strong>AD Russell (-5.26)</strong>, and Russell is indeed “not far” from Dhoni in this phase.
+      </div>
+      <div class="claim">
+        <strong>Back end (13–15 and 16–18):</strong> <strong>Rinku Singh</strong> is first in both tables, <strong>DA Miller</strong> is second in both, <strong>MS Dhoni</strong> remains near the top, and <strong>KA Pollard</strong> stays strong. That justifies the “finishers who get the job done” line for these names.
+      </div>
+      <div class="claim">
+        <strong>Russell’s volatility later in the innings:</strong> his PsP goes from <strong>-5.26 (10–12)</strong> to <strong>-6.57 (13–15)</strong> to <strong>-4.55 (16–18)</strong> in your supplied tables. So the claim that he becomes markedly worse later is only partly supported by the data shown here. It is clearly worse at <strong>13–15</strong>, but he improves again at <strong>16–18</strong>. I would not phrase that claim too strongly.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="phase-head">
+      <h2 class="phase-title">Phase 1–3</h2>
+      <div class="phase-note">
+        Openers and early entrants. Dravid and KL Rahul are among the standout reliable names here, though Sai Sudharsan sits well above everyone.
+      </div>
+    </div>
+    <div class="tables">
+      <div class="table-box">
+        <h3>Top few</h3>
+        <table>
+          <thead><tr><th>Player</th><th class="num">PsP</th></tr></thead>
+          <tbody>
+            <tr class="highlight-green"><td>B Sai Sudharsan</td><td class="num">-4.94</td></tr>
+            <tr class="highlight-blue"><td>R Dravid</td><td class="num">-8.10</td></tr>
+            <tr class="highlight-blue"><td>KL Rahul</td><td class="num">-8.47</td></tr>
+            <tr><td>MEK Hussey</td><td class="num">-9.05</td></tr>
+            <tr><td>AK Markram</td><td class="num">-9.32</td></tr>
+            <tr><td>KS Williamson</td><td class="num">-9.87</td></tr>
+            <tr><td>SA Yadav</td><td class="num">-9.88</td></tr>
+            <tr><td>KP Pietersen</td><td class="num">-10.00</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-box">
+        <h3>Bottom few</h3>
+        <table>
+          <thead><tr><th>Player</th><th class="num">PsP</th></tr></thead>
+          <tbody>
+            <tr class="highlight-red"><td>MP Stoinis</td><td class="num">-18.03</td></tr>
+            <tr><td>TM Dilshan</td><td class="num">-15.61</td></tr>
+            <tr><td>YBK Jaiswal</td><td class="num">-15.42</td></tr>
+            <tr><td>Q de Kock</td><td class="num">-15.36</td></tr>
+            <tr class="highlight-amber"><td>MR Marsh</td><td class="num">-14.85</td></tr>
+            <tr><td>MK Tiwary</td><td class="num">-14.94</td></tr>
+            <tr class="highlight-amber"><td>SPD Smith</td><td class="num">-14.40</td></tr>
+            <tr class="highlight-amber"><td>AM Rahane</td><td class="num">-13.71</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="phase-head">
+      <h2 class="phase-title">Phase 4–6</h2>
+      <div class="phase-note">
+        Late powerplay / early consolidation. Badrinath’s placement is strong enough to support your role description here.
+      </div>
+    </div>
+    <div class="tables">
+      <div class="table-box">
+        <h3>Top few</h3>
+        <table>
+          <thead><tr><th>Player</th><th class="num">PsP</th></tr></thead>
+          <tbody>
+            <tr class="highlight-green"><td>B Sai Sudharsan</td><td class="num">3.27</td></tr>
+            <tr class="highlight-green"><td>Tilak Varma</td><td class="num">-3.01</td></tr>
+            <tr class="highlight-blue"><td>S Badrinath</td><td class="num">-3.22</td></tr>
+            <tr><td>V Kohli</td><td class="num">-3.64</td></tr>
+            <tr><td>KS Williamson</td><td class="num">-5.55</td></tr>
+            <tr><td>SE Marsh</td><td class="num">-7.29</td></tr>
+            <tr class="highlight-amber"><td>SPD Smith</td><td class="num">-7.67</td></tr>
+            <tr><td>SS Tiwary</td><td class="num">-7.75</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-box">
+        <h3>Bottom few</h3>
+        <table>
+          <thead><tr><th>Player</th><th class="num">PsP</th></tr></thead>
+          <tbody>
+            <tr class="highlight-blue"><td>KL Rahul</td><td class="num">-13.68</td></tr>
+            <tr><td>RG Sharma</td><td class="num">-13.47</td></tr>
+            <tr><td>RV Uthappa</td><td class="num">-13.10</td></tr>
+            <tr><td>EJG Morgan</td><td class="num">-12.34</td></tr>
+            <tr><td>DPMD Jayawardene</td><td class="num">-12.28</td></tr>
+            <tr><td>DJ Hussey</td><td class="num">-12.23</td></tr>
+            <tr><td>SV Samson</td><td class="num">-11.46</td></tr>
+            <tr><td>KC Sangakkara</td><td class="num">-11.30</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="phase-head">
+      <h2 class="phase-title">Phase 7–9</h2>
+      <div class="phase-note">
+        This is the phase where Steve Smith’s improvement becomes obvious relative to his powerplay numbers.
+      </div>
+    </div>
+    <div class="tables">
+      <div class="table-box">
+        <h3>Top few</h3>
+        <table>
+          <thead><tr><th>Player</th><th class="num">PsP</th></tr></thead>
+          <tbody>
+            <tr><td>JP Duminy</td><td class="num">-1.45</td></tr>
+            <tr class="highlight-amber"><td>SPD Smith</td><td class="num">-1.90</td></tr>
+            <tr><td>MK Pandey</td><td class="num">-4.35</td></tr>
+            <tr><td>MK Tiwary</td><td class="num">-4.43</td></tr>
+            <tr><td>DJ Hussey</td><td class="num">-4.50</td></tr>
+            <tr class="highlight-blue"><td>MS Dhoni</td><td class="num">-4.92</td></tr>
+            <tr><td>RR Pant</td><td class="num">-6.07</td></tr>
+            <tr><td>V Kohli</td><td class="num">-6.08</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-box">
+        <h3>Bottom few</h3>
+        <table>
+          <thead><tr><th>Player</th><th class="num">PsP</th></tr></thead>
+          <tbody>
+            <tr><td>S Dube</td><td class="num">-12.07</td></tr>
+            <tr><td>LS Livingstone</td><td class="num">-11.89</td></tr>
+            <tr><td>KD Karthik</td><td class="num">-10.57</td></tr>
+            <tr class="highlight-blue"><td>KA Pollard</td><td class="num">-10.12</td></tr>
+            <tr><td>N Rana</td><td class="num">-10.01</td></tr>
+            <tr><td>SA Yadav</td><td class="num">-9.98</td></tr>
+            <tr><td>AB de Villiers</td><td class="num">-9.72</td></tr>
+            <tr><td>Yuvraj Singh</td><td class="num">-9.45</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="phase-head">
+      <h2 class="phase-title">Phase 10–12</h2>
+      <div class="phase-note">
+        Dhoni leads this phase in your supplied table, with Russell not far behind.
+      </div>
+    </div>
+    <div class="tables">
+      <div class="table-box">
+        <h3>Top few</h3>
+        <table>
+          <thead><tr><th>Player</th><th class="num">PsP</th></tr></thead>
+          <tbody>
+            <tr class="highlight-blue"><td>MS Dhoni</td><td class="num">-3.49</td></tr>
+            <tr class="highlight-amber"><td>SPD Smith</td><td class="num">-4.04</td></tr>
+            <tr><td>R Parag</td><td class="num">-5.03</td></tr>
+            <tr><td>SO Hetmyer</td><td class="num">-5.14</td></tr>
+            <tr class="highlight-blue"><td>AD Russell</td><td class="num">-5.26</td></tr>
+            <tr><td>SS Tiwary</td><td class="num">-5.44</td></tr>
+            <tr class="highlight-blue"><td>DA Miller</td><td class="num">-5.63</td></tr>
+            <tr><td>S Dube</td><td class="num">-5.63</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-box">
+        <h3>Bottom few</h3>
+        <table>
+          <thead><tr><th>Player</th><th class="num">PsP</th></tr></thead>
+          <tbody>
+            <tr class="highlight-blue"><td>KA Pollard</td><td class="num">-9.57</td></tr>
+            <tr><td>AB de Villiers</td><td class="num">-9.22</td></tr>
+            <tr><td>YK Pathan</td><td class="num">-8.29</td></tr>
+            <tr><td>RR Pant</td><td class="num">-7.96</td></tr>
+            <tr><td>RG Sharma</td><td class="num">-7.93</td></tr>
+            <tr><td>AT Rayudu</td><td class="num">-7.69</td></tr>
+            <tr><td>JP Duminy</td><td class="num">-7.62</td></tr>
+            <tr><td>SA Yadav</td><td class="num">-7.46</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="phase-head">
+      <h2 class="phase-title">Phase 13–15</h2>
+      <div class="phase-note">
+        The first clear finisher phase. Rinku, Miller, Dhoni and Pollard all sit near the top, which supports your write-up.
+      </div>
+    </div>
+    <div class="tables">
+      <div class="table-box">
+        <h3>Top few</h3>
+        <table>
+          <thead><tr><th>Player</th><th class="num">PsP</th></tr></thead>
+          <tbody>
+            <tr class="highlight-green"><td>RK Singh</td><td class="num">-0.78</td></tr>
+            <tr class="highlight-blue"><td>DA Miller</td><td class="num">-1.52</td></tr>
+            <tr><td>TH David</td><td class="num">-1.97</td></tr>
+            <tr><td>AB de Villiers</td><td class="num">-2.14</td></tr>
+            <tr><td>BJ Hodge</td><td class="num">-2.41</td></tr>
+            <tr><td>S Dube</td><td class="num">-2.62</td></tr>
+            <tr><td>N Pooran</td><td class="num">-2.95</td></tr>
+            <tr class="highlight-blue"><td>MS Dhoni</td><td class="num">-3.33</td></tr>
+            <tr class="highlight-blue"><td>KA Pollard</td><td class="num">-3.77</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-box">
+        <h3>Bottom few</h3>
+        <table>
+          <thead><tr><th>Player</th><th class="num">PsP</th></tr></thead>
+          <tbody>
+            <tr><td>KD Karthik</td><td class="num">-7.55</td></tr>
+            <tr class="highlight-blue"><td>AD Russell</td><td class="num">-6.57</td></tr>
+            <tr><td>AD Mathews</td><td class="num">-5.95</td></tr>
+            <tr><td>AT Rayudu</td><td class="num">-5.84</td></tr>
+            <tr><td>SO Hetmyer</td><td class="num">-5.77</td></tr>
+            <tr><td>JA Morkel</td><td class="num">-5.55</td></tr>
+            <tr><td>RR Pant</td><td class="num">-5.44</td></tr>
+            <tr><td>Yuvraj Singh</td><td class="num">-5.42</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="phase-head">
+      <h2 class="phase-title">Phase 16–18</h2>
+      <div class="phase-note">
+        Another finisher-heavy phase. Rinku remains first; Dhoni, Pollard and Miller stay near the top; Russell drops toward the bottom.
+      </div>
+    </div>
+    <div class="tables">
+      <div class="table-box">
+        <h3>Top few</h3>
+        <table>
+          <thead><tr><th>Player</th><th class="num">PsP</th></tr></thead>
+          <tbody>
+            <tr class="highlight-green"><td>RK Singh</td><td class="num">-0.29</td></tr>
+            <tr><td>Shakib Al Hasan</td><td class="num">-0.66</td></tr>
+            <tr><td>A Ashish Reddy</td><td class="num">-1.10</td></tr>
+            <tr><td>KM Jadhav</td><td class="num">-1.31</td></tr>
+            <tr class="highlight-blue"><td>MS Dhoni</td><td class="num">-1.37</td></tr>
+            <tr><td>AR Patel</td><td class="num">-1.52</td></tr>
+            <tr class="highlight-blue"><td>KA Pollard</td><td class="num">-1.68</td></tr>
+            <tr><td>SO Hetmyer</td><td class="num">-1.68</td></tr>
+            <tr class="highlight-blue"><td>DA Miller</td><td class="num">-2.54</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-box">
+        <h3>Bottom few</h3>
+        <table>
+          <thead><tr><th>Player</th><th class="num">PsP</th></tr></thead>
+          <tbody>
+            <tr class="highlight-blue"><td>AD Russell</td><td class="num">-4.55</td></tr>
+            <tr><td>CH Morris</td><td class="num">-4.21</td></tr>
+            <tr><td>JM Sharma</td><td class="num">-4.08</td></tr>
+            <tr><td>YK Pathan</td><td class="num">-4.03</td></tr>
+            <tr><td>MF Maharoof</td><td class="num">-3.87</td></tr>
+            <tr><td>Bipul Sharma</td><td class="num">-3.71</td></tr>
+            <tr><td>P Negi</td><td class="num">-3.71</td></tr>
+            <tr><td>KH Pandya</td><td class="num">-3.50</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    Notes: this page uses only the phase-wise PsP values you pasted. No 19–20 table was provided, so it is not included.
+    Also, “bottom few with positive NEB” cannot be verified from these tables alone because NEB is not present here. If you send the phase-wise NEB table too, I can make a stricter version that filters exactly the way you want.
+  </div>
+
+</div>
+</body>
+</html>

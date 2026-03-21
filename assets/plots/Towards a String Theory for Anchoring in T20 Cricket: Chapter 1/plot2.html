@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Best NEB in Each IPL Season</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 28px auto;
+      background: #ffffff;
+      padding: 28px 28px 18px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      margin: 0;
+      text-align: center;
+      font-size: 30px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      margin-bottom: 24px;
+      text-align: center;
+      color: #6b7280;
+      font-size: 15px;
+    }
+
+    .chart-wrap {
+      position: relative;
+      height: 720px;
+    }
+
+    .footnote {
+      margin-top: 14px;
+      text-align: center;
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .highlight {
+      font-weight: 700;
+      color: #92400e;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Best NEB in Each IPL Season</h1>
+    <div class="subtitle">
+      Season leader in Mean Chewability / NEB · minimum 7 innings
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="nebChart"></canvas>
+    </div>
+
+    <div class="footnote"> 
+      <span class="highlight">SE Marsh (2008)</span> remains the overall peak at
+      <span class="highlight">20.76</span> in 11 games.
+    </div>
+  </div>
+
+  <script>
+    const rawData = [
+      { Season: "2008", Player: "SE Marsh", Team: "Kings XI Punjab", MeanChewability: 20.763497, MatchesPlayed: 11 },
+
+      // Fill these from your Python result_df output
+      // { Season: "2009", Player: "...", Team: "...", MeanChewability: ..., MatchesPlayed: ... },
+      // { Season: "2010", Player: "...", Team: "...", MeanChewability: ..., MatchesPlayed: ... },
+
+      { Season: "2011", Player: "S Badrinath", Team: "Chennai Super Kings", MeanChewability: 3.962999916, MatchesPlayed: 7 },
+
+      // { Season: "2012", Player: "...", Team: "...", MeanChewability: ..., MatchesPlayed: ... },
+      // { Season: "2013", Player: "...", Team: "...", MeanChewability: ..., MatchesPlayed: ... },
+
+      { Season: "2014", Player: "LMP Simmons", Team: "Mumbai Indians", MeanChewability: 7.407666611, MatchesPlayed: 7 },
+      { Season: "2015", Player: "LMP Simmons", Team: "Mumbai Indians", MeanChewability: 7.407666611, MatchesPlayed: 7 },
+
+      { Season: "2016", Player: "V Kohli", Team: "Royal Challengers Bangalore", MeanChewability: 5.678291615, MatchesPlayed: 7 },
+      { Season: "2017", Player: "DA Warner", Team: "Sunrisers Hyderabad", MeanChewability: 4.375136325, MatchesPlayed: 7 },
+
+      // { Season: "2018", Player: "...", Team: "...", MeanChewability: ..., MatchesPlayed: ... },
+
+      { Season: "2019", Player: "DA Warner", Team: "Sunrisers Hyderabad", MeanChewability: 4.375136325, MatchesPlayed: 7 },
+      { Season: "2020", Player: "KL Rahul", Team: "Kings XI Punjab", MeanChewability: 8.184117573, MatchesPlayed: 7 },
+      { Season: "2021", Player: "KL Rahul", Team: "Punjab Kings", MeanChewability: 8.184117573, MatchesPlayed: 7 },
+
+      // { Season: "2022", Player: "...", Team: "...", MeanChewability: ..., MatchesPlayed: ... },
+      // { Season: "2023", Player: "...", Team: "...", MeanChewability: ..., MatchesPlayed: ... },
+
+      { Season: "2024", Player: "V Kohli", Team: "Royal Challengers Bengaluru", MeanChewability: 5.678291615, MatchesPlayed: 7 }
+
+      // Add 2025 too if your files include it
+      // { Season: "2025", Player: "...", Team: "...", MeanChewability: ..., MatchesPlayed: ... }
+    ];
+
+    rawData.sort((a, b) => Number(a.Season) - Number(b.Season));
+
+    const labels = rawData.map(d => d.Season);
+    const values = rawData.map(d => d.MeanChewability);
+    const players = rawData.map(d => d.Player);
+    const teams = rawData.map(d => d.Team);
+    const matches = rawData.map(d => d.MatchesPlayed);
+
+    const maxVal = Math.max(...values);
+
+    const barColors = rawData.map(d => {
+      if (d.Season === "2008") return "rgba(217, 119, 6, 0.9)";
+      if (d.Player === "S Badrinath") return "rgba(5, 150, 105, 0.85)";
+      return "rgba(37, 99, 235, 0.82)";
+    });
+
+    const borderColors = rawData.map(d => {
+      if (d.Season === "2008") return "rgba(146, 64, 14, 1)";
+      if (d.Player === "S Badrinath") return "rgba(4, 120, 87, 1)";
+      return "rgba(29, 78, 216, 1)";
+    });
+
+    const labelPlugin = {
+      id: "labelPlugin",
+      afterDatasetsDraw(chart) {
+        const { ctx } = chart;
+        const meta = chart.getDatasetMeta(0);
+
+        ctx.save();
+        ctx.font = "12px Arial";
+        ctx.fillStyle = "#1f2937";
+        ctx.textAlign = "center";
+
+        meta.data.forEach((bar, i) => {
+          ctx.fillText(players[i], bar.x, bar.y - 18);
+          ctx.fillText(values[i].toFixed(2), bar.x, bar.y - 4);
+        });
+
+        ctx.restore();
+      }
+    };
+
+    new Chart(document.getElementById("nebChart"), {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [{
+          data: values,
+          backgroundColor: barColors,
+          borderColor: borderColors,
+          borderWidth: 1.5,
+          borderRadius: 6,
+          barPercentage: 0.72,
+          categoryPercentage: 0.84
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        layout: {
+          padding: {
+            top: 50,
+            right: 8,
+            left: 8,
+            bottom: 8
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            callbacks: {
+              title: function(context) {
+                return "Season: " + context[0].label;
+              },
+              label: function(context) {
+                const i = context.dataIndex;
+                return [
+                  "Player: " + players[i],
+                  "Team: " + teams[i],
+                  "NEB: " + values[i].toFixed(2),
+                  "Matches: " + matches[i]
+                ];
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: {
+              display: false
+            },
+            title: {
+              display: true,
+              text: "IPL Season",
+              font: {
+                size: 14,
+                weight: "bold"
+              }
+            }
+          },
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: "rgba(0,0,0,0.08)"
+            },
+            title: {
+              display: true,
+              text: "Season-Best NEB",
+              font: {
+                size: 14,
+                weight: "bold"
+              }
+            }
+          }
+        }
+      },
+      plugins: [labelPlugin]
+    });
+  </script>
+</body>
+</html>

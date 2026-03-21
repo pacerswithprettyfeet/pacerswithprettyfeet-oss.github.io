@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Middle Order: NEB vs True SR</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    body { font-family: Arial; margin: 24px; }
+    #chart { width: 100%; height: 760px; }
+    .note { margin-top: 10px; font-size: 14px; color: #444; }
+  </style>
+</head>
+<body>
+
+<div id="chart"></div>
+<div class="note">
+  * Roles have changed over the years for these players
+</div>
+
+<script>
+const middleData = [
+  { player: "AT Rayudu*", neb: 2.083, trueSR: -0.11 },
+  { player: "AB de Villiers", neb: 2.958, trueSR: 19.00 },
+  { player: "A Badoni", neb: 1.831, trueSR: -11.74 },
+  { player: "BJ Hodge", neb: 2.979, trueSR: 1.65 },
+  { player: "DJ Hussey", neb: 1.371, trueSR: -1.27 },
+  { player: "EJG Morgan", neb: 0.271, trueSR: -8.90 },
+  { player: "H Klaasen", neb: 4.020, trueSR: 26.47 },
+  { player: "KD Karthik*", neb: 0.844, trueSR: 2.13 },
+  { player: "KS Williamson", neb: 4.530, trueSR: -2.59 },
+  { player: "N Pooran", neb: 1.462, trueSR: 25.54 },
+  { player: "N Rana", neb: 0.359, trueSR: 5.72 },
+  { player: "RR Pant", neb: 3.021, trueSR: 12.52 },
+  { player: "S Badrinath", neb: 3.963, trueSR: -6.36 },
+  { player: "SA Yadav", neb: 2.625, trueSR: 14.96 },
+  { player: "SS Iyer*", neb: 2.302, trueSR: 0.62 },
+  { player: "Tilak Varma", neb: 4.304, trueSR: -2.51 }
+];
+
+// Scatter
+const trace = {
+  x: middleData.map(d => d.neb),
+  y: middleData.map(d => d.trueSR),
+  text: middleData.map(d => d.player),
+  mode: "markers+text",
+  textposition: "top center",
+  marker: { size: 10, color: "#1f77b4" },
+  name: "Players",
+  hovertemplate: "<b>%{text}</b><br>NEB: %{x}<br>True SR: %{y}<extra></extra>"
+};
+
+// Legend dummy traces (same colors as top)
+const legend = [
+  { name: "Ultimate Anchors", color: "rgba(228,26,28,0.35)" },
+  { name: "Itchy Hands", color: "rgba(55,126,184,0.35)" },
+  { name: "Quick Anchors", color: "rgba(152,78,163,0.35)" }
+].map(z => ({
+  x: [null], y: [null],
+  mode: "markers",
+  marker: { size: 14, color: z.color },
+  name: z.name,
+  hoverinfo: "skip"
+}));
+
+const layout = {
+  title: "Middle Order: NEB vs True SR",
+  template: "plotly_white",
+  xaxis: { title: "NEB" },
+  yaxis: { title: "True SR" },
+  width: 1300,
+  height: 760,
+
+  shapes: [
+    // Pooran - Itchy Hands (BLUE)
+    {
+      type: "rect",
+      x0: 1.2, x1: 1.9,
+      y0: 20, y1: 27.5,
+      line: { color: "rgba(55,126,184,1)", width: 4 },
+      fillcolor: "rgba(55,126,184,0.18)"
+    },
+
+    // ABD - Ultimate Anchors (RED)
+    {
+      type: "rect",
+      x0: 2.4, x1: 4.3,
+      y0: 14, y1: 27.5,
+      line: { color: "rgba(228,26,28,1)", width: 4 },
+      fillcolor: "rgba(228,26,28,0.18)"
+    },
+
+    // Pant - Quick Anchors (PURPLE)
+    {
+      type: "rect",
+      x0: 2.7, x1: 3.4,
+      y0: 10, y1: 14,
+      line: { color: "rgba(152,78,163,1)", width: 4 },
+      fillcolor: "rgba(152,78,163,0.18)"
+    },
+
+    // Bottom-right cluster (same blue family visual block)
+    {
+      type: "rect",
+      x0: 3.6, x1: 4.7,
+      y0: -8.5, y1: 1,
+      line: { color: "rgba(55,126,184,1)", width: 4 },
+      fillcolor: "rgba(55,126,184,0.12)"
+    }
+  ],
+
+  legend: {
+    x: 1.02,
+    y: 1
+  },
+
+  margin: { l: 80, r: 200, t: 80, b: 80 }
+};
+
+Plotly.newPlot("chart", [trace, ...legend], layout);
+</script>
+
+</body>
+</html>

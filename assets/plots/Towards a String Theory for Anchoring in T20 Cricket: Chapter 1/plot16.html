@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Highest MEB in Each IPL Season</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 32px;
+      background: #f5f7fb;
+      font-family: Arial, sans-serif;
+      color: #1f2937;
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 28px 14px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+
+    .table-wrap {
+      padding: 20px 28px 28px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+
+    thead th {
+      text-align: left;
+      background: #eef2ff;
+      color: #1e3a8a;
+      padding: 12px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid #e5e7eb;
+      vertical-align: middle;
+    }
+
+    tbody tr:hover {
+      background: #f9fafb;
+    }
+
+    .num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .season {
+      font-weight: 700;
+    }
+
+    .player {
+      font-weight: 600;
+    }
+
+    .highlight {
+      background: #fffbeb;
+    }
+
+    .note {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="header">
+    <h1 class="title">Highest MEB in Each IPL Season</h1>
+    <div class="subtitle">
+      Batter with the highest season-level MEB in each IPL season, along with team, mean chewability, and matches played.
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Season</th>
+          <th>Player</th>
+          <th>Team</th>
+          <th class="num">MEB</th>
+          <th class="num">Matches</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td class="season">2008</td>
+          <td class="player">SE Marsh</td>
+          <td>Kings XI Punjab</td>
+          <td class="num">20.76</td>
+          <td class="num">11</td>
+        </tr>
+        <tr>
+          <td class="season">2009</td>
+          <td class="player">ML Hayden</td>
+          <td>Chennai Super Kings</td>
+          <td class="num">13.43</td>
+          <td class="num">12</td>
+        </tr>
+        <tr>
+          <td class="season">2010</td>
+          <td class="player">SR Tendulkar</td>
+          <td>Mumbai Indians</td>
+          <td class="num">9.78</td>
+          <td class="num">15</td>
+        </tr>
+        <tr>
+          <td class="season">2011</td>
+          <td class="player">S Badrinath</td>
+          <td>Chennai Super Kings</td>
+          <td class="num">10.23</td>
+          <td class="num">12</td>
+        </tr>
+        <tr>
+          <td class="season">2012</td>
+          <td class="player">CH Gayle</td>
+          <td>Royal Challengers Bangalore</td>
+          <td class="num">10.19</td>
+          <td class="num">14</td>
+        </tr>
+        <tr>
+          <td class="season">2013</td>
+          <td class="player">MEK Hussey</td>
+          <td>Chennai Super Kings</td>
+          <td class="num">13.55</td>
+          <td class="num">17</td>
+        </tr>
+        <tr>
+          <td class="season">2014</td>
+          <td class="player">LMP Simmons</td>
+          <td>Mumbai Indians</td>
+          <td class="num">12.81</td>
+          <td class="num">8</td>
+        </tr>
+        <tr>
+          <td class="season">2015</td>
+          <td class="player">LMP Simmons</td>
+          <td>Mumbai Indians</td>
+          <td class="num">12.36</td>
+          <td class="num">13</td>
+        </tr>
+        <tr>
+          <td class="season">2016</td>
+          <td class="player">V Kohli</td>
+          <td>Royal Challengers Bangalore</td>
+          <td class="num">16.45</td>
+          <td class="num">16</td>
+        </tr>
+        <tr>
+          <td class="season">2017</td>
+          <td class="player">DA Warner</td>
+          <td>Sunrisers Hyderabad</td>
+          <td class="num">10.62</td>
+          <td class="num">14</td>
+        </tr>
+        <tr>
+          <td class="season">2018</td>
+          <td class="player">KS Williamson</td>
+          <td>Sunrisers Hyderabad</td>
+          <td class="num">10.86</td>
+          <td class="num">17</td>
+        </tr>
+        <tr>
+          <td class="season">2019</td>
+          <td class="player">DA Warner</td>
+          <td>Sunrisers Hyderabad</td>
+          <td class="num">15.58</td>
+          <td class="num">12</td>
+        </tr>
+        <tr>
+          <td class="season">2020</td>
+          <td class="player">KL Rahul</td>
+          <td>Kings XI Punjab</td>
+          <td class="num">14.00</td>
+          <td class="num">14</td>
+        </tr>
+        <tr>
+          <td class="season">2021</td>
+          <td class="player">KL Rahul</td>
+          <td>Punjab Kings</td>
+          <td class="num">11.93</td>
+          <td class="num">13</td>
+        </tr>
+        <tr>
+          <td class="season">2022</td>
+          <td class="player">JC Buttler</td>
+          <td>Rajasthan Royals</td>
+          <td class="num">12.55</td>
+          <td class="num">17</td>
+        </tr>
+        <tr>
+          <td class="season">2023</td>
+          <td class="player">F du Plessis</td>
+          <td>Royal Challengers Bangalore</td>
+          <td class="num">12.30</td>
+          <td class="num">14</td>
+        </tr>
+        <tr>
+          <td class="season">2024</td>
+          <td class="player">V Kohli</td>
+          <td>Royal Challengers Bengaluru</td>
+          <td class="num">12.19</td>
+          <td class="num">15</td>
+        </tr>
+        <tr>
+          <td class="season">2025</td>
+          <td class="player">B Sai Sudharsan</td>
+          <td>Gujarat Titans</td>
+          <td class="num">10.96</td>
+          <td class="num">15</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      2008 Shaun Marsh is highlighted because it remains the standout season in the list.
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
