@@ -3,22 +3,19 @@
 
   {%- include head.html -%}
 
-  <body style="display:none;">
+  <body>
 
+    {% if site.private_mode %}
     <script>
-      const password = "varun_aaron";
+      const password = "{{ site.site_password }}";
       const user = prompt("Enter password:");
 
-      if (user === password) {
-        document.body.style.display = "block";
-      } else {
+      if (user !== password) {
         document.open();
         document.write(`
           <!DOCTYPE html>
           <html>
-            <head>
-              <title>Access denied</title>
-            </head>
+            <head><title>Access denied</title></head>
             <body>
               <h1>Access denied</h1>
             </body>
@@ -27,6 +24,7 @@
         document.close();
       }
     </script>
+    {% endif %}
 
     {%- include header.html -%}
 
