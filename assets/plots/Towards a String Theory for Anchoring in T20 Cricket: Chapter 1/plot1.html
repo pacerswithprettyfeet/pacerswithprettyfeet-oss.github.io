@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Career NEB Leaders</title>
+  <title>NEB: Career Leaders and Selected Batters</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
@@ -31,7 +31,7 @@
 <body>
 
 <div class="container">
-  <h2>Career NEB Leaders</h2>
+  <h2>NEB: Career Leaders and Selected Batters</h2>
   <canvas id="nebChart"></canvas>
 </div>
 
@@ -68,8 +68,8 @@ const games = [
 
 // Color highlighting
 const colors = players.map(p => {
-  if (p === "B Sai Sudharsan") return "rgba(34,139,34,0.8)";
-  if (p === "KL Rahul") return "rgba(255,140,0,0.8)";
+  // if (p === "B Sai Sudharsan") return "rgba(34,139,34,0.8)";
+  // if (p === "KL Rahul") return "rgba(255,140,0,0.8)";
   return "rgba(70,130,180,0.8)";
 });
 
@@ -106,7 +106,7 @@ new Chart(ctx, {
       x: {
         title: {
           display: true,
-          text: 'Career Net Effective Balls (NEB)'
+          text: 'Career Net Effective Balls'
         },
         grid: {
           color: "rgba(0,0,0,0.1)"
