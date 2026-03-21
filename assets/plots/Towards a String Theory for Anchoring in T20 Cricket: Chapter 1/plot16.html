@@ -27,7 +27,7 @@
     }
 
     .chart-wrap {
-      height: 1100px;
+      height: 550px;
     }
 
     canvas {
@@ -94,10 +94,11 @@ new Chart(document.getElementById("mebChart"), {
   data: {
     labels: labels,
     datasets: [{
-      label: "MEB",
       data: values,
       backgroundColor: "rgba(70,130,180,0.8)",
-      borderRadius: 6
+      borderRadius: 6,
+      barThickness: 18,
+      maxBarThickness: 18
     }]
   },
   options: {
