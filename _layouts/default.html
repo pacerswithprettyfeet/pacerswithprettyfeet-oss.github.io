@@ -3,37 +3,39 @@
 
   {%- include head.html -%}
 
-  <body>
+    <body>
+    
+      {% if site.private_mode and page.url == "/" %}
+      <script>
+        (function () {
+          const password = "{{ site.site_password }}";
+          const okKey = "pwpf_authorized";
+    
+          if (sessionStorage.getItem(okKey) === "true") {
+            return;
+          }
+    
+          const user = prompt("Enter password:");
+    
+          if (user === password) {
+            sessionStorage.setItem(okKey, "true");
+            return;
+          }
+    
+          window.location.replace("about:blank");
+        })();
+      </script>
+      {% endif %}
+    
+      {%- include header.html -%}
+    
+      <main class="page-content" aria-label="Content">
+        <div class="wrapper">
+          {{ content }}
+        </div>
+      </main>
 
-    {% if site.private_mode %}
-    <script>
-      (function () {
-        const password = "{{ site.site_password }}";
-        const okKey = "pwpf_authorized";
-
-        if (sessionStorage.getItem(okKey) === "true") {
-          return;
-        }
-
-        const user = prompt("Enter password:");
-
-        if (user === password) {
-          sessionStorage.setItem(okKey, "true");
-          return;
-        }
-
-        window.location.replace("about:blank");
-      })();
-    </script>
-    {% endif %}
-
-    {%- include header.html -%}
-
-    <main class="page-content" aria-label="Content">
-      <div class="wrapper">
-        {{ content }}
-      </div>
-    </main>
+  {%- include footer.html -%}
 
     {%- include footer.html -%}
     <script id="dsq-count-scr" src="//pacerswithprettyfeet.disqus.com/count.js" async></script>
