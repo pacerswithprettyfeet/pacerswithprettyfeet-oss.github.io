@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Career NEB Leaders</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 40px;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    canvas {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Career NEB Leaders</h2>
+  <canvas id="nebChart"></canvas>
+</div>
+
+<script>
+const players = [
+  "B Sai Sudharsan",
+  "KL Rahul",
+  "LMP Simmons",
+  "MEK Hussey",
+  "SE Marsh",
+  "DP Conway",
+  "V Kohli",
+  "JP Duminy",
+  "ML Hayden",
+  "RD Gaikwad"
+];
+
+const nebValues = [
+  10.16,
+  8.18,
+  7.41,
+  7.07,
+  7.07,
+  6.58,
+  5.68,
+  5.51,
+  5.42,
+  5.02
+];
+
+const games = [
+  40, 135, 29, 58, 69, 28, 259, 75, 32, 70
+];
+
+// Color highlighting
+const colors = players.map(p => {
+  if (p === "B Sai Sudharsan") return "rgba(34,139,34,0.8)";
+  if (p === "KL Rahul") return "rgba(255,140,0,0.8)";
+  return "rgba(70,130,180,0.8)";
+});
+
+const ctx = document.getElementById('nebChart').getContext('2d');
+
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: players,
+    datasets: [{
+      label: 'Career NEB',
+      data: nebValues,
+      backgroundColor: colors,
+      borderRadius: 6
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            const i = context.dataIndex;
+            return `NEB: ${nebValues[i]} | Matches: ${games[i]}`;
+          }
+        }
+      },
+      legend: {
+        display: false
+      }
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Career Net Effective Balls (NEB)'
+        },
+        grid: {
+          color: "rgba(0,0,0,0.1)"
+        }
+      },
+      y: {
+        grid: {
+          display: false
+        }
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
