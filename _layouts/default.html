@@ -5,6 +5,14 @@
 
   <body>
 
+    <script>
+      const password = "varun_aaron";
+      const user = prompt("Enter password:");
+      if (user !== password) {
+        document.body.innerHTML = "Access denied";
+      }
+    </script>
+
     {%- include header.html -%}
 
     <main class="page-content" aria-label="Content">
