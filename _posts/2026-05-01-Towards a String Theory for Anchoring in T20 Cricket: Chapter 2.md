@@ -137,7 +137,7 @@ Strangely, the only place Pathan looked even mildly mortal was against pace in t
 <iframe 
   src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot10_pathan_pooran.html'  |relative_url }}" 
   width="100%" 
-  height="1000" 
+  height="1200" 
   style="border:none; overflow:hidden;"
 ></iframe>
 Pooran has perfected the middle-overs spin-bashing machine that Pathan built. There is simply no point bowling spin to him in the middle overs: he operates at a TSR of 40.7 with an NEB of 17.3. The key difference lies against middle-overs pace. Unlike Pathan, Pooran is destructive there too, scoring at a TSR of 27.9. The only hope of containing him is to bowl pace and pray he gets out early: his NEB against middle-overs pace is -3.2. A side with a batter this absurd can structure itself almost entirely around maximizing his exposure in the middle overs.
@@ -151,7 +151,7 @@ However, ultimate Chris Lynn was bound to the powerplay. As soon as the field sp
 <iframe 
   src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot11_Lynn.html'  |relative_url }}" 
   width="100%" 
-  height="500" 
+  height="600" 
   style="border:none; overflow:hidden;"
 ></iframe>
 Lynn’s destruction of pace came through a slightly different scoring method from the one Pathan and Pooran used against spin. While his true strike rate against pace was majestic, he was less boundary-dependent than the two spin-scorchers. His effective boundary rate against pace was 4.5%, well below Pooran’s 8.5% against spin, and he relied slightly more on strike rotation too (-4%, compared to Pooran’s -9%). Nor was he especially explosive from ball one: in his first eight balls against pace, his TSR was -3.9. Pathan and Pooran, by contrast, got busy against spin much earlier.
@@ -168,7 +168,7 @@ Sai Sudarshan is Kohli with the knobs rearranged. From the small sample we have 
 <iframe 
   src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot12_kohli_sudharshan.html'  |relative_url }}" 
   width="100%" 
-  height="1000" 
+  height="1200" 
   style="border:none; overflow:hidden;"
 ></iframe>
 Against pace, however, he can bore us to death. As pointed out in the first chapter, Sudarshan’s consistency is almost comical, and much of it comes from not getting dismissed against pace in the powerplay, where his NEB is 57. At that level of consistency, a slightly negative TSR of -4.22 is acceptable. The accumulator mode against pace, though, ends with the powerplay. In the middle overs, his TSR drops to -8.5, but even more starkly, his NEB falls off a cliff to 1.9. In his first two years, he would almost automatically face 24 balls; pace would return around the 12th over, and suddenly he would run out of scoring options, try to slog, and get out. Amid all this orderly chaos, he gets the fireworks going once the death overs start, in the same mould as Kohli.
@@ -178,7 +178,7 @@ Raina is what the death-overs versions of Kohli and Sudarshan look like, except 
 <iframe 
   src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot13_raina.html'  |relative_url }}" 
   width="100%" 
-  height="500" 
+  height="600" 
   style="border:none; overflow:hidden;"
 ></iframe>
 Raina’s impartiality towards pace and spin shows up clearly in his boundary numbers. Across the full innings, his effective boundary rate is 2.3% above expectation against pace and 1.9% against spin. He finds the boundary against both at roughly the same rate. The difference lies in the other options he has. He is difficult to dot up against either type, but especially so against spin: his effective dot percentage falls to -5.8%, compared to a still-impressive -3.7% versus pace. Curiously, he takes his time to get started, particularly against spin. His TSR in the first eight balls is -1.4 against pace, but falls to -6.9 against spin.
