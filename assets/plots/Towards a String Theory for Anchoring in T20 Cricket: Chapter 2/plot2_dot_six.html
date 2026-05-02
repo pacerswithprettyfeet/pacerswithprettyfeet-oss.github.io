@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Dot-or-Six Anchors Radar</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 28px;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #1f2937;
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 28px 12px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #6b7280;
+    }
+
+    .chart-wrap {
+      padding: 24px 28px 28px;
+      height: 760px;
+    }
+
+    .note {
+      padding: 0 28px 24px;
+      font-size: 13px;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="header">
+      <h1 class="title">Dot-or-Six Anchors</h1>
+      <div class="subtitle">
+        Component-wise deviation from expectation across dots, jogs, and boundaries.
+        Positive dots mean more dots than expected; negative jogs mean less strike rotation than expected;
+        positive boundaries mean more boundary value than expected.
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="radarChart"></canvas>
+    </div>
+
+    <div class="note">
+      The dashed triangle marks par: 0% on all three components. This group lives away from par in a very specific shape:
+      more dots, fewer jogs, and more boundary value.
+    </div>
+  </div>
+
+  <script>
+    const ctx = document.getElementById("radarChart");
+
+    const radarData = {
+      labels: ["True Dots", "True Jogs", "True Boundaries"],
+
+      datasets: [
+        {
+          label: "AD Russell",
+          data: [0.077254479, -0.162668917, 0.085533114],
+          borderWidth: 3,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          fill: true,
+          backgroundColor: "rgba(220, 38, 38, 0.10)",
+          borderColor: "rgba(220, 38, 38, 0.95)",
+          pointBackgroundColor: "rgba(220, 38, 38, 0.95)"
+        },
+
+        {
+          label: "CH Gayle",
+          data: [0.019167789, -0.086264929, 0.067507422],
+          borderWidth: 3,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          fill: true,
+          backgroundColor: "rgba(37, 99, 235, 0.10)",
+          borderColor: "rgba(37, 99, 235, 0.95)",
+          pointBackgroundColor: "rgba(37, 99, 235, 0.95)"
+        },
+
+        {
+          label: "N Rana",
+          data: [0.026944982, -0.049465469, 0.022213987],
+          borderWidth: 3,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          fill: true,
+          backgroundColor: "rgba(22, 163, 74, 0.10)",
+          borderColor: "rgba(22, 163, 74, 0.95)",
+          pointBackgroundColor: "rgba(22, 163, 74, 0.95)"
+        },
+
+        {
+          label: "Yuvraj Singh",
+          data: [0.069862753, -0.090962193, 0.021284092],
+          borderWidth: 3,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          fill: true,
+          backgroundColor: "rgba(147, 51, 234, 0.10)",
+          borderColor: "rgba(147, 51, 234, 0.95)",
+          pointBackgroundColor: "rgba(147, 51, 234, 0.95)"
+        },
+
+        {
+          label: "KA Pollard",
+          data: [0.045812975, -0.062820136, 0.01664871],
+          borderWidth: 3,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          fill: true,
+          backgroundColor: "rgba(245, 158, 11, 0.12)",
+          borderColor: "rgba(245, 158, 11, 0.95)",
+          pointBackgroundColor: "rgba(245, 158, 11, 0.95)"
+        },
+
+        {
+          label: "Par",
+          data: [0, 0, 0],
+          borderWidth: 2,
+          pointRadius: 3,
+          pointHoverRadius: 5,
+          fill: false,
+          borderColor: "rgba(17, 24, 39, 0.70)",
+          pointBackgroundColor: "rgba(17, 24, 39, 0.70)",
+          borderDash: [6, 6]
+        }
+      ]
+    };
+
+    new Chart(ctx, {
+      type: "radar",
+      data: radarData,
+
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+
+        elements: {
+          line: {
+            tension: 0
+          }
+        },
+
+        plugins: {
+          legend: {
+            position: "right",
+            labels: {
+              boxWidth: 14,
+              padding: 16,
+              font: {
+                size: 13
+              }
+            }
+          },
+
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const value = Number(context.raw);
+                return context.dataset.label + ": " + (value * 100).toFixed(2) + "%";
+              }
+            }
+          }
+        },
+
+        scales: {
+          r: {
+            min: -0.20,
+            max: 0.20,
+
+            ticks: {
+              display: true,
+              showLabelBackdrop: false,
+              backdropColor: "transparent",
+              stepSize: 0.05,
+              callback: function(value) {
+                return (Number(value) * 100).toFixed(0) + "%";
+              }
+            },
+
+            grid: {
+              circular: false,
+              color: "rgba(0,0,0,0.12)"
+            },
+
+            angleLines: {
+              display: true,
+              color: "rgba(0,0,0,0.20)"
+            },
+
+            pointLabels: {
+              font: {
+                size: 14,
+                weight: "bold"
+              },
+              color: "#374151"
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

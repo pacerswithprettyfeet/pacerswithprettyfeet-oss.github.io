@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>N Pooran by Phase</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 28px;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #1f2937;
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 28px 12px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #6b7280;
+    }
+
+    .chart-wrap {
+      padding: 24px 28px 28px;
+      height: 760px;
+    }
+
+    .note {
+      padding: 0 28px 24px;
+      font-size: 13px;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <h1 class="title">N Pooran — Dot-to-Six Spectrum by Phase</h1>
+      <div class="subtitle">
+        Jogs are defined as True1PerBall + True23PerBall. Boundaries are defined as True4PerBall + True6PerBall.
+        Click legend items to toggle PP, MO, and DO.
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="radarChart"></canvas>
+    </div>
+
+    <div class="note">
+      Dashed triangle = par (0 on all components). This view highlights the phase where Pooran becomes a true freak: the middle overs.
+    </div>
+  </div>
+
+  <script>
+    const ctx = document.getElementById("radarChart");
+
+    const radarData = {
+      labels: ["True Dots", "True Jogs", "True Boundaries"],
+      datasets: [
+        {
+          label: "PP",
+          data: [
+            0.056364128,
+            -0.08931661 + (-0.002282324),
+            -0.016491504 + 0.05172631
+          ],
+          borderWidth: 3,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          fill: true,
+          backgroundColor: "rgba(37, 99, 235, 0.10)",
+          borderColor: "rgba(37, 99, 235, 0.95)",
+          pointBackgroundColor: "rgba(37, 99, 235, 0.95)"
+        },
+        {
+          label: "MO",
+          data: [
+            0.005551399,
+            -0.061875019 + (-0.029139823),
+            0.017695646 + 0.067844791
+          ],
+          borderWidth: 3,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          fill: true,
+          backgroundColor: "rgba(22, 163, 74, 0.10)",
+          borderColor: "rgba(22, 163, 74, 0.95)",
+          pointBackgroundColor: "rgba(22, 163, 74, 0.95)"
+        },
+        {
+          label: "DO",
+          data: [
+            0.009758901,
+            -0.032528296 + (-0.002642561),
+            -0.003796927 + 0.029208883
+          ],
+          borderWidth: 3,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          fill: true,
+          backgroundColor: "rgba(220, 38, 38, 0.10)",
+          borderColor: "rgba(220, 38, 38, 0.95)",
+          pointBackgroundColor: "rgba(220, 38, 38, 0.95)"
+        },
+        {
+          label: "Par",
+          data: [0, 0, 0],
+          borderWidth: 2,
+          pointRadius: 3,
+          pointHoverRadius: 5,
+          fill: false,
+          borderColor: "rgba(17, 24, 39, 0.70)",
+          pointBackgroundColor: "rgba(17, 24, 39, 0.70)",
+          borderDash: [6, 6]
+        }
+      ]
+    };
+
+    new Chart(ctx, {
+      type: "radar",
+      data: radarData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+
+        elements: {
+          line: {
+            tension: 0
+          }
+        },
+
+        plugins: {
+          legend: {
+            position: "right",
+            labels: {
+              boxWidth: 14,
+              padding: 16,
+              font: {
+                size: 13
+              }
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const value = Number(context.raw);
+                return context.dataset.label + ": " + (value * 100).toFixed(2) + "%";
+              }
+            }
+          }
+        },
+
+        scales: {
+          r: {
+            min: -0.15,
+            max: 0.15,
+            ticks: {
+              display: true,
+              showLabelBackdrop: false,
+              backdropColor: "transparent",
+              stepSize: 0.05,
+              callback: function(value) {
+                return (Number(value) * 100).toFixed(0) + "%";
+              }
+            },
+            grid: {
+              circular: false,
+              color: "rgba(0,0,0,0.12)"
+            },
+            angleLines: {
+              display: true,
+              color: "rgba(0,0,0,0.20)"
+            },
+            pointLabels: {
+              font: {
+                size: 14,
+                weight: "bold"
+              },
+              color: "#374151"
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

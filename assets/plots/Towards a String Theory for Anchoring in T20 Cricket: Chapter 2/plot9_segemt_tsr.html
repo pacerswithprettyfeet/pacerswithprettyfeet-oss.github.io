@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>True SR by Ball Segment</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 28px;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #1f2937;
+    }
+
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 28px 12px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #6b7280;
+    }
+
+    .chart-wrap {
+      padding: 24px 28px 28px;
+      height: 900px;
+    }
+
+    .note {
+      padding: 0 28px 24px;
+      font-size: 13px;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="header">
+      <h1 class="title">True SR by Ball Segment</h1>
+      <div class="subtitle">
+        X-axis shows segment-wise True SR, Y-axis shows ball segment, bubble size is proportional to segment balls.
+        Click batter names in the legend to toggle them on or off.
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="bubbleChart"></canvas>
+    </div>
+
+    <div class="note">
+      Bubble radius is scaled from segment ball counts, so larger bubbles indicate more observations in that segment.
+    </div>
+  </div>
+
+  <script>
+    const segmentOrder = ["1_8", "9_16", "17_24", "25_32", "33_40", "41_48", "49_56", "57_64", "65_72"];
+
+    const rawData = [
+      { batter: "AB de Villiers", segment: "1_8",   balls: 1200, trueSR: -11.10305633 },
+      { batter: "AB de Villiers", segment: "9_16",  balls: 847,  trueSR: 24.09288106 },
+      { batter: "AB de Villiers", segment: "17_24", balls: 596,  trueSR: 35.86809484 },
+      { batter: "AB de Villiers", segment: "25_32", balls: 403,  trueSR: 25.68094959 },
+      { batter: "AB de Villiers", segment: "33_40", balls: 237,  trueSR: 65.22673872 },
+      { batter: "AB de Villiers", segment: "41_48", balls: 89,   trueSR: 43.55026659 },
+      { batter: "AB de Villiers", segment: "49_56", balls: 26,   trueSR: 128.8630725 },
+      { batter: "AB de Villiers", segment: "57_64", balls: 2,    trueSR: -87.77777778 },
+
+      { batter: "CH Gayle", segment: "1_8",   balls: 1048, trueSR: -2.102578835 },
+      { batter: "CH Gayle", segment: "9_16",  balls: 750,  trueSR: 37.86250209 },
+      { batter: "CH Gayle", segment: "17_24", balls: 528,  trueSR: 34.97984595 },
+      { batter: "CH Gayle", segment: "25_32", balls: 380,  trueSR: 42.9269372 },
+      { batter: "CH Gayle", segment: "33_40", balls: 282,  trueSR: 33.30284241 },
+      { batter: "CH Gayle", segment: "41_48", balls: 186,  trueSR: 71.57743848 },
+      { batter: "CH Gayle", segment: "49_56", balls: 112,  trueSR: 80.11293433 },
+      { batter: "CH Gayle", segment: "57_64", balls: 44,   trueSR: 52.69646004 },
+      { batter: "CH Gayle", segment: "65_72", balls: 1,    trueSR: -70.58823529 },
+
+      { batter: "H Klaasen", segment: "1_8",   balls: 333, trueSR: 3.044815915 },
+      { batter: "H Klaasen", segment: "9_16",  balls: 258, trueSR: 31.96323429 },
+      { batter: "H Klaasen", segment: "17_24", balls: 143, trueSR: 39.5831122 },
+      { batter: "H Klaasen", segment: "25_32", balls: 77,  trueSR: 39.15595361 },
+      { batter: "H Klaasen", segment: "33_40", balls: 33,  trueSR: 52.43413982 },
+      { batter: "H Klaasen", segment: "41_48", balls: 16,  trueSR: 32.28894042 },
+      { batter: "H Klaasen", segment: "49_56", balls: 3,   trueSR: 100.4385965 },
+
+      { batter: "MS Dhoni", segment: "1_8",   balls: 1682, trueSR: -18.74583571 },
+      { batter: "MS Dhoni", segment: "9_16",  balls: 1134, trueSR: -0.254503147 },
+      { batter: "MS Dhoni", segment: "17_24", balls: 653,  trueSR: 13.08130798 },
+      { batter: "MS Dhoni", segment: "25_32", balls: 328,  trueSR: 23.98628954 },
+      { batter: "MS Dhoni", segment: "33_40", balls: 110,  trueSR: 45.09268098 },
+      { batter: "MS Dhoni", segment: "41_48", balls: 28,   trueSR: 123.3920147 },
+
+      { batter: "N Pooran", segment: "1_8",   balls: 591, trueSR: 6.51467615 },
+      { batter: "N Pooran", segment: "9_16",  balls: 370, trueSR: 52.26521646 },
+      { batter: "N Pooran", segment: "17_24", balls: 251, trueSR: 36.92836612 },
+      { batter: "N Pooran", segment: "25_32", balls: 120, trueSR: 22.02771019 },
+      { batter: "N Pooran", segment: "33_40", balls: 22,  trueSR: -63.9109811 },
+      { batter: "N Pooran", segment: "41_48", balls: 1,   trueSR: -97.36842105 },
+
+      { batter: "SA Yadav", segment: "1_8",   balls: 1049, trueSR: 0.756563301 },
+      { batter: "SA Yadav", segment: "9_16",  balls: 759,  trueSR: 21.47555453 },
+      { batter: "SA Yadav", segment: "17_24", balls: 514,  trueSR: 22.88138299 },
+      { batter: "SA Yadav", segment: "25_32", balls: 321,  trueSR: 23.99020819 },
+      { batter: "SA Yadav", segment: "33_40", balls: 162,  trueSR: 14.49533039 },
+      { batter: "SA Yadav", segment: "41_48", balls: 68,   trueSR: 14.82457741 },
+      { batter: "SA Yadav", segment: "49_56", balls: 16,   trueSR: 87.8635472 },
+
+      { batter: "SK Raina", segment: "1_8",   balls: 1437, trueSR: -3.715803684 },
+      { batter: "SK Raina", segment: "9_16",  balls: 1040, trueSR: 20.32430822 },
+      { batter: "SK Raina", segment: "17_24", balls: 714,  trueSR: 17.58338706 },
+      { batter: "SK Raina", segment: "25_32", balls: 423,  trueSR: 21.78379687 },
+      { batter: "SK Raina", segment: "33_40", balls: 248,  trueSR: 23.13559951 },
+      { batter: "SK Raina", segment: "41_48", balls: 131,  trueSR: 39.95783729 },
+      { batter: "SK Raina", segment: "49_56", balls: 32,   trueSR: 13.1719372 },
+
+      { batter: "V Kohli", segment: "1_8",   balls: 1902, trueSR: -9.406767931 },
+      { batter: "V Kohli", segment: "9_16",  balls: 1468, trueSR: 3.997563372 },
+      { batter: "V Kohli", segment: "17_24", balls: 1125, trueSR: -1.950024162 },
+      { batter: "V Kohli", segment: "25_32", balls: 854,  trueSR: -0.174120351 },
+      { batter: "V Kohli", segment: "33_40", balls: 586,  trueSR: 19.46593328 },
+      { batter: "V Kohli", segment: "41_48", balls: 377,  trueSR: 16.88304171 },
+      { batter: "V Kohli", segment: "49_56", balls: 139,  trueSR: 45.11159135 },
+      { batter: "V Kohli", segment: "57_64", balls: 46,   trueSR: 40.18290364 },
+      { batter: "V Kohli", segment: "65_72", balls: 8,    trueSR: -2.884615385 }
+    ];
+
+    const batterColors = {
+      "AB de Villiers": {
+        border: "rgba(220, 38, 38, 0.95)",
+        background: "rgba(220, 38, 38, 0.35)"
+      },
+      "CH Gayle": {
+        border: "rgba(37, 99, 235, 0.95)",
+        background: "rgba(37, 99, 235, 0.35)"
+      },
+      "H Klaasen": {
+        border: "rgba(22, 163, 74, 0.95)",
+        background: "rgba(22, 163, 74, 0.35)"
+      },
+      "MS Dhoni": {
+        border: "rgba(245, 158, 11, 0.95)",
+        background: "rgba(245, 158, 11, 0.35)"
+      },
+      "N Pooran": {
+        border: "rgba(147, 51, 234, 0.95)",
+        background: "rgba(147, 51, 234, 0.35)"
+      },
+      "SA Yadav": {
+        border: "rgba(14, 165, 233, 0.95)",
+        background: "rgba(14, 165, 233, 0.35)"
+      },
+      "SK Raina": {
+        border: "rgba(16, 185, 129, 0.95)",
+        background: "rgba(16, 185, 129, 0.35)"
+      },
+      "V Kohli": {
+        border: "rgba(107, 114, 128, 0.95)",
+        background: "rgba(107, 114, 128, 0.35)"
+      }
+    };
+
+    function bubbleRadius(balls) {
+      return Math.max(4, Math.min(26, Math.sqrt(balls) * 0.55));
+    }
+
+    const batters = [...new Set(rawData.map(d => d.batter))];
+
+    const datasets = batters.map(batter => {
+      const color = batterColors[batter];
+      const playerData = rawData
+        .filter(d => d.batter === batter)
+        .map(d => ({
+          x: d.trueSR,
+          y: d.segment,
+          r: bubbleRadius(d.balls),
+          balls: d.balls,
+          batter: d.batter
+        }));
+
+      return {
+        label: batter,
+        data: playerData,
+        borderColor: color.border,
+        backgroundColor: color.background,
+        pointBackgroundColor: color.background,
+        pointBorderColor: color.border,
+        pointBorderWidth: 1.5,
+        hoverBorderWidth: 2,
+        hoverRadius: 0
+      };
+    });
+
+    const ctx = document.getElementById("bubbleChart");
+
+    new Chart(ctx, {
+      type: "bubble",
+      data: {
+        datasets: datasets
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+
+        plugins: {
+          legend: {
+            position: "right",
+            labels: {
+              boxWidth: 14,
+              padding: 14,
+              font: {
+                size: 12
+              }
+            }
+          },
+          tooltip: {
+            callbacks: {
+              title: function(context) {
+                const p = context[0].raw;
+                return p.batter;
+              },
+              label: function(context) {
+                const p = context.raw;
+                return [
+                  "Segment: " + p.y,
+                  "True SR: " + p.x.toFixed(2),
+                  "Segment Balls: " + p.balls
+                ];
+              }
+            }
+          }
+        },
+
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: "True SR"
+            },
+            grid: {
+              color: "rgba(0,0,0,0.08)"
+            }
+          },
+          y: {
+            type: "category",
+            labels: segmentOrder,
+            reverse: true,
+            title: {
+              display: true,
+              text: "Ball Segment"
+            },
+            grid: {
+              color: "rgba(0,0,0,0.08)"
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
