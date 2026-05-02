@@ -64,17 +64,13 @@
     <div class="header">
       <h1 class="title">True SR by Ball Segment</h1>
       <div class="subtitle">
-        X-axis shows segment-wise True SR, Y-axis shows ball segment, bubble size is proportional to segment balls.
-        Click batter names in the legend to toggle them on or off.
+        Click on batters in the legend names in the legend to toggle their figures on and off. the bubble size is indicative of 
+        the number of balls a batter has played in each cluster.
       </div>
     </div>
 
     <div class="chart-wrap">
       <canvas id="bubbleChart"></canvas>
-    </div>
-
-    <div class="note">
-      Bubble radius is scaled from segment ball counts, so larger bubbles indicate more observations in that segment.
     </div>
   </div>
 
@@ -272,7 +268,7 @@
             reverse: true,
             title: {
               display: true,
-              text: "Ball Segment"
+              text: "Cluster"
             },
             grid: {
               color: "rgba(0,0,0,0.08)"
