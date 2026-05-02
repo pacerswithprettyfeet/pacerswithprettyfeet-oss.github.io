@@ -1,37 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cards</title>
+
 <style>
-.cards-wrap{display:flex;flex-direction:column;gap:28px;align-items:center;font-family:Georgia,serif;margin:32px 0;}
-.card-row{display:flex;gap:24px;justify-content:center;}
-.player-side{width:380px;height:560px;display:flex;flex-direction:column;background:#fffdf7;border:2px solid #1d1d1d;border-radius:14px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.15);}
-.card-title{background:#111;color:white;text-align:center;padding:10px;font-size:22px;font-weight:700;}
-.player-img{width:100%!important;height:220px!important;object-fit:contain;display:block;background:#111;}
-.table-wrap{flex:1;display:flex;flex-direction:column;}
-.table-wrap table{width:100%;height:100%;border-collapse:collapse;font-size:13px;}
-.table-wrap th{background:#222;color:white;padding:6px;}
-.table-wrap td{padding:6px;text-align:center;border-bottom:1px solid #ddd;}
-.table-wrap td.metric{text-align:left;font-weight:700;background:#f2f2f2;}
-.pos{background:#dff3df;} .neg{background:#f7dddd;} .blank{background:#fff;}
-.gap-row td{height:10px;padding:0;background:#111;border-bottom:none;}
+*{box-sizing:border-box;}
+
+html,body{
+  margin:0;
+  padding:0;
+  overflow-x:hidden;
+  background:#f5f7fb;
+}
+
+/* WRAPPER */
+.cards-wrap{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:28px;
+  align-items:center;
+  font-family:Georgia,serif;
+  margin:32px 0;
+  padding:0 8px;
+}
+
+/* ROW (side-by-side always) */
+.card-row{
+  width:100%;
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  align-items:stretch;
+  flex-wrap:nowrap;
+}
+
+/* CARD */
+.player-side{
+  width:clamp(160px, 45vw, 360px);
+  height:540px;
+  display:flex;
+  flex-direction:column;
+  background:#fffdf7;
+  border:2px solid #1d1d1d;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 6px 18px rgba(0,0,0,.15);
+}
+
+/* TITLE */
+.card-title{
+  background:#111;
+  color:white;
+  text-align:center;
+  padding:9px;
+  font-size:clamp(16px, 2.5vw, 22px);
+  font-weight:700;
+}
+
+/* IMAGE */
+.player-img{
+  width:100%;
+  height:200px;
+  object-fit:contain;
+  background:#111;
+}
+
+/* TABLE */
+.table-wrap{
+  flex:1;
+  min-width:0;
+}
+
+.table-wrap table{
+  width:100%;
+  height:100%;
+  border-collapse:collapse;
+  font-size:clamp(9px, 1.5vw, 13px);
+  table-layout:fixed;
+}
+
+.table-wrap th{
+  background:#222;
+  color:white;
+  padding:5px 3px;
+}
+
+.table-wrap td{
+  padding:5px 3px;
+  text-align:center;
+  border-bottom:1px solid #ddd;
+  word-break:break-word;
+}
+
+.table-wrap td.metric{
+  text-align:left;
+  font-weight:700;
+  background:#f2f2f2;
+}
+
+/* COLORS */
+.pos{background:#dff3df;}
+.neg{background:#f7dddd;}
+.blank{background:#fff;}
+
+.gap-row td{
+  height:10px;
+  padding:0;
+  background:#111;
+  border-bottom:none;
+}
 </style>
+</head>
+
+<body>
 
 <div class="cards-wrap">
 
+<!-- CHRIS LYNN -->
 <div class="card-row">
 
 <div class="player-side">
 <div class="card-title">CA Lynn</div>
 <img class="player-img" src="https://raw.githubusercontent.com/pacerswithprettyfeet/pacerswithprettyfeet-oss.github.io/main/assets/images/Towards%20a%20String%20Theory%20for%20Anchoring%20in%20T20%20Cricket%3A%20Chapter%202/Chris%20Lunn.png">
-<div class="table-wrap"><table>
+<div class="table-wrap">
+<table>
 <tr><th>Metric</th><th>Overall</th><th>Pace</th><th>Spin</th></tr>
 <tr><td class="metric">Career TSR</td><td class="pos">+19.86</td><td class="pos">+24.34</td><td class="neg">-5.01</td></tr>
 <tr><td class="metric">PP TSR</td><td class="pos">+17.08</td><td class="pos">+23.11</td><td class="neg">-2.11</td></tr>
 <tr><td class="metric">MO TSR</td><td class="pos">+19.51</td><td class="pos">+45.49</td><td class="neg">-5.03</td></tr>
 <tr><td class="metric">DO TSR</td><td class="pos">+36.64</td><td class="neg">-51.26</td><td class="neg">-141.00</td></tr>
-</table></div>
+</table>
+</div>
 </div>
 
 <div class="player-side">
 <div class="card-title">CA Lynn</div>
-<div class="table-wrap"><table>
+<div class="table-wrap">
+<table>
 <tr><th>Metric</th><th>Overall</th><th>Pace</th><th>Spin</th></tr>
 <tr><td class="metric">Career NEB</td><td class="pos">+1.97</td><td class="neg">-0.27</td><td class="pos">+1.71</td></tr>
 <tr><td class="metric">PP NEB</td><td class="pos">+7.09</td><td class="pos">+8.76</td><td class="pos">+3.63</td></tr>
@@ -42,8 +150,13 @@
 <tr><td class="metric">True Jogs</td><td class="neg">-2.0%</td><td class="neg">-3.9%</td><td class="pos">+1.0%</td></tr>
 <tr><td class="metric">True Boundary</td><td class="pos">+1.8%</td><td class="pos">+4.6%</td><td class="neg">-1.2%</td></tr>
 <tr><td class="metric">TSR (1–8)</td><td class="neg">-11.13</td><td class="neg">-3.97</td><td class="neg">-37.81</td></tr>
-</table></div>
+</table>
+</div>
 </div>
 
 </div>
+
 </div>
+
+</body>
+</html>
