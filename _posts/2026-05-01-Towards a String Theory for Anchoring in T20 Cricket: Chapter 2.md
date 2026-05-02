@@ -137,7 +137,7 @@ Strangely, the only place Pathan looked even mildly mortal was against pace in t
 <iframe 
   src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot10_pathan_pooran.html'  |relative_url }}" 
   width="100%" 
-  height="500" 
+  height="1000" 
   style="border:none; overflow:hidden;"
 ></iframe>
 Pooran has perfected the middle-overs spin-bashing machine that Pathan built. There is simply no point bowling spin to him in the middle overs: he operates at a TSR of 40.7 with an NEB of 17.3. The key difference lies against middle-overs pace. Unlike Pathan, Pooran is destructive there too, scoring at a TSR of 27.9. The only hope of containing him is to bowl pace and pray he gets out early: his NEB against middle-overs pace is -3.2. A side with a batter this absurd can structure itself almost entirely around maximizing his exposure in the middle overs.
@@ -168,7 +168,7 @@ Sai Sudarshan is Kohli with the knobs rearranged. From the small sample we have 
 <iframe 
   src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot12_kohli_sudharshan.html'  |relative_url }}" 
   width="100%" 
-  height="500" 
+  height="1000" 
   style="border:none; overflow:hidden;"
 ></iframe>
 Against pace, however, he can bore us to death. As pointed out in the first chapter, Sudarshan’s consistency is almost comical, and much of it comes from not getting dismissed against pace in the powerplay, where his NEB is 57. At that level of consistency, a slightly negative TSR of -4.22 is acceptable. The accumulator mode against pace, though, ends with the powerplay. In the middle overs, his TSR drops to -8.5, but even more starkly, his NEB falls off a cliff to 1.9. In his first two years, he would almost automatically face 24 balls; pace would return around the 12th over, and suddenly he would run out of scoring options, try to slog, and get out. Amid all this orderly chaos, he gets the fireworks going once the death overs start, in the same mould as Kohli.
