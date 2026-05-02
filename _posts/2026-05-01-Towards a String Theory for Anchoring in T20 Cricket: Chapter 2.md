@@ -119,7 +119,7 @@ True strike rate by innings progression paints a recognizable picture for more c
 
 Itchy hands are far more diverse creatures. There are fast starters, like Nicholas Pooran, and delayed starters, like Suresh Raina. Pooran has a TSR of +6 in his first eight balls, before skyrocketing to +52 between balls 9 and 16, where his raw strike rate is a ridiculous 198. He then “slows down” to 190 between balls 17 and 24, and 178 between balls 25 and 32. This comes despite him facing only 45% spin in this cluster (we will see his appetite for spin later on). Raina, by contrast, has a TSR of -3.7 in his first eight balls. From there on, he barely cools off: his TSR stays above 15 in every remaining cluster, and above 20 in all but the 17–24 cluster.
 <iframe 
-  src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot9_segment_tsr.html'  |relative_url }}" 
+  src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot9_segemt_tsr.html'  |relative_url }}" 
   width="100%" 
   height="500" 
   style="border:none; overflow:hidden;"
