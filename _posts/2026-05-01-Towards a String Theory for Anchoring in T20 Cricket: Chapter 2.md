@@ -93,7 +93,7 @@ Breaking down the dot-to-six spectrum by phase can tell us a great deal about ho
 <iframe 
   src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot7_jaiswal_triangke.html'  |relative_url }}" 
   width="100%" 
-  height="520" 
+  height="550" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
@@ -121,7 +121,7 @@ Itchy hands are far more diverse creatures. There are fast starters, like Nichol
 <iframe 
   src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot9_segemt_tsr.html'  |relative_url }}" 
   width="100%" 
-  height="500" 
+  height="1200" 
   style="border:none; overflow:hidden;"
 ></iframe>
 **Dimension 9: Game vs spin and pace**
