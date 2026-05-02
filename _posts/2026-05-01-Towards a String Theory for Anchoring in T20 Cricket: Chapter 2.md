@@ -43,7 +43,7 @@ Venky Iyer is the cleaner puzzle. He has always been a batter we have found diff
 
 Dot-or-six anchors: This is the 2010s West Indies school of batting, and true to type, almost every dot-or-six anchor comes from the Caribbean. These are batters who eat up balls and repay the debt in sixes. Sometimes, the dots are almost deliberate. Pollard, for instance, once pulled off a chase of 66 in four overs after more or less wiping off an entire over against Rashid Khan, before tearing into everyone else. Russell rotates strike 16% less than expected and faces 8% more dot balls than par, but makes up for it with an effective boundary rate of 8.5%. Gayle, too, preferred to take his time getting set and had little interest in nudging singles if sixes were available later; his effective boundary rate stands at 6.7%. Interestingly, Yuvraj falls into this category, and so does Nitish Rana.
 <iframe 
-  src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot2_dot_six.html.html'  |relative_url }}" 
+  src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot2_dot_six.html'  |relative_url }}" 
   width="100%" 
   height="500" 
   style="border:none; overflow:hidden;"
