@@ -151,7 +151,7 @@ However, ultimate Chris Lynn was bound to the powerplay. As soon as the field sp
 <iframe 
   src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot11_Lynn.html'  |relative_url }}" 
   width="100%" 
-  height="600" 
+  height="620" 
   style="border:none; overflow:hidden;"
 ></iframe>
 Lynn’s destruction of pace came through a slightly different scoring method from the one Pathan and Pooran used against spin. While his true strike rate against pace was majestic, he was less boundary-dependent than the two spin-scorchers. His effective boundary rate against pace was 4.5%, well below Pooran’s 8.5% against spin, and he relied slightly more on strike rotation too (-4%, compared to Pooran’s -9%). Nor was he especially explosive from ball one: in his first eight balls against pace, his TSR was -3.9. Pathan and Pooran, by contrast, got busy against spin much earlier.
@@ -178,7 +178,7 @@ Raina is what the death-overs versions of Kohli and Sudarshan look like, except 
 <iframe 
   src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot13_raina.html'  |relative_url }}" 
   width="100%" 
-  height="600" 
+  height="620" 
   style="border:none; overflow:hidden;"
 ></iframe>
 Raina’s impartiality towards pace and spin shows up clearly in his boundary numbers. Across the full innings, his effective boundary rate is 2.3% above expectation against pace and 1.9% against spin. He finds the boundary against both at roughly the same rate. The difference lies in the other options he has. He is difficult to dot up against either type, but especially so against spin: his effective dot percentage falls to -5.8%, compared to a still-impressive -3.7% versus pace. Curiously, he takes his time to get started, particularly against spin. His TSR in the first eight balls is -1.4 against pace, but falls to -6.9 against spin.
