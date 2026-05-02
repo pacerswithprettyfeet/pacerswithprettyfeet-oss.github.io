@@ -93,7 +93,7 @@ Breaking down the dot-to-six spectrum by phase can tell us a great deal about ho
 <iframe 
   src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot7_jaiswal_triangke.html'  |relative_url }}" 
   width="100%" 
-  height="500" 
+  height="520" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
