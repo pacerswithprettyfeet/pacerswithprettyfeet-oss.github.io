@@ -1,1 +1,155 @@
+---
+layout: post
+title: "Towards a String Theory for Anchoring in T20 Cricket: Chapter 2"
+comments: true
+author: "Atharv Tambade and Aadityan Ganesh."
+date: 2026-05-01
+categories: IPL
+tags: []
+---
+This series studies anchors in T20 cricket without collapsing them into the familiar Kohli–Rahul stereotype. Our starting point is simple: an anchor is not defined by how he looks — slow, classical, or accumulative — but by what he does. An anchor is any batter who holds together an innings by facing more balls than the match context expects of him. To formalize this, we introduced Net Effective Balls (NEB), defined as the difference between the balls a batter actually faced and the number an average batter would have been expected to face in the same circumstances. Any batter with a positive NEB, then, qualifies as an anchor.
+
+Even among batters with positive NEB, their methods can vary wildly. Chapter 1 began separating those methods using broader summary dimensions: how quickly a batter scores relative to par (true strike rate, or TSR), how volatile his innings are (the pessimist’s prediction), how his game changes between the first and second innings, and how much of his team’s stability he is personally responsible for (marginal effective balls).
+
+This chapter asks a narrower and more granular question: how do different anchors go about constructing their innings ball by ball, in terms of how they score, where they score, and against whom they score?
+
+**Part 3: Dissecting Scoring Patterns**
+
+The six ultimate anchors, batters who have found a way to play long innings at extraordinary speed, all end up in roughly the same neighbourhood on NEB and TSR. However, they get there in very different ways. 
+
+Gayle did not mind facing dot balls, and could always make up for a slow start by hitting a few sixes. De Villiers, by contrast, hardly faced any dot balls. Klaasen destroyed spin. Buttler’s true strike rate never dipped at any point in the innings.
+
+In this part, we decode batters through their preferred scoring methods: whether they rely on strike rotation or boundaries, whether they are more comfortable against pace or spin, and how they build an innings over time.
+
+**Dimension 7: The Dot-to-Six Spectrum: Effective Dots, Jogs, and Boundaries**
+
+Both Gayle and Klaasen hit boundaries off roughly 21% of the balls they face, with close to 10% going for six and 11% for four. But those numbers mean very different things in context. Gayle pioneered his method in an era when Kallis was still happily strutting around at a strike rate south of 110. Klaasen, by contrast, usually walks in during the middle overs against defensive spin, when most batters sign a quiet non-aggression pact and settle for seven an over. So even if both score a boundary roughly once every five balls, the burden of those boundaries is not the same. A modern finisher is expected to clear the ropes far more often than an opener in 2008, and it is much harder to hit through the line in the dust bowls of Chennai than in the batting carnivals of Bengaluru or Mumbai. We therefore normalize scoring frequencies by era, venue, and phase before comparing batters.
+
+Beyond boundaries, we look at the entire scoring spectrum, from dots to sixes. Russell, for instance, faced far more dots than par, but more than compensated with a surge in boundaries. Shubman Gill sits at the other end, making his living through strike rotation. To capture these differences, we break scoring into three components: effective dots, jogs (singles, doubles, and threes), and boundaries. Effective dots, for example, measure the difference between a batter’s dot-ball percentage and the dot-ball percentage an average batter would have produced in the same context. We then classify batters into six archetypes based on this dot-to-six spectrum.
+
+These archetypes are descriptive, not hierarchical. Russell produces more effective boundaries than any other batter with positive NEB in the IPL, but that does not automatically make him better or worse than a busier batter like AB de Villiers. They are solving different problems, not climbing the same ladder.
+
+For each of the six archetypes, do radar plots/histograms.
+
+Equilateral anchors: These are batters who sit almost exactly at par on all three components, lying within 1% of expectation on effective dots, jogs, and boundaries. Among batters with positive NEB and at least 600 balls faced, only three fall into this category: Rohit, Venky Iyer, and DK. Maybe coincidentally, and maybe not, all three have rather confusing IPL legacies. Rohit has lived several batting lives, from slow-scoring anchor to outright basher, so his balanced dot-to-six profile may simply be a soup of very different seasons. DK, similarly, has played for almost every franchise and batted everywhere from one-down to number eight.
+
+Venky Iyer is the cleaner puzzle. He has always been a batter we have found difficult to place, and his dot-to-six profile may explain why. When a batter has one standout scoring trait, it is usually clear how to optimize his usage. But a batter who is roughly par at avoiding dots, rotating strike, and finding boundaries is harder to pin down, because the profile points to no obvious role.
+<iframe 
+  src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot1_equi_acchor.html'  |relative_url }}" 
+  width="100%" 
+  height="500" 
+  style="border:none; overflow:hidden;"
+></iframe>
+
+Dot-or-six anchors: This is the 2010s West Indies school of batting, and true to type, almost every dot-or-six anchor comes from the Caribbean. These are batters who eat up balls and repay the debt in sixes. Sometimes, the dots are almost deliberate. Pollard, for instance, once pulled off a chase of 66 in four overs after more or less wiping off an entire over against Rashid Khan, before tearing into everyone else. Russell rotates strike 16% less than expected and faces 8% more dot balls than par, but makes up for it with an effective boundary rate of 8.5%. Gayle, too, preferred to take his time getting set and had little interest in nudging singles if sixes were available later; his effective boundary rate stands at 6.7%. Interestingly, Yuvraj falls into this category, and so does Nitish Rana.
+<iframe 
+  src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot2_dot_six.html.html'  |relative_url }}" 
+  width="100%" 
+  height="500" 
+  style="border:none; overflow:hidden;"
+></iframe>
+
+Turtles: These are batters who get stuck: they face more dots than expected and hit fewer boundaries than par. Saurabh Tiwary and Tewatia are clear examples. Tiwary entered the IPL with the reputation of being a six-hitter, but never quite lived up to the hype. Worse, he could not figure out alternate scoring options, so his innings often dissolved into dots. Tewatia is a different kind of turtle: on his good days, he can look like a genuine match-winner, but on the bad ones, everything grinds to a halt. Overall, he faces 3.7% more dots than par, while scoring 2.5% fewer jogs and 1.2% fewer boundaries. Hetmyer is the more high-profile name in this bucket.
+
+Dhoni is more complicated. He can get badly stuck against spin, but against pace he resembles the dot-or-six anchors: content to absorb dot balls and postpone his boundary-hitting until the very end (shoutout to Varun Alvakonda and Jarrod Kimber — add link). His overall effective boundary rate is almost exactly par, but in the death overs it jumps to 5% above expectation.
+<iframe 
+  src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot3_turtles.html'  |relative_url }}" 
+  width="100%" 
+  height="500" 
+  style="border:none; overflow:hidden;"
+></iframe>
+
+Strike rotators:  The name is fairly self-explanatory. These are batters with negative effective dots and close-to-zero, or even negative, effective boundaries. Most of their scoring comes through singles and twos. Shubman Gill is the cleanest version of this archetype: he faces 7% fewer dots than expected and hits 1% fewer boundaries, but rotates strike 8% more than par. The other safehouses fill out this group: Sudarshan, Kohli, and Rahul. Shreyas Iyer is a more interesting case. His recent avatar has been all fire and ash, but his earlier life at Delhi still leaves him with 3% more jogs, 2.5% fewer dots, and about 1% fewer boundaries than expected.
+
+<iframe 
+  src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot4_strike_rotators.html'  |relative_url }}" 
+  width="100%" 
+  height="500" 
+  style="border:none; overflow:hidden;"
+></iframe>
+
+
+Boffin’s dream: These batters are single-peaked on boundaries. They do not rotate strike much, and also do not allow dot balls to pile up. Jaiswal rules the roost here, with an effective boundary rate of 5%, while facing 1% fewer dot balls than expected and producing 4% fewer jogs. Two ultimate anchors, Buttler and SKY, sit in this region too. Hayden, Bairstow, and Yusuf Pathan (more on him later when we get to batting against spin) show similar scoring patterns. It is not surprising that the last three all end up with negative effective jogs. The surprise is that they also avoid dot balls. Spiritually, they are much closer to the dot-or-six anchors, except they have somehow found a way to dodge the dots.
+
+<iframe 
+  src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot5_boffins_dream.html'  |relative_url }}" 
+  width="100%" 
+  height="500" 
+  style="border:none; overflow:hidden;"
+></iframe>
+
+
+Busy anchors: Like the boffin’s dreams, these batters do not face many dot balls and are good at finding the fence. Unlike them, they also run hard between the wickets. The remaining three ultimate anchors, Warner, Klaasen, and AB de Villiers, all sit in this bucket. Conway is an interesting almost-case. Both of us at Pacers with Pretty Feet rated him very highly even before CSK bought him in the 2023 mega-auction, and thought he had the ceiling of an ultimate anchor. While he never got especially close to that ceiling, his dot-to-six spectrum still bears the outline of the player he once threatened to become.
+
+<iframe 
+  src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot6_busy_anchors.html'  |relative_url }}" 
+  width="100%" 
+  height="500" 
+  style="border:none; overflow:hidden;"
+></iframe>
+
+Breaking down the dot-to-six spectrum by phase can tell us a great deal about how best to use a batter. Jaiswal is particularly revealing. His overall profile looks like a boffin’s dream, but much of that boundary-heavy scoring is concentrated in the powerplay. There, he is almost a dot-or-six anchor: 7% more boundaries than expected, roughly par on dots, and 6.7% fewer jogs. He pulls this off while still facing 1.59 more balls per dismissal than the average opener in the powerplay. Through the middle overs, however, he becomes an entirely different batter: better at avoiding dots (-2.5%), more reliant on jogs (+1.1%), and much less boundary-heavy (-1.3%). Nor is he especially comfortable playing that tepid role, averaging 4.8 fewer balls per dismissal than the average batter in the middle overs.
+
+<iframe 
+  src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot7_jaiswal_triangke.html'  |relative_url }}" 
+  width="100%" 
+  height="500" 
+  style="border:none; overflow:hidden;"
+></iframe>
+
+
+At least in Jaiswal’s case, the role question is easy: he is clearly an opener. Pooran is more interesting, because teams have regularly used him at 3, 4, and 5. The dot-to-six spectrum helps decode which of those roles suits him best. He is below par in strike rotation regardless of where he bats: by 9% in both the powerplay and the middle overs, improving only to -3.5% at the death. In the powerplay, he is a genuine dot-or-six anchor. His true strike rate is 14.6, but it comes with 5.6% more dots and 3.5% more boundaries than expected. He is strong at the death too, with a true strike rate of 11.4, alongside 1% effective dots and 2.5% effective boundaries.
+
+These numbers already describe a well-above-par batter who can fit into most sides. But his magic lies in the middle overs, where his effective boundary rate rises to a freakish 8.5%. For context, Andre Russell sits at 7%. Pooran manages this while remaining par on dots. Put differently, he plays like an average IPL batter, except on the balls where the average batter takes a jog, Pooran sends it to the fence. The ideal role for Pooran, then, is one that gets him to the crease no earlier than the last two overs of the powerplay. Sending him in much earlier risks losing him before the powerplay is done: his powerplay NEB is -7.33, and remains -7.22 between overs 4 and 6 (although we do not have a clean explanation for this, especially since his powerplay record in other leagues and international cricket seems to hold up fine). Send him in much later, and you waste precious middle-over time. Interestingly, LSG have been sending him in at 5 to separate their international top order from their uncapped lower order.
+<iframe 
+  src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot8_pooran.html'  |relative_url }}" 
+  width="100%" 
+  height="500" 
+  style="border:none; overflow:hidden;"
+></iframe>
+
+**Dimension 8: Innings Progression vs True Strike Rate**
+
+Apart from solving T20 batting, the ultimate anchors seem to share one more curious trait: almost all of them take around eight balls to get set, and then go berserk immediately after. To track this, we break each innings into eight-ball clusters and compute a batter’s true strike rate within each cluster (clusters where the batter has faced at least 50 balls).
+
+The first eight balls are nothing special for the ultimate anchors. Klaasen and SKY are the only two with positive TSRs in this cluster, and even they sit at just +3 and +0.7 respectively. De Villiers is all the way down at -11.1. From ball 9 onward, though, all six detonate, as if by some off-field agreement. SKY, the least explosive of the group in this phase, still reaches +21; Gayle peaks at +37. None of them really look back from there.
+Yet, there are tiers even among gods. Gayle and de Villiers have the most terrifying top gear, both touching strike rates of around 220 once fully set. Buttler and Klaasen form the next tier, peaking around 200. Warner and SKY do not quite have the same beast mode as the rest; for all their greatness, their peak strike rates stay below 170.
+
+True strike rate by innings progression paints a recognizable picture for more conventional anchors. Kohli is famously the master of the catch-up innings: his TSR remains below par until he has faced 32 balls. The only exception is the 9–16 cluster, where he is most likely cashing in on the last few balls of the powerplay. Then, the launch begins, with TSRs of +19.4, +16.8, and +45 in the next three clusters. Dhoni’s finisher-anchoring follows a similar script. His TSR in the first eight balls is a frustratingly slow -18.7, and remains slightly below par in the next cluster. His innings only really begins from ball 17, with TSRs of +13, +23.9, and +45 in the three clusters that follow.
+
+Itchy hands are far more diverse creatures. There are fast starters, like Nicholas Pooran, and delayed starters, like Suresh Raina. Pooran has a TSR of +6 in his first eight balls, before skyrocketing to +52 between balls 9 and 16, where his raw strike rate is a ridiculous 198. He then “slows down” to 190 between balls 17 and 24, and 178 between balls 25 and 32. This comes despite him facing only 45% spin in this cluster (we will see his appetite for spin later on). Raina, by contrast, has a TSR of -3.7 in his first eight balls. From there on, he barely cools off: his TSR stays above 15 in every remaining cluster, and above 20 in all but the 17–24 cluster.
+<iframe 
+  src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot9_segment_tsr.html'  |relative_url }}" 
+  width="100%" 
+  height="500" 
+  style="border:none; overflow:hidden;"
+></iframe>
+**Dimension 9: Game vs spin and pace**
+
+We can ask almost every question from the previous eight dimensions separately against pace and spin. Does a batter face more balls than expected? Does he score quicker than expected? What does his dot-to-six spectrum look like? How comfortable is he starting against each type of bowling?
+A full taxonomy along these lines would quickly explode into too many categories to be useful. So instead, we focus on six batters whose pace-spin profiles are especially distinctive. Yusuf Pathan (Varun Alvakonda has successfully recruited us into the Yusuf cult — insert link) and Nicholas Pooran are our spin-bashing case studies. Chris Lynn is the powerplay pace-hitting analogue. Kohli and Sai Sudarshan are the conventional anchors with opposite preferences: one prefers pace, the other likes spin. Finally, Raina is Raina.
+Yusuf Pathan and Nicholas Pooran:
+We begin with Yusuf Pathan and his evolutionary successor, Nicholas Pooran.
+Yusuf Pathan built the dark art of middle-overs spin-bashing. Against spin overall, he had a TSR of 26.4 while remaining roughly par on NEB. But the middle overs were where he became especially vicious: against spin in this phase, he pushed into ultimate-anchor territory, with a TSR of 19.9 and an NEB of 3.1. Teams sent hapless spinners to him in the powerplay too, fortunately for themselves only 33 times, to be devoured at a true strike rate of 134.9. Mind you, that is his true strike rate, not his strike rate.
+Pathan was far more than just a spin-basher. Even against pace, his supposedly weaker suit, he was a clear positive. At the death, pace offered little respite: he still managed a TSR of 17.1 while barely getting out, for an NEB of 6.6. Even once teams identified the short ball as the obvious antidote, it was not enough to keep him quiet.
+Strangely, the only place Pathan looked even mildly mortal was against pace in the middle overs, where his TSR dropped to +5. Nor did he compensate by hanging around longer: he was essentially par on NEB. Pace also kept him relatively quiet early in the innings. In his first eight balls, his TSR against spin was 19.1; against pace, it fell to -9.6.
+Pooran has perfected the middle-overs spin-bashing machine that Pathan built. There is simply no point bowling spin to him in the middle overs: he operates at a TSR of 40.7 with an NEB of 17.3. The key difference lies against middle-overs pace. Unlike Pathan, Pooran is destructive there too, scoring at a TSR of 27.9. The only hope of containing him is to bowl pace and pray he gets out early: his NEB against middle-overs pace is -3.2. A side with a batter this absurd can structure itself almost entirely around maximizing his exposure in the middle overs.
+He remains a positive even outside the middle overs. At the death, he is still strong against pace, with a TSR of 12.8 and an NEB of 2.2. His IPL powerplay record is modest, but the sample is thin: just 92 balls against pace and 21 against spin. Across T20Is and other leagues, there is little evidence of a systematic weakness, with a TSR of 11.96.
+The resemblance between Pathan and Pooran runs deeper than output. Their methods are strikingly aligned. Both start slowly against pace, with TSRs of -9.6 and -8.3 in their first eight balls, and both attack spin almost immediately, at 19.1 and 31.3 respectively. Their dot-to-six spectra against spin are eerily close: both face more dots than expected (1% and 2%), largely ignore strike rotation (-9% and -8%), and compensate with extreme boundary production (8.5% and 6.5%). The divergence comes against pace. Pathan was relatively balanced; Pooran remains closer to a boffin’s dream, albeit a milder version of his spin-hitting self.
+Chris Lynn:
+If Pathan and Pooran define middle-overs spin-bashing, the streets remember Chris Lynn as the closest powerplay analogue against pace. True to the legend, he was violent in that phase: a TSR of 23.11 with an NEB of 8.7, basically Nicholas Pooran-light, but against pace rather than spin.
+However, ultimate Chris Lynn was bound to the powerplay. As soon as the field spread and the tweakers came on, he seemed to run out of options. Against spin in the middle overs, his TSR drops to -5.0, with NEB staying roughly par. His response appears to be doubling down against pace: in the middle overs, he pushes his TSR to 45, but at the cost of an NEB of -7.8. From an ultimate anchor against pace in the powerplay, he becomes a middle-overs pace hitter, although a very good one.
+Lynn’s destruction of pace came through a slightly different scoring method from the one Pathan and Pooran used against spin. While his true strike rate against pace was majestic, he was less boundary-dependent than the two spin-scorchers. His effective boundary rate against pace was 4.5%, well below Pooran’s 8.5% against spin, and he relied slightly more on strike rotation too (-4%, compared to Pooran’s -9%). Nor was he especially explosive from ball one: in his first eight balls against pace, his TSR was -3.9. Pathan and Pooran, by contrast, got busy against spin much earlier.
+Kohli and Sai Sudarshan:
+From batters who barely believe in defence, we move to the anchors who build innings for a living.
+Kohli has more or less cracked the code for preserving his wicket. His numbers against spin are a neat miniature of his overall batting method. His NEB against spinners is a massive 19.6 in the powerplay, rising further to 26 in the middle overs. He pays the price in strike rate. In the powerplay, his TSR against spin is a ludicrously low -17.7; in his first eight balls against spin, it is -18.7. That is not because he is being dotted up: he still manages 13% more jogs than expected and 7% fewer dots than par. The problem is boundary-hitting, with an effective boundary rate of -5% in this phase. A similar pattern persists into the middle overs. His TSR against spin improves to -3.48, decent enough in isolation. But that aggregate hides wild year-to-year variation: -18 in 2022, -33.2 in 2023, +4.5 in 2024, and -7.2 in 2025. Nor can all of this be written off as bad form; 2023, for instance, was a 600-run season. Kohli’s genius against spin is that he almost never dies. Kohli’s problem against spin is that he almost never dies.
+Kohli is much better against pace. In the powerplay, he scores at a TSR of 5.4 while still being far from easy to remove, with an NEB of 8.7. The middle overs, though, are a different story. His TSR slips to -0.59, and unlike against spin, his survival overdrive tapers off too: his NEB drops, though still remains positive, to 2.7. He is not quite the god-tier accumulator against pace that he becomes against spin in this phase. Instead, he mostly hibernates until the slugfest begins after the 15th over.
+Kohli’s reputation is built on a very specific script: an automatic fifty off 38 balls, followed by a violent catch-up act at the death. His death-overs numbers make the whole innings read like a SS Rajamouli redemption arc storyline for all those earlier chewed-up balls. He smacks pacers and spinners alike here, at TSRs of 30.4 and 28.5 respectively. Importantly, he is not trying to take the game deep in the Dhoni sense of the term. His NEB is basically par against both pace and spin. This is not wicket-preservation mode anymore. This is Kohli finally cashing the innings in. This is the version of Kohli we deserve to watch for all twenty overs, not just the last five.
+Sai Sudarshan is Kohli with the knobs rearranged. From the small sample we have so far, his accumulation mode looks genuinely Kohli-grade. His NEB against spin in the middle overs is 19.4, not as ridiculous as Kohli’s 26, but hardly an everyday NEB either. Crucially, Sudarshan enjoys this matchup in a way Kohli does not: his TSR against middle-overs spin is 13.07. He has a gear well above Kohli’s grim “I shall survive and you shall all watch” mode against spin.
+Against pace, however, he can bore us to death. As pointed out in the first chapter, Sudarshan’s consistency is almost comical, and much of it comes from not getting dismissed against pace in the powerplay, where his NEB is 57. At that level of consistency, a slightly negative TSR of -4.22 is acceptable. The accumulator mode against pace, though, ends with the powerplay. In the middle overs, his TSR drops to -8.5, but even more starkly, his NEB falls off a cliff to 1.9. In his first two years, he would almost automatically face 24 balls; pace would return around the 12th over, and suddenly he would run out of scoring options, try to slog, and get out. Amid all this orderly chaos, he gets the fireworks going once the death overs start, in the same mould as Kohli.
+Raina:
+Raina is what the death-overs versions of Kohli and Sudarshan look like, except if both of them showed up on the team bus rather than twenty minutes before the innings ended. His middle-overs TSR is 15.8 against pace and 12 against spin, so unlike Kohli, he does not spend this phase falling behind and scheming a rescue act for later. The trade-off is that he is perfectly willing to YOLO a little. Against pace, he gets dismissed about a ball quicker than average; against spin, his NEB is only slightly positive at 1.2.
+Raina’s impartiality towards pace and spin shows up clearly in his boundary numbers. Across the full innings, his effective boundary rate is 2.3% above expectation against pace and 1.9% against spin. He finds the boundary against both at roughly the same rate. The difference lies in the other options he has. He is difficult to dot up against either type, but especially so against spin: his effective dot percentage falls to -5.8%, compared to a still-impressive -3.7% versus pace. Curiously, he takes his time to get started, particularly against spin. His TSR in the first eight balls is -1.4 against pace, but falls to -6.9 against spin.
+If Chapter 1 was about summary statistics more useful than raw strike rate and average, this chapter has focused on the micro-patterns in how batters actually bat. In a supplementary article, we use these nine dimensions to unpack the confusing career of Tristan Stubbs. As we will see, the summary statistics alone do not solve the puzzle; his dot-to-six spectrum and innings progression do much more of the explanatory work. Briefly: he is a finishing anchor.
+In the final chapter of this sequence, we go one layer deeper, looking at the scoring pockets batters access and classifying them by the number of scoring options they possess.
 
