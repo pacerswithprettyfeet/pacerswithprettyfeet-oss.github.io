@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Equilateral Anchors Radar</title>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -11,7 +10,7 @@
   <style>
     body {
       margin: 0;
-      padding: 28px;
+      padding: 20px;
       font-family: Arial, sans-serif;
       background: #f5f7fb;
       color: #1f2937;
@@ -27,7 +26,7 @@
     }
 
     .header {
-      padding: 24px 28px 12px;
+      padding: 20px 28px 10px;
       border-bottom: 1px solid #e5e7eb;
     }
 
@@ -46,12 +45,12 @@
     }
 
     .chart-wrap {
-      padding: 24px 28px 28px;
-      height: 720px;
+      padding: 4px 20px 4px;
+      height: 520px;
     }
 
     .note {
-      padding: 0 28px 24px;
+      padding: 8px 28px 18px;
       font-size: 13px;
       color: #6b7280;
       line-height: 1.5;
@@ -97,7 +96,6 @@
           borderColor: "rgba(220, 38, 38, 0.95)",
           pointBackgroundColor: "rgba(220, 38, 38, 0.95)"
         },
-
         {
           label: "RG Sharma",
           data: [-0.00842057, 0.003817037, 0.004634715],
@@ -109,7 +107,6 @@
           borderColor: "rgba(37, 99, 235, 0.95)",
           pointBackgroundColor: "rgba(37, 99, 235, 0.95)"
         },
-
         {
           label: "VR Iyer",
           data: [-0.000910505, 0.000292756, -0.000318581],
@@ -121,7 +118,6 @@
           borderColor: "rgba(22, 163, 74, 0.95)",
           pointBackgroundColor: "rgba(22, 163, 74, 0.95)"
         },
-
         {
           label: "Par",
           data: [0, 0, 0],
@@ -144,6 +140,15 @@
         responsive: true,
         maintainAspectRatio: false,
 
+        layout: {
+          padding: {
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0
+          }
+        },
+
         elements: {
           line: {
             tension: 0
@@ -155,7 +160,7 @@
             position: "right",
             labels: {
               boxWidth: 14,
-              padding: 16,
+              padding: 14,
               font: {
                 size: 13
               }
@@ -176,12 +181,14 @@
           r: {
             min: -0.05,
             max: 0.05,
+            beginAtZero: false,
 
             ticks: {
               display: true,
               showLabelBackdrop: false,
               backdropColor: "transparent",
               stepSize: 0.01,
+              padding: 0,
               callback: function(value) {
                 return (Number(value) * 100).toFixed(0) + "%";
               }
@@ -198,6 +205,7 @@
             },
 
             pointLabels: {
+              padding: 0,
               font: {
                 size: 14,
                 weight: "bold"
