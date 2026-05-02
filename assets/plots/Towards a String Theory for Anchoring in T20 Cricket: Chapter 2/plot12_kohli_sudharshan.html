@@ -1,23 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-.cards-wrap{display:flex;flex-direction:column;gap:28px;align-items:center;font-family:Georgia,serif;margin:32px 0;}
-.card-row{display:flex;gap:24px;justify-content:center;}
-.player-side{width:380px;height:560px;display:flex;flex-direction:column;background:#fffdf7;border:2px solid #1d1d1d;border-radius:14px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.15);}
-.card-title{background:#111;color:white;text-align:center;padding:10px;font-size:22px;font-weight:700;}
-.player-img{width:100%!important;height:220px!important;object-fit:contain;display:block;background:#111;}
-.table-wrap{flex:1;display:flex;flex-direction:column;}
-.table-wrap table{width:100%;height:100%;border-collapse:collapse;font-size:13px;}
-.table-wrap th{background:#222;color:white;padding:6px;}
-.table-wrap td{padding:6px;text-align:center;border-bottom:1px solid #ddd;}
-.table-wrap td.metric{text-align:left;font-weight:700;background:#f2f2f2;}
-.pos{background:#dff3df;} .neg{background:#f7dddd;} .blank{background:#fff;}
-.gap-row td{height:10px;padding:0;background:#111;border-bottom:none;}
+*{box-sizing:border-box;}
+
+html,body{
+  margin:0;
+  padding:0;
+  overflow-x:hidden;
+  background:#f5f7fb;
+}
+
+/* WRAPPER */
+.cards-wrap{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:28px;
+  align-items:center;
+  font-family:Georgia,serif;
+  margin:32px 0;
+  padding:0 8px;
+}
+
+/* ROW */
+.card-row{
+  width:100%;
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  align-items:stretch;
+  flex-wrap:nowrap;
+}
+
+/* CARD */
+.player-side{
+  width:clamp(160px, 45vw, 360px);
+  height:540px;
+  display:flex;
+  flex-direction:column;
+  background:#fffdf7;
+  border:2px solid #1d1d1d;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 6px 18px rgba(0,0,0,.15);
+}
+
+/* TITLE */
+.card-title{
+  background:#111;
+  color:white;
+  text-align:center;
+  padding:9px;
+  font-size:clamp(15px, 2.3vw, 22px);
+  font-weight:700;
+}
+
+/* IMAGE */
+.player-img{
+  width:100%;
+  height:200px;
+  object-fit:contain;
+  background:#111;
+}
+
+/* TABLE */
+.table-wrap{
+  flex:1;
+  min-width:0;
+}
+
+.table-wrap table{
+  width:100%;
+  height:100%;
+  border-collapse:collapse;
+  font-size:clamp(9px, 1.5vw, 13px);
+  table-layout:fixed;
+}
+
+.table-wrap th{
+  background:#222;
+  color:white;
+  padding:5px 3px;
+}
+
+.table-wrap td{
+  padding:5px 3px;
+  text-align:center;
+  border-bottom:1px solid #ddd;
+  word-break:break-word;
+}
+
+.table-wrap td.metric{
+  text-align:left;
+  font-weight:700;
+  background:#f2f2f2;
+}
+
+/* COLORS */
+.pos{background:#dff3df;}
+.neg{background:#f7dddd;}
+.blank{background:#fff;}
+
+.gap-row td{
+  height:10px;
+  padding:0;
+  background:#111;
+  border-bottom:none;
+}
 </style>
+</head>
+
+<body>
 
 <div class="cards-wrap">
 
+<!-- ===== SAI SUDHARSHAN ===== -->
 <div class="card-row">
 
-<!-- SUDHARSHAN FRONT -->
 <div class="player-side">
 <div class="card-title">B Sai Sudharsan</div>
 <img class="player-img" src="https://raw.githubusercontent.com/pacerswithprettyfeet/pacerswithprettyfeet-oss.github.io/main/assets/images/Towards%20a%20String%20Theory%20for%20Anchoring%20in%20T20%20Cricket%3A%20Chapter%202/Sai%20Sudharshan.png">
@@ -30,7 +133,6 @@
 </table></div>
 </div>
 
-<!-- SUDHARSHAN BACK -->
 <div class="player-side">
 <div class="card-title">B Sai Sudharsan</div>
 <div class="table-wrap"><table>
@@ -49,9 +151,9 @@
 
 </div>
 
+<!-- ===== KOHLI ===== -->
 <div class="card-row">
 
-<!-- KOHLI FRONT -->
 <div class="player-side">
 <div class="card-title">V Kohli</div>
 <img class="player-img" src="https://raw.githubusercontent.com/pacerswithprettyfeet/pacerswithprettyfeet-oss.github.io/main/assets/images/Towards%20a%20String%20Theory%20for%20Anchoring%20in%20T20%20Cricket%3A%20Chapter%202/V%20Kohli.png">
@@ -64,7 +166,6 @@
 </table></div>
 </div>
 
-<!-- KOHLI BACK -->
 <div class="player-side">
 <div class="card-title">V Kohli</div>
 <div class="table-wrap"><table>
@@ -84,3 +185,6 @@
 </div>
 
 </div>
+
+</body>
+</html>
