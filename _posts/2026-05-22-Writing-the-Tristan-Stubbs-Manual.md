@@ -24,7 +24,7 @@ The table that you showed me where it becomes extremely obvious that he is sitti
 <iframe 
   src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plot1.html'  |relative_url }}" 
   width="100%" 
-  height="500" 
+  height="1100" 
   style="border:none; overflow:hidden;"
 ></iframe>
 IPL 2026 has not been any different. Every Stubbs innings over 20 has followed the same broad shape. Against LSG, he was 32 off 28 while Sameer Rizvi did the heavy lifting. Against CSK, he went from 13 off 12 to 60 off 38 while the batting order collapsed around him.
@@ -55,7 +55,7 @@ Their interesting dot-to-six spectrum in the middle overs against pace and spin.
 <iframe 
   src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plots_dots_jogs_biund_2026.html'  |relative_url }}" 
   width="100%" 
-  height="500" 
+  height="400" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
@@ -76,7 +76,7 @@ His percentage of dots, jogs, fours and sixes this year.
 <iframe 
   src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plots_TSR_death.html'  |relative_url }}" 
   width="100%" 
-  height="500" 
+  height="1700" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
@@ -89,7 +89,7 @@ Table with his clusterwise TSR.
 <iframe 
   src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plot_clusterwise_TSR.html'  |relative_url }}" 
   width="100%" 
-  height="500" 
+  height="400" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
@@ -103,7 +103,7 @@ Insert a table with the phasewise strikerates in the IPL since 2018. I have atta
 <iframe 
   src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plot_phase_sr.html'  |relative_url }}" 
   width="100%" 
-  height="500" 
+  height="600" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
