@@ -63,7 +63,7 @@ Then comes the whiplash. From being a strike-rotator through the middle-overs, S
 
 Table of leading TSRs, averages and NEB having faced at least 150 balls.
 <iframe 
-  src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plots_TSR_death.html'  |relative_url }}" 
+  src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plots_Death_TSR_NEB.html'  |relative_url }}" 
   width="100%" 
   height="500" 
   style="border:none; overflow:hidden;"
