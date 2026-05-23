@@ -22,7 +22,7 @@ The Dhoni comparison goes well beyond the average. Like Dhoni, Stubbs is highly 
 
 The table that you showed me where it becomes extremely obvious that he is sitting at run a ball for a long long time.
 <iframe 
-  src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot1_equi_acchor.html'  |relative_url }}" 
+  src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plot1.html'  |relative_url }}" 
   width="100%" 
   height="500" 
   style="border:none; overflow:hidden;"
@@ -31,7 +31,7 @@ IPL 2026 has not been any different. Every Stubbs innings over 20 has followed t
 
 A list of stuff he has done in this season → setting up base to what he actually scored, in the three/four innings where he came off.
 <iframe 
-  src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot1_equi_acchor.html'  |relative_url }}" 
+  src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plot2.html'  |relative_url }}" 
   width="100%" 
   height="500" 
   style="border:none; overflow:hidden;"
@@ -41,7 +41,7 @@ The obvious explanation would be that Stubbs lacks middle-overs scoring options.
 
 Their interesting dot-to-six spectrum.
 <iframe 
-  src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot1_equi_acchor.html'  |relative_url }}" 
+  src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plot3.html'  |relative_url }}" 
   width="100%" 
   height="500" 
   style="border:none; overflow:hidden;"
@@ -53,7 +53,7 @@ Stubbs is still playing his middle-overs anchor role in 2026, at a strike rate o
 
 Their interesting dot-to-six spectrum in the middle overs against pace and spin.
 <iframe 
-  src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot1_equi_acchor.html'  |relative_url }}" 
+  src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plots_dots_jogs_biund_2026.html'  |relative_url }}" 
   width="100%" 
   height="500" 
   style="border:none; overflow:hidden;"
@@ -63,7 +63,7 @@ Then comes the whiplash. From being a strike-rotator through the middle-overs, S
 
 Table of leading TSRs, averages and NEB having faced at least 150 balls.
 <iframe 
-  src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot1_equi_acchor.html'  |relative_url }}" 
+  src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plots_TSR_death.html'  |relative_url }}" 
   width="100%" 
   height="500" 
   style="border:none; overflow:hidden;"
@@ -74,7 +74,7 @@ The interesting part is not just that Stubbs scores fast at the death. His bluep
 Stats for everything mentioned above — TSR in the death, dot-to-six spectrum, the leaderboard in dots and fours. Show numbers for Dhoni as well here.
 His percentage of dots, jogs, fours and sixes this year.
 <iframe 
-  src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot1_equi_acchor.html'  |relative_url }}" 
+  src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plots_TSR_death.html'  |relative_url }}" 
   width="100%" 
   height="500" 
   style="border:none; overflow:hidden;"
@@ -87,7 +87,7 @@ To test this, we start with his cluster-wise TSR. Stubbs’s first eight balls a
 
 Table with his clusterwise TSR.
 <iframe 
-  src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot1_equi_acchor.html'  |relative_url }}" 
+  src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plot_clusterwise_TSR.html'  |relative_url }}" 
   width="100%" 
   height="500" 
   style="border:none; overflow:hidden;"
@@ -101,7 +101,7 @@ As the Good Areas team have pointed out (link), teams have fundamentally changed
 
 Insert a table with the phasewise strikerates in the IPL since 2018. I have attached the full numbers in a table at the end of the article for your reference. Put a disclaimer that the data is till the PBKS v DC game on the 11th.
 <iframe 
-  src="{{ '/assets/plots/Towards a String Theory for Anchoring in T20 Cricket: Chapter 2/plot1_equi_acchor.html'  |relative_url }}" 
+  src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plot_phase_sr.html'  |relative_url }}" 
   width="100%" 
   height="500" 
   style="border:none; overflow:hidden;"
