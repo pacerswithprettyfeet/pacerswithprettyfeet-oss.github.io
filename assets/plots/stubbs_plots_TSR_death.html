@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Stubbs Death Overs Profile</title>
+
+<style>
+body {
+  margin: 0;
+  padding: 28px;
+  font-family: Arial, sans-serif;
+  background: #f5f7fb;
+  color: #1f2937;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+.header {
+  padding: 24px 28px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+h1 {
+  margin: 0;
+  font-size: 27px;
+  color: #111827;
+}
+
+.subtitle {
+  margin-top: 7px;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.content {
+  padding: 20px 28px 28px;
+}
+
+.section {
+  margin-bottom: 22px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.section-title {
+  padding: 13px 16px;
+  font-size: 18px;
+  font-weight: 700;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.section-subtitle {
+  padding: 0 16px 12px;
+  margin-top: -4px;
+  font-size: 13px;
+  color: #6b7280;
+  background: #f9fafb;
+  line-height: 1.45;
+}
+
+.leaderboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.table-wrap {
+  padding: 14px 16px 16px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #eef2ff;
+}
+
+th {
+  text-align: left;
+  padding: 10px;
+  font-size: 12px;
+  color: #1e3a8a;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+tr:hover {
+  background: #f9fafb;
+}
+
+.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.pos {
+  color: #047857;
+  font-weight: 700;
+}
+
+.neg {
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.highlight {
+  background: #fffbeb;
+  font-weight: 700;
+}
+
+.note {
+  margin-top: 8px;
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #6b7280;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+}
+
+@media (max-width: 900px) {
+  .leaderboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <h1>Tristan Stubbs: Death Overs Blueprint</h1>
+    <div class="subtitle">
+      True dot avoidance, true jogs, true fours and true sixes in the death overs.
+      Positive values mean above expectation; negative values mean below expectation.
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- TOP TABLE -->
+    <div class="section">
+      <div class="section-title">Stubbs vs Dhoni: Death Overs Comparison</div>
+      <div class="section-subtitle">
+        True Jogs = True 1s + True 2s/3s.
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Batter</th>
+              <th class="num">Runs</th>
+              <th class="num">Balls Faced</th>
+              <th class="num">True Dots</th>
+              <th class="num">True Jogs</th>
+              <th class="num">True 4s</th>
+              <th class="num">True 6s</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr class="highlight">
+              <td>T Stubbs</td>
+              <td class="num">439</td>
+              <td class="num">199</td>
+              <td class="num neg">-12.94%</td>
+              <td class="num pos">+6.17%</td>
+              <td class="num pos">+5.96%</td>
+              <td class="num pos">+0.80%</td>
+            </tr>
+
+            <tr>
+              <td>MS Dhoni</td>
+              <td class="num">3468</td>
+              <td class="num">1965</td>
+              <td class="num neg">-3.61%</td>
+              <td class="num neg">-1.22%</td>
+              <td class="num pos">+1.76%</td>
+              <td class="num pos">+3.07%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- LEADERBOARDS SIDE BY SIDE -->
+    <div class="leaderboard-grid">
+
+      <!-- TRUE DOT LEADERBOARD -->
+      <div class="section">
+        <div class="section-title">Death True Dot Avoidance</div>
+        <div class="section-subtitle">
+          More negative = fewer dots than expected.
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Batter</th>
+                <th class="num">BF</th>
+                <th class="num">Runs</th>
+                <th class="num">True Dots</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr><td>1</td><td>CL White</td><td class="num">192</td><td class="num">363</td><td class="num neg">-13.94%</td></tr>
+              <tr class="highlight"><td>2</td><td>T Stubbs</td><td class="num">199</td><td class="num">439</td><td class="num neg">-12.94%</td></tr>
+              <tr><td>3</td><td>KS Williamson</td><td class="num">275</td><td class="num">460</td><td class="num neg">-12.72%</td></tr>
+              <tr><td>4</td><td>JP Duminy</td><td class="num">516</td><td class="num">882</td><td class="num neg">-10.59%</td></tr>
+              <tr><td>5</td><td>GJ Bailey</td><td class="num">185</td><td class="num">327</td><td class="num neg">-10.52%</td></tr>
+              <tr><td>6</td><td>KL Rahul</td><td class="num">472</td><td class="num">839</td><td class="num neg">-9.76%</td></tr>
+              <tr><td>7</td><td>H Klaasen</td><td class="num">277</td><td class="num">553</td><td class="num neg">-9.19%</td></tr>
+              <tr><td>8</td><td>AB de Villiers</td><td class="num">829</td><td class="num">1868</td><td class="num neg">-8.92%</td></tr>
+              <tr><td>9</td><td>DPMD Jayawardene</td><td class="num">234</td><td class="num">374</td><td class="num neg">-8.60%</td></tr>
+              <tr><td>10</td><td>SK Raina</td><td class="num">521</td><td class="num">899</td><td class="num neg">-8.56%</td></tr>
+              <!-- <tr><td>11</td><td>Dhruv Jurel</td><td class="num">229</td><td class="num">410</td><td class="num neg">-8.31%</td></tr>
+              <tr><td>12</td><td>V Kohli</td><td class="num">803</td><td class="num">1507</td><td class="num neg">-8.00%</td></tr> -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TRUE FOURS LEADERBOARD -->
+      <div class="section">
+        <div class="section-title">Death True Fours</div>
+        <div class="section-subtitle">
+          More positive = more fours than expected.
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Batter</th>
+                <th class="num">BF</th>
+                <th class="num">Runs</th>
+                <th class="num">True 4s</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr><td>1</td><td>SN Khan</td><td class="num">168</td><td class="num">280</td><td class="num pos">+7.21%</td></tr>
+              <tr><td>2</td><td>SA Yadav</td><td class="num">451</td><td class="num">821</td><td class="num pos">+6.05%</td></tr>
+              <tr class="highlight"><td>3</td><td>T Stubbs</td><td class="num">199</td><td class="num">439</td><td class="num pos">+5.96%</td></tr>
+              <tr><td>4</td><td>JH Kallis</td><td class="num">228</td><td class="num">394</td><td class="num pos">+5.93%</td></tr>
+              <tr><td>5</td><td>KS Williamson</td><td class="num">275</td><td class="num">460</td><td class="num pos">+5.24%</td></tr>
+              <tr><td>6</td><td>N Rana</td><td class="num">233</td><td class="num">427</td><td class="num pos">+5.05%</td></tr>
+              <tr><td>7</td><td>S Dhawan</td><td class="num">418</td><td class="num">668</td><td class="num pos">+4.88%</td></tr>
+              <tr><td>8</td><td>RK Singh</td><td class="num">317</td><td class="num">608</td><td class="num pos">+4.84%</td></tr>
+              <tr><td>9</td><td>RR Pant</td><td class="num">492</td><td class="num">1000</td><td class="num pos">+4.75%</td></tr>
+              <tr><td>10</td><td>DA Warner</td><td class="num">352</td><td class="num">628</td><td class="num pos">+4.70%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="note">
+      <strong>Definitions:</strong>
+      True Dots = actual dot rate minus expected dot rate.
+      True 4s = actual four rate minus expected four rate.
+      True Jogs = True 1s + True 2s/3s.
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>

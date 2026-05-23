@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Middle Overs True Dots Jogs Boundaries Radar</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 28px;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #1f2937;
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 28px 12px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #6b7280;
+    }
+
+    .chart-wrap {
+      padding: 24px 28px 28px;
+      height: 720px;
+    }
+
+    .note {
+      padding: 0 28px 24px;
+      font-size: 13px;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="header">
+      <h1 class="title">Middle Overs: True Dots, Jogs and Boundaries</h1>
+      <div class="subtitle">
+        Component-wise deviation from expectation in middle overs only.
+        Positive values mean the batter produced more of that event than expected;
+        negative values mean less than expected.
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="radarChart"></canvas>
+    </div>
+
+    <div class="note">
+      True Jogs = True 1s + True 2s/3s. True Boundaries = True 4s + True 6s.
+      The dashed triangle marks par: 0% on all three components.
+    </div>
+  </div>
+
+  <script>
+    const ctx = document.getElementById("radarChart");
+
+    const radarData = {
+      labels: ["True Dots", "True Jogs", "True Boundaries"],
+      datasets: [
+        {
+          label: "T Stubbs",
+          data: [0.002747275, 0.101238858, -0.103986133],
+          borderWidth: 3,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          fill: true,
+          backgroundColor: "rgba(220, 38, 38, 0.10)",
+          borderColor: "rgba(220, 38, 38, 0.95)",
+          pointBackgroundColor: "rgba(220, 38, 38, 0.95)"
+        },
+        {
+          label: "MS Dhoni",
+          data: [0.070129446, -0.020366219, -0.049419636],
+          borderWidth: 3,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          fill: true,
+          backgroundColor: "rgba(37, 99, 235, 0.10)",
+          borderColor: "rgba(37, 99, 235, 0.95)",
+          pointBackgroundColor: "rgba(37, 99, 235, 0.95)"
+        },
+        {
+          label: "Par",
+          data: [0, 0, 0],
+          borderWidth: 2,
+          pointRadius: 3,
+          pointHoverRadius: 5,
+          fill: false,
+          borderColor: "rgba(17, 24, 39, 0.70)",
+          pointBackgroundColor: "rgba(17, 24, 39, 0.70)",
+          borderDash: [6, 6]
+        }
+      ]
+    };
+
+    new Chart(ctx, {
+      type: "radar",
+      data: radarData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+
+        elements: {
+          line: {
+            tension: 0
+          }
+        },
+
+        plugins: {
+          legend: {
+            position: "right",
+            labels: {
+              boxWidth: 14,
+              padding: 16,
+              font: {
+                size: 13
+              }
+            }
+          },
+
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const value = Number(context.raw);
+                return context.dataset.label + ": " + (value * 100).toFixed(2) + "%";
+              }
+            }
+          }
+        },
+
+        scales: {
+          r: {
+            min: -0.12,
+            max: 0.12,
+
+            ticks: {
+              display: true,
+              showLabelBackdrop: false,
+              backdropColor: "transparent",
+              stepSize: 0.03,
+              callback: function(value) {
+                return (Number(value) * 100).toFixed(0) + "%";
+              }
+            },
+
+            grid: {
+              circular: false,
+              color: "rgba(0,0,0,0.12)"
+            },
+
+            angleLines: {
+              display: true,
+              color: "rgba(0,0,0,0.20)"
+            },
+
+            pointLabels: {
+              font: {
+                size: 14,
+                weight: "bold"
+              },
+              color: "#374151"
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
