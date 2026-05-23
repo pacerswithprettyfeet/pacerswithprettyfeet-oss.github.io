@@ -76,7 +76,7 @@ His percentage of dots, jogs, fours and sixes this year.
 <iframe 
   src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plots_TSR_death.html'  |relative_url }}" 
   width="100%" 
-  height="1450" 
+  height="1500" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
