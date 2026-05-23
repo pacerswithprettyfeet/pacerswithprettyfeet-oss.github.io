@@ -33,7 +33,7 @@ A list of stuff he has done in this season → setting up base to what he actual
 <iframe 
   src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plot2.html'  |relative_url }}" 
   width="100%" 
-  height="1000" 
+  height="800" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
@@ -43,7 +43,7 @@ Their interesting dot-to-six spectrum.
 <iframe 
   src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plot3.html'  |relative_url }}" 
   width="100%" 
-  height="1250" 
+  height="1400" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
