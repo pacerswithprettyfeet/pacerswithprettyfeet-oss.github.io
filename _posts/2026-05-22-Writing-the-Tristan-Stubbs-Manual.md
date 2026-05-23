@@ -43,7 +43,7 @@ Their interesting dot-to-six spectrum.
 <iframe 
   src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plot3.html'  |relative_url }}" 
   width="100%" 
-  height="1250" 
+  height="1300" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
