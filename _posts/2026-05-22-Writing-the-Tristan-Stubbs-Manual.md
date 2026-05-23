@@ -3,7 +3,7 @@ layout: post
 title: "Writing the Tristan Stubbs Manual"
 comments: true
 author: "Atharv Tambade and Aadityan Ganesh."
-date: 2026-22-05
+date: 2026-05-22
 categories: IPL
 tags: []
 ---
