@@ -43,7 +43,7 @@ Their interesting dot-to-six spectrum.
 <iframe 
   src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plot3.html'  |relative_url }}" 
   width="100%" 
-  height="1100" 
+  height="1250" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
@@ -55,7 +55,7 @@ Their interesting dot-to-six spectrum in the middle overs against pace and spin.
 <iframe 
   src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plots_dots_jogs_biund_2026.html'  |relative_url }}" 
   width="100%" 
-  height="370" 
+  height="380" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
@@ -76,7 +76,7 @@ His percentage of dots, jogs, fours and sixes this year.
 <iframe 
   src="{{ '/assets/plots/Writing the Tristan Stubbs Manual/stubbs_plots_TSR_death.html'  |relative_url }}" 
   width="100%" 
-  height="1500" 
+  height="1400" 
   style="border:none; overflow:hidden;"
 ></iframe>
 
