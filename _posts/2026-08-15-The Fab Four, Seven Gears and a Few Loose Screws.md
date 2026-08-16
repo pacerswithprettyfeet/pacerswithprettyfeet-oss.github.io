@@ -19,13 +19,13 @@ tags: [Fab Four, batting, gears]
   .plot-headingley { height: 550px; }
   .plot-monasteries, .plot-arsonists { height: 630px; }
   .plot-fingerprint { height: 430px; }
-  .plot-average-survival { height: 450px; }
+  .plot-average-survival { height: 460px; }
   .plot-major-opposition { height: 470px; }
   .plot-ten-over-phases { height: 490px; }
   .plot-smith-eras { height: 430px; }
   .plot-kohli-careers { height: 680px; }
   .plot-root-handbrake { height: 365px; }
-  .plot-root-jogs { height: 410px; }
+  .plot-root-jogs { height: 420px; }
   .plot-starting-innings { height: 420px; }
   .plot-innings-average { height: 405px; }
   .plot-innings-gears { height: 385px; }
