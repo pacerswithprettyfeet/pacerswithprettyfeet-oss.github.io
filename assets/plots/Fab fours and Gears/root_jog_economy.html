@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Root's jog economy</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background: #ffffff;
+      color: #17212b;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    figure {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 6px 8px 0;
+      overflow: hidden;
+    }
+
+    .series-legend {
+      display: flex;
+      min-height: 27px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 5px 16px;
+      color: #53616d;
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .line-key {
+      position: relative;
+      width: 24px;
+      height: 10px;
+      margin-right: 5px;
+      color: var(--series-color);
+    }
+
+    .line-key::before {
+      position: absolute;
+      top: 4px;
+      left: 0;
+      width: 24px;
+      height: var(--line-width);
+      content: "";
+      background: currentColor;
+    }
+
+    .line-key.dashed::before {
+      height: 1px;
+      background: repeating-linear-gradient(
+        90deg,
+        currentColor 0 5px,
+        transparent 5px 8px
+      );
+    }
+
+    .line-key::after {
+      position: absolute;
+      top: 2px;
+      left: 9px;
+      width: 6px;
+      height: 6px;
+      border: 1px solid #ffffff;
+      border-radius: 50%;
+      background: currentColor;
+      content: "";
+    }
+
+    .chart-stage {
+      position: relative;
+      width: 100%;
+      height: 360px;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+      width: 100% !important;
+      max-width: 100%;
+    }
+
+    figcaption {
+      padding: 4px 8px 0 76px;
+      color: #61707d;
+      font-size: 10px;
+      font-weight: 400;
+      line-height: 1.42;
+      letter-spacing: 0;
+    }
+
+    @media (max-width: 680px) {
+      figure {
+        width: 100vw;
+        max-width: 100vw;
+        padding: 4px 5px 0;
+      }
+
+      .series-legend {
+        min-height: 43px;
+        gap: 5px 11px;
+        font-size: 9px;
+      }
+
+      .chart-stage { height: 390px; }
+
+      figcaption {
+        padding: 5px 7px 0;
+        font-size: 9px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <figure>
+    <div class="series-legend" id="seriesLegend"></div>
+    <div class="chart-stage">
+      <canvas id="jogChart" aria-label="Joe Root jog percentage before and after Bazball, compared with Virat Kohli from 2014 to 2019"></canvas>
+    </div>
+    <figcaption>
+      Share of balls on which Root rotated the strike, by gear. We compare Root up to 2021 with Root under Bazball from 2022 onward, using Kohli's 2014-19 peak as a benchmark. Since Bazball began, Root has rotated the strike more often than even peak Kohli in every gear.
+    </figcaption>
+  </figure>
+
+  <script>
+    const SERIES = [{"key":"root_until_2021","label":"Root, until 2021","batter":"JE Root","start":null,"end":2021,"color":"#8aa9c2","dash":[6,4],"pointStyle":"circle","lineWidth":2.0,"totalBalls":17360,"totalJogBalls":4032,"totalBoundaryBalls":1090,"overallJogShare":23.225806451612904,"overallBoundaryShare":6.278801843317972,"gears":[{"gear":0,"balls":4100,"dotBalls":3853,"jogBalls":234,"boundaryBalls":13,"jogShare":5.7073170731707314,"boundaryShare":0.3170731707317073},{"gear":1,"balls":3606,"dotBalls":2904,"jogBalls":626,"boundaryBalls":76,"jogShare":17.359955629506377,"boundaryShare":2.107598447032723},{"gear":2,"balls":2864,"dotBalls":2020,"jogBalls":734,"boundaryBalls":110,"jogShare":25.62849162011173,"boundaryShare":3.840782122905028},{"gear":3,"balls":2132,"dotBalls":1245,"jogBalls":764,"boundaryBalls":123,"jogShare":35.834896810506564,"boundaryShare":5.769230769230769},{"gear":4,"balls":1383,"dotBalls":772,"jogBalls":470,"boundaryBalls":141,"jogShare":33.98409255242227,"boundaryShare":10.195227765726681},{"gear":5,"balls":2060,"dotBalls":999,"jogBalls":756,"boundaryBalls":305,"jogShare":36.699029126213595,"boundaryShare":14.805825242718447},{"gear":6,"balls":1215,"dotBalls":445,"jogBalls":448,"boundaryBalls":322,"jogShare":36.8724279835391,"boundaryShare":26.502057613168724}]},{"key":"root_2022_onward","label":"Root, 2022 onward","batter":"JE Root","start":2022,"end":null,"color":"#2f6fb3","dash":[],"pointStyle":"circle","lineWidth":3.0,"totalBalls":6909,"totalJogBalls":2096,"totalBoundaryBalls":458,"overallJogShare":30.33724127949052,"overallBoundaryShare":6.629034592560428,"gears":[{"gear":0,"balls":1090,"dotBalls":1018,"jogBalls":69,"boundaryBalls":3,"jogShare":6.330275229357798,"boundaryShare":0.27522935779816515},{"gear":1,"balls":1152,"dotBalls":889,"jogBalls":243,"boundaryBalls":20,"jogShare":21.09375,"boundaryShare":1.7361111111111112},{"gear":2,"balls":1301,"dotBalls":882,"jogBalls":368,"boundaryBalls":51,"jogShare":28.285933897002305,"boundaryShare":3.9200614911606455},{"gear":3,"balls":1164,"dotBalls":638,"jogBalls":472,"boundaryBalls":54,"jogShare":40.549828178694156,"boundaryShare":4.639175257731959},{"gear":4,"balls":716,"dotBalls":353,"jogBalls":306,"boundaryBalls":57,"jogShare":42.737430167597765,"boundaryShare":7.960893854748603},{"gear":5,"balls":818,"dotBalls":351,"jogBalls":363,"boundaryBalls":104,"jogShare":44.37652811735941,"boundaryShare":12.71393643031785},{"gear":6,"balls":668,"dotBalls":224,"jogBalls":275,"boundaryBalls":169,"jogShare":41.16766467065868,"boundaryShare":25.29940119760479}]},{"key":"kohli_2014_19","label":"Kohli, 2014-19","batter":"V Kohli","start":2014,"end":2019,"color":"#bd463e","dash":[2,4],"pointStyle":"rectRot","lineWidth":2.1,"totalBalls":9383,"totalJogBalls":2475,"totalBoundaryBalls":647,"overallJogShare":26.37749120750293,"overallBoundaryShare":6.895449216668443,"gears":[{"gear":0,"balls":1767,"dotBalls":1658,"jogBalls":108,"boundaryBalls":1,"jogShare":6.112054329371817,"boundaryShare":0.056593095642331635},{"gear":1,"balls":1707,"dotBalls":1393,"jogBalls":268,"boundaryBalls":46,"jogShare":15.700058582308143,"boundaryShare":2.6947861745752784},{"gear":2,"balls":1613,"dotBalls":1111,"jogBalls":438,"boundaryBalls":64,"jogShare":27.154370737755734,"boundaryShare":3.967761934283943},{"gear":3,"balls":1504,"dotBalls":836,"jogBalls":583,"boundaryBalls":85,"jogShare":38.763297872340424,"boundaryShare":5.651595744680851},{"gear":4,"balls":882,"dotBalls":456,"jogBalls":343,"boundaryBalls":83,"jogShare":38.888888888888886,"boundaryShare":9.410430839002268},{"gear":5,"balls":1060,"dotBalls":493,"jogBalls":413,"boundaryBalls":154,"jogShare":38.9622641509434,"boundaryShare":14.528301886792454},{"gear":6,"balls":850,"dotBalls":314,"jogBalls":322,"boundaryBalls":214,"jogShare":37.88235294117647,"boundaryShare":25.176470588235293}]}];
+
+    document.getElementById("seriesLegend").innerHTML = SERIES.map(series => {
+      const dashed = series.dash.length ? " dashed" : "";
+      return `<span class="legend-item"><span class="line-key${dashed}" style="--series-color:${series.color};--line-width:${series.lineWidth}px"></span>${series.label}</span>`;
+    }).join("");
+
+    const gearBands = {
+      id: "gearBands",
+      beforeDatasetsDraw(chart) {
+        if (chart.canvas.id !== "jogChart") return;
+        const { ctx, chartArea, scales } = chart;
+        const x = scales.x;
+        const step = Math.abs(x.getPixelForValue(1) - x.getPixelForValue(0));
+        ctx.save();
+        [0, 2, 4, 6].forEach(gear => {
+          const center = x.getPixelForValue(gear);
+          const left = Math.max(chartArea.left, center - step / 2);
+          const right = Math.min(chartArea.right, center + step / 2);
+          ctx.fillStyle = "rgba(78, 101, 115, 0.045)";
+          ctx.fillRect(left, chartArea.top, right - left, chartArea.height);
+        });
+        ctx.restore();
+      }
+    };
+
+    Chart.register(gearBands);
+
+    const datasets = SERIES.map(series => ({
+      label: series.label,
+      data: series.gears.map(gear => ({
+        x: gear.gear,
+        y: gear.jogShare,
+        balls: gear.balls,
+        jogBalls: gear.jogBalls
+      })),
+      borderColor: series.color,
+      backgroundColor: series.color,
+      pointBackgroundColor: series.color,
+      pointBorderColor: "#ffffff",
+      pointBorderWidth: 1.2,
+      pointRadius: series.key === "root_2022_onward" ? 5 : 4.2,
+      pointHoverRadius: 7,
+      pointStyle: series.pointStyle,
+      borderWidth: series.lineWidth,
+      borderDash: series.dash,
+      tension: 0.16
+    }));
+
+    new Chart(document.getElementById("jogChart"), {
+      type: "line",
+      data: { datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 180 },
+        layout: { padding: { top: 6, right: 8, bottom: 0, left: 2 } },
+        interaction: { mode: "nearest", intersect: true },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            displayColors: true,
+            backgroundColor: "rgba(23, 33, 43, 0.97)",
+            padding: 10,
+            titleFont: { size: 12 },
+            bodyFont: { size: 11 },
+            callbacks: {
+              title(items) { return `Gear ${items[0].raw.x}`; },
+              label(context) {
+                const row = context.raw;
+                return `${context.dataset.label}: ${row.y.toFixed(1)}% (${row.jogBalls.toLocaleString()} of ${row.balls.toLocaleString()} balls)`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            type: "linear",
+            min: -0.08,
+            max: 6.08,
+            afterBuildTicks(scale) {
+              scale.ticks = [0, 1, 2, 3, 4, 5, 6].map(value => ({ value }));
+            },
+            ticks: {
+              color: "#42515e",
+              font: { size: 10, weight: "bold" },
+              padding: 7,
+              callback(value) { return `Gear ${value}`; }
+            },
+            grid: { display: false },
+            border: { color: "#8a98a4" }
+          },
+          y: {
+            min: 0,
+            max: 50,
+            title: {
+              display: true,
+              text: "Fraction of jogged deliveries",
+              color: "#42515e",
+              font: { size: 10, weight: "bold" }
+            },
+            ticks: {
+              stepSize: 10,
+              color: "#61707d",
+              font: { size: 9 },
+              callback(value) { return `${value}%`; }
+            },
+            grid: { color: "rgba(217, 224, 229, 0.74)" },
+            border: { display: false }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

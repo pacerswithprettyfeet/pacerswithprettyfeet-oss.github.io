@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fab Four: partner preferences, 2014-19</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background: #ffffff;
+      color: #17212b;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    figure {
+      width: 100%;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 6px 9px 0;
+      overflow: hidden;
+    }
+
+    .figure-head {
+      display: flex;
+      min-height: 30px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 18px;
+      color: #43515d;
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    .period {
+      color: #6a7680;
+      font-weight: 700;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border: 1px solid #ffffff;
+      border-radius: 50%;
+      background: var(--entity-color);
+      box-shadow: 0 0 0 1px var(--entity-color);
+    }
+
+    .story-grid {
+      display: grid;
+      width: 100%;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .panel { min-width: 0; }
+
+    .panel-title {
+      min-height: 23px;
+      padding-top: 3px;
+      color: #33414d;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.2;
+      text-align: center;
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+
+    .grid-line {
+      stroke: #e1e6ea;
+      stroke-width: 1;
+    }
+
+    .axis-line {
+      stroke: #8e9aa4;
+      stroke-width: 1;
+    }
+
+    .connector {
+      stroke: #b7c0c7;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    .player-line {
+      fill: none;
+      stroke-width: 3;
+      stroke-linecap: round;
+    }
+
+    .lollipop-stem {
+      stroke-width: 3;
+      stroke-linecap: round;
+      opacity: 0.72;
+    }
+
+    .axis-label,
+    .tick-label,
+    .row-label,
+    .category-label,
+    .value-label,
+    .player-label,
+    .callout {
+      font-family: Arial, Helvetica, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .axis-label {
+      fill: #52616d;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .tick-label {
+      fill: #61707d;
+      font-size: 9px;
+    }
+
+    .row-label,
+    .category-label {
+      fill: #465560;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .value-label,
+    .player-label,
+    .callout {
+      stroke: #ffffff;
+      stroke-width: 4px;
+      paint-order: stroke;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .player-label { font-size: 11px; }
+
+    .callout {
+      fill: #26333d;
+      text-anchor: middle;
+    }
+
+    .data-point {
+      stroke-width: 1.5;
+    }
+
+    .hit-target {
+      fill: transparent;
+      cursor: default;
+      outline: none;
+    }
+
+    .hit-target:focus + .focus-ring { display: block; }
+
+    .focus-ring {
+      display: none;
+      fill: none;
+      stroke: #17212b;
+      stroke-width: 1.5;
+    }
+
+    .tooltip {
+      position: fixed;
+      z-index: 20;
+      display: none;
+      max-width: 275px;
+      padding: 9px 10px;
+      border-radius: 4px;
+      background: rgba(23, 33, 43, 0.97);
+      color: #ffffff;
+      font-size: 10px;
+      line-height: 1.42;
+      pointer-events: none;
+    }
+
+    .tooltip strong {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 11px;
+    }
+
+    figcaption {
+      padding: 5px 8px 2px 56px;
+      color: #61707d;
+      font-size: 9px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0;
+    }
+
+    @media (max-width: 720px) {
+      figure {
+        width: 100vw;
+        max-width: 100vw;
+        padding: 5px 6px 0;
+      }
+
+      .figure-head {
+        min-height: 29px;
+        gap: 12px;
+      }
+
+      .story-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px;
+      }
+
+      .panel-title {
+        min-height: 20px;
+        font-size: 10px;
+      }
+
+      .slope-panel .tick-label { font-size: 16px; }
+      .slope-panel .axis-label,
+      .slope-panel .category-label { font-size: 17px; }
+      .slope-panel .callout { font-size: 17px; }
+      .slope-panel .player-line { stroke-width: 5; }
+
+      figcaption {
+        padding: 3px 7px 2px;
+        font-size: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <figure>
+    <div class="figure-head" aria-label="Player key">
+      <span class="period">2014-19</span>
+      <span class="legend-item"><span class="legend-dot" style="--entity-color:#2f6fb3"></span>Root</span>
+      <span class="legend-item"><span class="legend-dot" style="--entity-color:#2f7a5d"></span>Williamson</span>
+      <span class="legend-item"><span class="legend-dot" style="--entity-color:#bd463e"></span>Kohli</span>
+      <span class="legend-item"><span class="legend-dot" style="--entity-color:#b87813"></span>Smith</span>
+    </div>
+
+    <div class="story-grid">
+      <section class="panel slope-panel">
+        <div class="panel-title" id="middle-title">Middle-gear balls per dismissal</div>
+        <svg class="slope-chart" id="middle-chart" viewBox="0 0 460 255" role="img" aria-labelledby="middle-title"></svg>
+      </section>
+      <section class="panel slope-panel">
+        <div class="panel-title" id="high-title">High-gear balls per dismissal</div>
+        <svg class="slope-chart" id="high-chart" viewBox="0 0 460 255" role="img" aria-labelledby="high-title"></svg>
+      </section>
+    </div>
+
+    <figcaption>
+      The Fab Four between 2014-19: middle- and high-gear balls per dismissal with top-five, Nos. 6-8 and tail partners. Root and Williamson were not dismissed in the high gears when batting with the tail.
+    </figcaption>
+  </figure>
+  <div class="tooltip" id="tooltip" role="tooltip"></div>
+
+  <script>
+    const RECORDS = {"partnerEffects":[{"batter":"JE Root","key":"root","entity":"Joe Root","shortName":"Root","color":"#2f6fb3","bands":[{"key":"middle","label":"Middle gears","points":[{"partnerKey":"top-five","partnerLabel":"Top five","balls":2876,"runs":1797,"dismissals":40,"ballsPerDismissal":71.9,"battingAverage":44.925,"lowerBound":null},{"partnerKey":"lower-middle","partnerLabel":"Nos. 6-8","balls":947,"runs":598,"dismissals":13,"ballsPerDismissal":72.84615384615384,"battingAverage":46.0,"lowerBound":null},{"partnerKey":"tail","partnerLabel":"Tail","balls":181,"runs":119,"dismissals":1,"ballsPerDismissal":181.0,"battingAverage":119.0,"lowerBound":null}]},{"key":"high","label":"High gears","points":[{"partnerKey":"top-five","partnerLabel":"Top five","balls":1623,"runs":2052,"dismissals":15,"ballsPerDismissal":108.2,"battingAverage":136.8,"lowerBound":null},{"partnerKey":"lower-middle","partnerLabel":"Nos. 6-8","balls":533,"runs":719,"dismissals":4,"ballsPerDismissal":133.25,"battingAverage":179.75,"lowerBound":null},{"partnerKey":"tail","partnerLabel":"Tail","balls":171,"runs":237,"dismissals":0,"ballsPerDismissal":null,"battingAverage":null,"lowerBound":171}]}]},{"batter":"KS Williamson","key":"williamson","entity":"Kane Williamson","shortName":"Williamson","color":"#2f7a5d","bands":[{"key":"middle","label":"Middle gears","points":[{"partnerKey":"top-five","partnerLabel":"Top five","balls":2192,"runs":1387,"dismissals":22,"ballsPerDismissal":99.63636363636364,"battingAverage":63.04545454545455,"lowerBound":null},{"partnerKey":"lower-middle","partnerLabel":"Nos. 6-8","balls":682,"runs":416,"dismissals":6,"ballsPerDismissal":113.66666666666667,"battingAverage":69.33333333333333,"lowerBound":null},{"partnerKey":"tail","partnerLabel":"Tail","balls":67,"runs":49,"dismissals":2,"ballsPerDismissal":33.5,"battingAverage":24.5,"lowerBound":null}]},{"key":"high","label":"High gears","points":[{"partnerKey":"top-five","partnerLabel":"Top five","balls":1260,"runs":1678,"dismissals":9,"ballsPerDismissal":140.0,"battingAverage":186.44444444444446,"lowerBound":null},{"partnerKey":"lower-middle","partnerLabel":"Nos. 6-8","balls":355,"runs":411,"dismissals":1,"ballsPerDismissal":355.0,"battingAverage":411.0,"lowerBound":null},{"partnerKey":"tail","partnerLabel":"Tail","balls":26,"runs":48,"dismissals":0,"ballsPerDismissal":null,"battingAverage":null,"lowerBound":26}]}]},{"batter":"SPD Smith","key":"smith","entity":"Steve Smith","shortName":"Smith","color":"#b87813","bands":[{"key":"middle","label":"Middle gears","points":[{"partnerKey":"top-five","partnerLabel":"Top five","balls":2587,"runs":1670,"dismissals":22,"ballsPerDismissal":117.5909090909091,"battingAverage":75.9090909090909,"lowerBound":null},{"partnerKey":"lower-middle","partnerLabel":"Nos. 6-8","balls":1138,"runs":683,"dismissals":7,"ballsPerDismissal":162.57142857142858,"battingAverage":97.57142857142857,"lowerBound":null},{"partnerKey":"tail","partnerLabel":"Tail","balls":277,"runs":194,"dismissals":3,"ballsPerDismissal":92.33333333333333,"battingAverage":64.66666666666667,"lowerBound":null}]},{"key":"high","label":"High gears","points":[{"partnerKey":"top-five","partnerLabel":"Top five","balls":1380,"runs":1825,"dismissals":12,"ballsPerDismissal":115.0,"battingAverage":152.08333333333334,"lowerBound":null},{"partnerKey":"lower-middle","partnerLabel":"Nos. 6-8","balls":568,"runs":718,"dismissals":5,"ballsPerDismissal":113.6,"battingAverage":143.6,"lowerBound":null},{"partnerKey":"tail","partnerLabel":"Tail","balls":185,"runs":236,"dismissals":5,"ballsPerDismissal":37.0,"battingAverage":47.2,"lowerBound":null}]}]},{"batter":"V Kohli","key":"kohli","entity":"Virat Kohli","shortName":"Kohli","color":"#bd463e","bands":[{"key":"middle","label":"Middle gears","points":[{"partnerKey":"top-five","partnerLabel":"Top five","balls":2954,"runs":1896,"dismissals":20,"ballsPerDismissal":147.7,"battingAverage":94.8,"lowerBound":null},{"partnerKey":"lower-middle","partnerLabel":"Nos. 6-8","balls":917,"runs":602,"dismissals":14,"ballsPerDismissal":65.5,"battingAverage":43.0,"lowerBound":null},{"partnerKey":"tail","partnerLabel":"Tail","balls":128,"runs":89,"dismissals":1,"ballsPerDismissal":128.0,"battingAverage":89.0,"lowerBound":null}]},{"key":"high","label":"High gears","points":[{"partnerKey":"top-five","partnerLabel":"Top five","balls":1241,"runs":1619,"dismissals":8,"ballsPerDismissal":155.125,"battingAverage":202.375,"lowerBound":null},{"partnerKey":"lower-middle","partnerLabel":"Nos. 6-8","balls":506,"runs":652,"dismissals":5,"ballsPerDismissal":101.2,"battingAverage":130.4,"lowerBound":null},{"partnerKey":"tail","partnerLabel":"Tail","balls":163,"runs":214,"dismissals":1,"ballsPerDismissal":163.0,"battingAverage":214.0,"lowerBound":null}]}]}]};
+    const NS = "http://www.w3.org/2000/svg";
+    const COLORS = { kohli: "#bd463e", smith: "#b87813" };
+
+    function svgElement(name, attributes = {}, text = "") {
+      const element = document.createElementNS(NS, name);
+      Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
+      if (text) element.textContent = text;
+      return element;
+    }
+
+    function addPoint(svg, options) {
+      svg.appendChild(svgElement("circle", {
+        class: "data-point",
+        cx: options.x,
+        cy: options.y,
+        r: options.radius || 6,
+        fill: options.color,
+        stroke: "#ffffff"
+      }));
+      const hit = svgElement("circle", {
+        class: "hit-target",
+        cx: options.x,
+        cy: options.y,
+        r: options.hitRadius || 15,
+        tabindex: 0,
+        "aria-label": options.ariaLabel
+      });
+      hit.dataset.tooltip = options.tooltip;
+      svg.appendChild(hit);
+      svg.appendChild(svgElement("circle", {
+        class: "focus-ring",
+        cx: options.x,
+        cy: options.y,
+        r: (options.radius || 6) + 4
+      }));
+    }
+
+    function findBand(player, bandKey) {
+      return player.bands.find(band => band.key === bandKey);
+    }
+
+    function buildSlopeChart(bandKey) {
+      const svg = document.getElementById(`${bandKey}-chart`);
+      const width = 460;
+      const height = 255;
+      const margin = { left: 51, right: 24, top: 12, bottom: 43 };
+      const xPositions = { "top-five": 92, "lower-middle": 230, "tail": 368 };
+      const yMin = 0;
+      const yMax = bandKey === "middle" ? 200 : 380;
+      const yTicks = bandKey === "middle" ? [0, 50, 100, 150, 200] : [0, 100, 200, 300];
+      const y = value => margin.top + ((yMax - value) / (yMax - yMin)) * (height - margin.top - margin.bottom);
+
+      yTicks.forEach(value => {
+        const position = y(value);
+        svg.appendChild(svgElement("line", {
+          class: "grid-line",
+          x1: margin.left,
+          x2: width - margin.right,
+          y1: position,
+          y2: position
+        }));
+        svg.appendChild(svgElement("text", {
+          class: "tick-label",
+          x: margin.left - 8,
+          y: position + 3,
+          "text-anchor": "end"
+        }, String(value)));
+      });
+      const baseline = y(yMin);
+      svg.appendChild(svgElement("line", {
+        class: "axis-line",
+        x1: margin.left,
+        x2: width - margin.right,
+        y1: baseline,
+        y2: baseline
+      }));
+      [
+        { key: "top-five", label: "Top five" },
+        { key: "lower-middle", label: "Nos. 6-8" },
+        { key: "tail", label: "Tail" }
+      ].forEach(partner => {
+        svg.appendChild(svgElement("text", {
+          class: "category-label",
+          x: xPositions[partner.key],
+          y: height - 15,
+          "text-anchor": "middle"
+        }, partner.label));
+      });
+
+      RECORDS.partnerEffects.forEach(player => {
+        const band = findBand(player, bandKey);
+        const points = band.points;
+        const finitePoints = points.filter(point => point.ballsPerDismissal !== null);
+        const path = finitePoints.map((point, index) => {
+          const command = index === 0 ? "M" : "L";
+          return `${command} ${xPositions[point.partnerKey]} ${y(point.ballsPerDismissal)}`;
+        }).join(" ");
+        if (finitePoints.length > 1) {
+          svg.appendChild(svgElement("path", {
+            class: "player-line",
+            d: path,
+            stroke: player.color
+          }));
+        }
+        points.forEach(point => {
+          const pointX = xPositions[point.partnerKey];
+          if (point.ballsPerDismissal === null) return;
+          const pointY = y(point.ballsPerDismissal);
+          const metricText = `${point.ballsPerDismissal.toFixed(1)} balls per dismissal`;
+          const averageText = `${point.battingAverage.toFixed(1)} batting average`;
+          addPoint(svg, {
+            x: pointX,
+            y: pointY,
+            color: player.color,
+            ariaLabel: `${player.entity}, ${band.label}, ${point.partnerLabel}: ${metricText}`,
+            tooltip: [
+              `<strong>${player.entity}</strong>`,
+              `${band.label} | ${point.partnerLabel}`,
+              metricText,
+              averageText,
+              `${point.balls.toLocaleString()} balls | ${point.dismissals} dismissals`
+            ].join("<br>")
+          });
+          const isMiddleCallout = bandKey === "middle" && player.key === "smith" && point.partnerKey === "lower-middle";
+          const isHighCallout = bandKey === "high" && player.key === "kohli" && point.partnerKey === "top-five";
+          if (isMiddleCallout || isHighCallout) {
+            svg.appendChild(svgElement("text", {
+              class: "callout",
+              x: pointX,
+              y: pointY - 13
+            }, point.ballsPerDismissal.toFixed(1)));
+          }
+        });
+      });
+    }
+
+    buildSlopeChart("middle");
+    buildSlopeChart("high");
+
+    const tooltip = document.getElementById("tooltip");
+
+    function placeTooltip(clientX, clientY) {
+      tooltip.style.left = "0px";
+      tooltip.style.top = "0px";
+      const bounds = tooltip.getBoundingClientRect();
+      const left = Math.min(clientX + 12, window.innerWidth - bounds.width - 8);
+      const top = Math.min(clientY + 12, window.innerHeight - bounds.height - 8);
+      tooltip.style.left = `${Math.max(8, left)}px`;
+      tooltip.style.top = `${Math.max(8, top)}px`;
+    }
+
+    document.querySelectorAll(".hit-target").forEach(target => {
+      target.addEventListener("mouseenter", event => {
+        tooltip.innerHTML = target.dataset.tooltip;
+        tooltip.style.display = "block";
+        placeTooltip(event.clientX, event.clientY);
+      });
+      target.addEventListener("mousemove", event => placeTooltip(event.clientX, event.clientY));
+      target.addEventListener("mouseleave", () => { tooltip.style.display = "none"; });
+      target.addEventListener("focus", () => {
+        tooltip.innerHTML = target.dataset.tooltip;
+        tooltip.style.display = "block";
+        const bounds = target.getBoundingClientRect();
+        placeTooltip(bounds.right, bounds.bottom);
+      });
+      target.addEventListener("blur", () => { tooltip.style.display = "none"; });
+    });
+  </script>
+</body>
+</html>

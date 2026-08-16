@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fab Four batting average and balls per dismissal by gear</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background: #ffffff;
+      color: #17212b;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    figure {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 4px 7px 0;
+    }
+
+    .mode-switch {
+      display: flex;
+      min-height: 34px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mode-control {
+      display: inline-flex;
+      overflow: hidden;
+      border: 1px solid #aab4bc;
+      border-radius: 4px;
+      background: #ffffff;
+    }
+
+    .mode-button {
+      min-height: 26px;
+      padding: 4px 10px;
+      border: 0;
+      border-right: 1px solid #aab4bc;
+      background: #ffffff;
+      color: #465560;
+      font: 700 10px/1 Arial, Helvetica, sans-serif;
+      letter-spacing: 0;
+      cursor: pointer;
+    }
+
+    .mode-button:last-child { border-right: 0; }
+
+    .mode-button:hover { background: #f1f4f5; }
+
+    .mode-button:focus-visible {
+      position: relative;
+      z-index: 1;
+      outline: 2px solid #17212b;
+      outline-offset: -2px;
+    }
+
+    .mode-button[aria-pressed="true"] {
+      background: #26323d;
+      color: #ffffff;
+    }
+
+    .series-legend {
+      display: flex;
+      min-height: 24px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 5px 15px;
+      color: #53616d;
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .legend-dot {
+      width: 9px;
+      height: 9px;
+      margin-right: 4px;
+      border: 1px solid #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 0 0 1px rgba(42, 54, 64, 0.15);
+    }
+
+    .legend-line {
+      width: 18px;
+      height: 0;
+      margin-right: 5px;
+      border-top: 2px dashed #6f4c9b;
+    }
+
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+      min-width: 0;
+      height: 340px;
+    }
+
+    canvas {
+      display: block;
+      width: 100% !important;
+      max-width: 100%;
+    }
+
+    figcaption {
+      padding: 4px 8px 0 42px;
+      color: #61707d;
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0;
+    }
+
+    @media (max-width: 620px) {
+      figure { padding: 3px 5px 0; }
+
+      .mode-switch { min-height: 32px; }
+
+      .mode-button {
+        min-height: 25px;
+        padding: 4px 9px;
+        font-size: 9px;
+      }
+
+      .series-legend {
+        min-height: 34px;
+        gap: 5px 10px;
+      }
+
+      .chart-wrap { height: 260px; }
+
+      figcaption {
+        padding: 3px 7px 0 40px;
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <figure>
+    <div class="mode-switch">
+      <div class="mode-control" role="group" aria-label="Choose batting metric">
+        <button class="mode-button" type="button" data-metric="battingAverage" aria-pressed="true">Batting average</button>
+        <button class="mode-button" type="button" data-metric="ballsPerDismissal" aria-pressed="false">Balls per dismissal</button>
+      </div>
+    </div>
+    <div class="series-legend" id="seriesLegend" aria-label="Player and baseline legend"></div>
+    <div class="chart-wrap">
+      <canvas id="metricChart" aria-label="Fab Four batting average or balls per dismissal by gear"></canvas>
+    </div>
+    <figcaption>Gear-by-gear batting average and balls per dismissal for the Fab Four. Use the buttons above to switch between the two metrics. Batting average is shown on a logarithmic scale. Steve Smith owns the defensive gears but is the weakest of the four in the attacking gears. Kane Williamson outperforms Kohli and Root in every gear except gear 6, where Kohli's batting average of 486 is an act of statistical vandalism.</figcaption>
+  </figure>
+
+  <script>
+    const SERIES = [{"entity":"Joe Root","shortName":"Root","kind":"player","color":"#2f6fb3","offset":0,"totalBalls":24269,"values":[{"gear":0,"balls":5190,"ballShare":21.3853,"runs":404,"dismissals":61,"battingAverage":6.623,"ballsPerDismissal":85.082},{"gear":1,"balls":4758,"ballShare":19.6053,"runs":1403,"dismissals":51,"battingAverage":27.5098,"ballsPerDismissal":93.2941},{"gear":2,"balls":4165,"ballShare":17.1618,"runs":1974,"dismissals":51,"battingAverage":38.7059,"ballsPerDismissal":81.6667},{"gear":3,"balls":3296,"ballShare":13.5811,"runs":2235,"dismissals":49,"battingAverage":45.6122,"ballsPerDismissal":67.2653},{"gear":4,"balls":2099,"ballShare":8.6489,"runs":1786,"dismissals":27,"battingAverage":66.1481,"ballsPerDismissal":77.7407},{"gear":5,"balls":2878,"ballShare":11.8587,"runs":3162,"dismissals":24,"battingAverage":131.75,"ballsPerDismissal":119.9167},{"gear":6,"balls":1883,"ballShare":7.7589,"runs":2988,"dismissals":12,"battingAverage":249.0,"ballsPerDismissal":156.9167}]},{"entity":"Kane Williamson","shortName":"Williamson","kind":"player","color":"#2f7a5d","offset":0,"totalBalls":18306,"values":[{"gear":0,"balls":4855,"ballShare":26.5214,"runs":353,"dismissals":51,"battingAverage":6.9216,"ballsPerDismissal":95.1961},{"gear":1,"balls":4039,"ballShare":22.0638,"runs":1137,"dismissals":39,"battingAverage":29.1538,"ballsPerDismissal":103.5641},{"gear":2,"balls":2878,"ballShare":15.7216,"runs":1395,"dismissals":31,"battingAverage":45.0,"ballsPerDismissal":92.8387},{"gear":3,"balls":2077,"ballShare":11.346,"runs":1418,"dismissals":22,"battingAverage":64.4545,"ballsPerDismissal":94.4091},{"gear":4,"balls":1280,"ballShare":6.9922,"runs":1102,"dismissals":13,"battingAverage":84.7692,"ballsPerDismissal":98.4615},{"gear":5,"balls":1848,"ballShare":10.0951,"runs":1993,"dismissals":12,"battingAverage":166.0833,"ballsPerDismissal":154.0},{"gear":6,"balls":1329,"ballShare":7.2599,"runs":2117,"dismissals":8,"battingAverage":264.625,"ballsPerDismissal":166.125}]},{"entity":"Steve Smith","shortName":"Smith","kind":"player","color":"#b87813","offset":0,"totalBalls":19834,"values":[{"gear":0,"balls":4844,"ballShare":24.4227,"runs":360,"dismissals":46,"battingAverage":7.8261,"ballsPerDismissal":105.3043},{"gear":1,"balls":4288,"ballShare":21.6194,"runs":1237,"dismissals":23,"battingAverage":53.7826,"ballsPerDismissal":186.4348},{"gear":2,"balls":3212,"ballShare":16.1944,"runs":1567,"dismissals":39,"battingAverage":40.1795,"ballsPerDismissal":82.359},{"gear":3,"balls":2486,"ballShare":12.534,"runs":1695,"dismissals":27,"battingAverage":62.7778,"ballsPerDismissal":92.0741},{"gear":4,"balls":1498,"ballShare":7.5527,"runs":1297,"dismissals":15,"battingAverage":86.4667,"ballsPerDismissal":99.8667},{"gear":5,"balls":2096,"ballShare":10.5677,"runs":2262,"dismissals":24,"battingAverage":94.25,"ballsPerDismissal":87.3333},{"gear":6,"balls":1410,"ballShare":7.109,"runs":2245,"dismissals":14,"battingAverage":160.3571,"ballsPerDismissal":100.7143}]},{"entity":"Virat Kohli","shortName":"Kohli","kind":"player","color":"#bd463e","offset":0,"totalBalls":16608,"values":[{"gear":0,"balls":3794,"ballShare":22.8444,"runs":282,"dismissals":52,"battingAverage":5.4231,"ballsPerDismissal":72.9615},{"gear":1,"balls":3445,"ballShare":20.743,"runs":1014,"dismissals":46,"battingAverage":22.0435,"ballsPerDismissal":74.8913},{"gear":2,"balls":2611,"ballShare":15.7213,"runs":1265,"dismissals":31,"battingAverage":40.8065,"ballsPerDismissal":84.2258},{"gear":3,"balls":2374,"ballShare":14.2943,"runs":1638,"dismissals":29,"battingAverage":56.4828,"ballsPerDismissal":81.8621},{"gear":4,"balls":1312,"ballShare":7.8998,"runs":1133,"dismissals":17,"battingAverage":66.6471,"ballsPerDismissal":77.1765},{"gear":5,"balls":1804,"ballShare":10.8622,"runs":1954,"dismissals":18,"battingAverage":108.5556,"ballsPerDismissal":100.2222},{"gear":6,"balls":1268,"ballShare":7.6349,"runs":1944,"dismissals":4,"battingAverage":486.0,"ballsPerDismissal":317.0}]},{"entity":"Top-seven baseline","shortName":"Top-seven baseline","kind":"baseline","color":"#6f4c9b","offset":0,"totalBalls":1448971,"values":[{"gear":0,"balls":389947,"ballShare":26.912,"runs":29162,"dismissals":5814,"battingAverage":5.0158,"ballsPerDismissal":67.0703},{"gear":1,"balls":309537,"ballShare":21.3625,"runs":88028,"dismissals":4299,"battingAverage":20.4764,"ballsPerDismissal":72.0021},{"gear":2,"balls":223800,"ballShare":15.4454,"runs":106726,"dismissals":3314,"battingAverage":32.2046,"ballsPerDismissal":67.5317},{"gear":3,"balls":174336,"ballShare":12.0317,"runs":117692,"dismissals":2642,"battingAverage":44.5466,"ballsPerDismissal":65.9864},{"gear":4,"balls":107242,"ballShare":7.4013,"runs":91924,"dismissals":1473,"battingAverage":62.406,"ballsPerDismissal":72.8052},{"gear":5,"balls":141071,"ballShare":9.7359,"runs":153527,"dismissals":1752,"battingAverage":87.6296,"ballsPerDismissal":80.52},{"gear":6,"balls":103038,"ballShare":7.1111,"runs":164623,"dismissals":1134,"battingAverage":145.1702,"ballsPerDismissal":90.8624}]}];
+    const SPECS = [{"key":"battingAverage","field":"battingAverage","title":"Batting average","scaleType":"logarithmic","minimum":4,"maximum":600,"stepSize":null,"displayCap":null},{"key":"ballsPerDismissal","field":"ballsPerDismissal","title":"Balls per dismissal","scaleType":"linear","minimum":50,"maximum":210,"stepSize":50,"displayCap":200}];
+    const PLAYERS = SERIES.filter(item => item.kind === "player");
+    const BASELINE = SERIES.find(item => item.kind === "baseline");
+    const LOG_TICKS = [5, 10, 20, 50, 100, 200, 500];
+    let chart = null;
+
+    document.getElementById("seriesLegend").innerHTML = [
+      ...PLAYERS.map(item =>
+        `<span class="legend-item"><span class="legend-dot" style="background:${item.color}"></span>${item.shortName}</span>`
+      ),
+      `<span class="legend-item"><span class="legend-line" style="border-color:${BASELINE.color}"></span>${BASELINE.shortName}</span>`
+    ].join("");
+
+    const gearBands = {
+      id: "gearBands",
+      beforeDraw(activeChart) {
+        const { ctx, chartArea, scales } = activeChart;
+        if (!chartArea || !scales.x) return;
+        ctx.save();
+        for (let gear = 0; gear < 7; gear += 1) {
+          const left = Math.max(chartArea.left, scales.x.getPixelForValue(gear - 0.5));
+          const right = Math.min(chartArea.right, scales.x.getPixelForValue(gear + 0.5));
+          if (gear % 2 === 0) {
+            ctx.fillStyle = "rgba(76, 91, 103, 0.045)";
+            ctx.fillRect(left, chartArea.top, right - left, chartArea.bottom - chartArea.top);
+          }
+        }
+        ctx.restore();
+      }
+    };
+
+    const offScaleLabels = {
+      id: "offScaleLabels",
+      afterDatasetsDraw(activeChart) {
+        const { ctx } = activeChart;
+        ctx.save();
+        ctx.font = "700 9px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "bottom";
+        activeChart.data.datasets.forEach((dataset, datasetIndex) => {
+          const meta = activeChart.getDatasetMeta(datasetIndex);
+          dataset.data.forEach((point, pointIndex) => {
+            if (!point.offScale || !meta.data[pointIndex]) return;
+            const element = meta.data[pointIndex];
+            ctx.fillStyle = point.color;
+            ctx.fillText(point.actualValue.toFixed(0), element.x, element.y - 8);
+          });
+        });
+        ctx.restore();
+      }
+    };
+
+    Chart.register(gearBands, offScaleLabels);
+
+    function pointFor(item, value, spec) {
+      const actualValue = Number(value[spec.field]);
+      const offScale = Number.isFinite(spec.displayCap) && actualValue > spec.displayCap;
+      return {
+        x: value.gear,
+        y: offScale ? spec.displayCap : actualValue,
+        gear: value.gear,
+        balls: value.balls,
+        runs: value.runs,
+        dismissals: value.dismissals,
+        entity: item.entity,
+        kind: item.kind,
+        color: item.color,
+        actualValue,
+        offScale
+      };
+    }
+
+    function playerDataset(item, spec) {
+      return {
+        type: "line",
+        label: item.entity,
+        data: item.values.map(value => pointFor(item, value, spec)),
+        parsing: false,
+        showLine: true,
+        borderColor: item.color,
+        borderWidth: 2,
+        tension: 0,
+        pointStyle: context => context.raw && context.raw.offScale ? "triangle" : "circle",
+        pointRadius: context => context.raw && context.raw.offScale ? 6 : 4,
+        pointHoverRadius: 7,
+        pointHitRadius: 9,
+        pointBackgroundColor: item.color,
+        pointBorderColor: "#ffffff",
+        pointBorderWidth: 1,
+        order: 0
+      };
+    }
+
+    function baselineDataset(spec) {
+      return {
+        type: "line",
+        label: BASELINE.entity,
+        data: BASELINE.values.map(value => pointFor(BASELINE, value, spec)),
+        parsing: false,
+        showLine: true,
+        borderColor: BASELINE.color,
+        borderWidth: 2.2,
+        borderDash: [6, 4],
+        pointRadius: 2.8,
+        pointHoverRadius: 6,
+        pointHitRadius: 8,
+        pointBackgroundColor: "#ffffff",
+        pointBorderColor: BASELINE.color,
+        pointBorderWidth: 1.3,
+        tension: 0,
+        order: 10
+      };
+    }
+
+    function formatted(value, spec) {
+      return Number(value).toFixed(1);
+    }
+
+    function yTicks(spec) {
+      if (spec.scaleType === "logarithmic") {
+        return {
+          autoSkip: false,
+          color: "#61707d",
+          font: { size: 9 },
+          callback(value) {
+            return LOG_TICKS.includes(Number(value)) ? Number(value).toLocaleString() : "";
+          }
+        };
+      }
+      return {
+        stepSize: spec.stepSize,
+        color: "#61707d",
+        font: { size: 9 },
+        callback(value) {
+          if (Number.isFinite(spec.displayCap) && Number(value) > spec.displayCap) return "";
+          return Number(value).toLocaleString();
+        }
+      };
+    }
+
+    function yGrid(spec) {
+      if (spec.scaleType === "logarithmic") {
+        return {
+          color(context) {
+            return LOG_TICKS.includes(Number(context.tick.value))
+              ? "rgba(217, 224, 229, 0.8)"
+              : "transparent";
+          }
+        };
+      }
+      return {
+        color(context) {
+          if (Number.isFinite(spec.displayCap) && Number(context.tick.value) > spec.displayCap) {
+            return "transparent";
+          }
+          return "rgba(217, 224, 229, 0.8)";
+        }
+      };
+    }
+
+    function buildChart(spec) {
+      return new Chart(document.getElementById("metricChart"), {
+        type: "line",
+        data: { datasets: [baselineDataset(spec), ...PLAYERS.map(item => playerDataset(item, spec))] },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 180 },
+          layout: { padding: { top: 5, right: 5 } },
+          interaction: { mode: "nearest", axis: "xy", intersect: true },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              displayColors: true,
+              backgroundColor: "rgba(23, 33, 43, 0.96)",
+              padding: 10,
+              titleFont: { size: 12 },
+              bodyFont: { size: 11 },
+              callbacks: {
+                title(items) {
+                  const point = items[0].raw;
+                  return `${point.entity}, gear ${point.gear}`;
+                },
+                label(context) {
+                  const point = context.raw;
+                  return [
+                    ` ${spec.title}: ${formatted(point.actualValue, spec)}`,
+                    ` ${point.runs.toLocaleString()} runs | ${point.dismissals.toLocaleString()} dismissals`,
+                    ` ${point.balls.toLocaleString()} balls`
+                  ];
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              type: "linear",
+              min: -0.5,
+              max: 6.5,
+              afterBuildTicks(scale) {
+                scale.ticks = [0, 1, 2, 3, 4, 5, 6].map(value => ({ value }));
+              },
+              title: {
+                display: true,
+                text: "Gear",
+                color: "#42515e",
+                font: { weight: "bold", size: 10 }
+              },
+              ticks: {
+                color: "#61707d",
+                font: { size: 9, weight: "700" },
+                callback(value) { return `G${value}`; }
+              },
+              grid: { display: false },
+              border: { color: "#8a98a4" }
+            },
+            y: {
+              type: spec.scaleType,
+              min: spec.minimum,
+              max: spec.maximum,
+              title: {
+                display: true,
+                text: spec.title,
+                color: "#42515e",
+                font: { weight: "bold", size: 10 }
+              },
+              afterBuildTicks(scale) {
+                if (spec.scaleType === "logarithmic") {
+                  scale.ticks = LOG_TICKS.map(value => ({ value }));
+                }
+              },
+              ticks: yTicks(spec),
+              grid: yGrid(spec),
+              border: { color: "#8a98a4" }
+            }
+          }
+        }
+      });
+    }
+
+    function setMetric(metricKey) {
+      const spec = SPECS.find(item => item.key === metricKey) || SPECS[0];
+      document.querySelectorAll(".mode-button").forEach(button => {
+        button.setAttribute("aria-pressed", String(button.dataset.metric === spec.key));
+      });
+      if (chart) chart.destroy();
+      chart = buildChart(spec);
+    }
+
+    document.querySelectorAll(".mode-button").forEach(button => {
+      button.addEventListener("click", () => setMetric(button.dataset.metric));
+    });
+
+    const requestedMetric = new URLSearchParams(window.location.search).get("metric");
+    setMetric(requestedMetric || SPECS[0].key);
+  </script>
+</body>
+</html>

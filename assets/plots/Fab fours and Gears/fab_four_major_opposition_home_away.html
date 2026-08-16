@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fab Four high gears against major opposition</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background: #ffffff;
+      color: #17212b;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    figure {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 4px 7px 0;
+    }
+
+    .controls {
+      display: flex;
+      min-height: 36px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mode-control {
+      display: inline-flex;
+      overflow: hidden;
+      border: 1px solid #aab4bc;
+      border-radius: 4px;
+      background: #ffffff;
+    }
+
+    .mode-button {
+      min-height: 27px;
+      padding: 4px 11px;
+      border: 0;
+      border-right: 1px solid #aab4bc;
+      background: #ffffff;
+      color: #465560;
+      font: 700 10px/1 Arial, Helvetica, sans-serif;
+      letter-spacing: 0;
+      cursor: pointer;
+    }
+
+    .mode-button:last-child { border-right: 0; }
+    .mode-button:hover { background: #f1f4f5; }
+
+    .mode-button:focus-visible {
+      position: relative;
+      z-index: 1;
+      outline: 2px solid #17212b;
+      outline-offset: -2px;
+    }
+
+    .mode-button[aria-pressed="true"] {
+      background: #26323d;
+      color: #ffffff;
+    }
+
+    .legend {
+      display: flex;
+      min-height: 25px;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      color: #53616d;
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .legend-mark {
+      width: 9px;
+      height: 9px;
+      margin-right: 5px;
+      border: 1px solid #ffffff;
+      box-shadow: 0 0 0 1px rgba(42, 54, 64, 0.2);
+    }
+
+    .legend-mark.home {
+      border-radius: 50%;
+      background: #2f7a5d;
+    }
+
+    .legend-mark.away {
+      border-radius: 1px;
+      background: #c7603c;
+    }
+
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+      min-width: 0;
+      height: 305px;
+    }
+
+    canvas {
+      display: block;
+      width: 100% !important;
+      max-width: 100%;
+    }
+
+    figcaption {
+      padding: 5px 9px 0 104px;
+      color: #61707d;
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.43;
+      letter-spacing: 0;
+    }
+
+    @media (max-width: 620px) {
+      figure { padding: 3px 5px 0; }
+      .controls { min-height: 34px; }
+
+      .mode-button {
+        min-height: 26px;
+        padding: 4px 9px;
+        font-size: 9px;
+      }
+
+      .legend { min-height: 23px; }
+      .chart-wrap { height: 285px; }
+
+      figcaption {
+        padding: 4px 7px 0;
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <figure>
+    <div class="controls">
+      <div class="mode-control" role="group" aria-label="Choose batting metric">
+        <button class="mode-button" type="button" data-metric="battingAverage" aria-pressed="true">Batting average</button>
+        <button class="mode-button" type="button" data-metric="ballsPerDismissal" aria-pressed="false">Balls per dismissal</button>
+      </div>
+    </div>
+    <div class="legend" aria-label="Home and away legend">
+      <span class="legend-item"><span class="legend-mark home"></span>Home</span>
+      <span class="legend-item"><span class="legend-mark away"></span>Away</span>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="metricChart" aria-label="Fab Four high-gear home and away comparison"></canvas>
+    </div>
+    <figcaption>High-gear batting average and balls per dismissal for the Fab Four against major opposition, split between home and away Tests. Use the buttons above to switch metrics. For each batter, major opposition means the other four teams among Australia, England, India, New Zealand and South Africa; neutral Tests are excluded. Root, Williamson and Smith all become substantially less secure away, while Kohli somehow improves: his average rises from 212.4 at home to 241.4 away, and his balls per dismissal from 166.8 to 193.4! Williamson has the strongest home record and trails only Kohli away; Smith ranks last in both settings. Hover over a point for the underlying runs, balls and opposition breakdown.</figcaption>
+  </figure>
+
+  <script>
+    const RECORDS = [{"batter":"JE Root","player":"Joe Root","shortName":"Root","homeCountry":"England","opponents":["Australia","India","New Zealand","South Africa"],"context":"Home","y":3,"innings":104,"runs":2318,"balls":1726,"dismissals":11,"segments":146,"highGearInnings":61,"battingAverage":210.72727272727272,"ballsPerDismissal":156.9090909090909,"opponentBreakdown":[{"opposition":"Australia","runs":693,"balls":522,"dismissals":4,"segments":42,"highGearInnings":19},{"opposition":"India","runs":880,"balls":649,"dismissals":3,"segments":58,"highGearInnings":25},{"opposition":"New Zealand","runs":535,"balls":419,"dismissals":3,"segments":32,"highGearInnings":12},{"opposition":"South Africa","runs":210,"balls":136,"dismissals":1,"segments":14,"highGearInnings":5}]},{"batter":"JE Root","player":"Joe Root","shortName":"Root","homeCountry":"England","opponents":["Australia","India","New Zealand","South Africa"],"context":"Away","y":3,"innings":104,"runs":1575,"balls":1240,"dismissals":13,"segments":104,"highGearInnings":52,"battingAverage":121.15384615384616,"ballsPerDismissal":95.38461538461539,"opponentBreakdown":[{"opposition":"Australia","runs":444,"balls":358,"dismissals":2,"segments":33,"highGearInnings":17},{"opposition":"India","runs":449,"balls":362,"dismissals":3,"segments":31,"highGearInnings":14},{"opposition":"New Zealand","runs":389,"balls":283,"dismissals":3,"segments":23,"highGearInnings":10},{"opposition":"South Africa","runs":293,"balls":237,"dismissals":5,"segments":17,"highGearInnings":11}]},{"batter":"KS Williamson","player":"Kane Williamson","shortName":"Williamson","homeCountry":"New Zealand","opponents":["Australia","England","India","South Africa"],"context":"Home","y":2,"innings":49,"runs":959,"balls":759,"dismissals":4,"segments":69,"highGearInnings":26,"battingAverage":239.75,"ballsPerDismissal":189.75,"opponentBreakdown":[{"opposition":"Australia","runs":48,"balls":45,"dismissals":1,"segments":4,"highGearInnings":3},{"opposition":"England","runs":381,"balls":294,"dismissals":1,"segments":29,"highGearInnings":11},{"opposition":"India","runs":128,"balls":86,"dismissals":0,"segments":7,"highGearInnings":3},{"opposition":"South Africa","runs":402,"balls":334,"dismissals":2,"segments":29,"highGearInnings":9}]},{"batter":"KS Williamson","player":"Kane Williamson","shortName":"Williamson","homeCountry":"New Zealand","opponents":["Australia","England","India","South Africa"],"context":"Away","y":2,"innings":52,"runs":669,"balls":527,"dismissals":5,"segments":50,"highGearInnings":25,"battingAverage":133.8,"ballsPerDismissal":105.4,"opponentBreakdown":[{"opposition":"Australia","runs":320,"balls":255,"dismissals":2,"segments":24,"highGearInnings":10},{"opposition":"England","runs":132,"balls":105,"dismissals":1,"segments":10,"highGearInnings":5},{"opposition":"India","runs":172,"balls":137,"dismissals":1,"segments":13,"highGearInnings":7},{"opposition":"South Africa","runs":45,"balls":30,"dismissals":1,"segments":3,"highGearInnings":3}]},{"batter":"SPD Smith","player":"Steve Smith","shortName":"Smith","homeCountry":"Australia","opponents":["England","India","New Zealand","South Africa"],"context":"Home","y":1,"innings":84,"runs":1782,"balls":1382,"dismissals":13,"segments":124,"highGearInnings":53,"battingAverage":137.07692307692307,"ballsPerDismissal":106.3076923076923,"opponentBreakdown":[{"opposition":"England","runs":711,"balls":582,"dismissals":4,"segments":53,"highGearInnings":21},{"opposition":"India","runs":694,"balls":502,"dismissals":5,"segments":43,"highGearInnings":16},{"opposition":"New Zealand","runs":178,"balls":136,"dismissals":2,"segments":13,"highGearInnings":7},{"opposition":"South Africa","runs":199,"balls":162,"dismissals":2,"segments":15,"highGearInnings":9}]},{"batter":"SPD Smith","player":"Steve Smith","shortName":"Smith","homeCountry":"Australia","opponents":["England","India","New Zealand","South Africa"],"context":"Away","y":1,"innings":73,"runs":1512,"balls":1182,"dismissals":17,"segments":102,"highGearInnings":42,"battingAverage":88.94117647058823,"ballsPerDismissal":69.52941176470588,"opponentBreakdown":[{"opposition":"England","runs":933,"balls":726,"dismissals":12,"segments":63,"highGearInnings":23},{"opposition":"India","runs":265,"balls":229,"dismissals":4,"segments":19,"highGearInnings":8},{"opposition":"New Zealand","runs":143,"balls":105,"dismissals":1,"segments":10,"highGearInnings":5},{"opposition":"South Africa","runs":171,"balls":122,"dismissals":0,"segments":10,"highGearInnings":6}]},{"batter":"V Kohli","player":"Virat Kohli","shortName":"Kohli","homeCountry":"India","opponents":["Australia","England","New Zealand","South Africa"],"context":"Home","y":0,"innings":65,"runs":1062,"balls":834,"dismissals":5,"segments":73,"highGearInnings":32,"battingAverage":212.4,"ballsPerDismissal":166.8,"opponentBreakdown":[{"opposition":"Australia","runs":209,"balls":169,"dismissals":4,"segments":15,"highGearInnings":9},{"opposition":"England","runs":389,"balls":315,"dismissals":1,"segments":29,"highGearInnings":11},{"opposition":"New Zealand","runs":253,"balls":204,"dismissals":0,"segments":17,"highGearInnings":7},{"opposition":"South Africa","runs":211,"balls":146,"dismissals":0,"segments":12,"highGearInnings":5}]},{"batter":"V Kohli","player":"Virat Kohli","shortName":"Kohli","homeCountry":"India","opponents":["Australia","England","New Zealand","South Africa"],"context":"Away","y":0,"innings":89,"runs":1690,"balls":1354,"dismissals":7,"segments":116,"highGearInnings":48,"battingAverage":241.42857142857142,"ballsPerDismissal":193.42857142857142,"opponentBreakdown":[{"opposition":"Australia","runs":616,"balls":513,"dismissals":1,"segments":43,"highGearInnings":15},{"opposition":"England","runs":424,"balls":324,"dismissals":3,"segments":31,"highGearInnings":15},{"opposition":"New Zealand","runs":186,"balls":143,"dismissals":1,"segments":12,"highGearInnings":5},{"opposition":"South Africa","runs":464,"balls":374,"dismissals":2,"segments":30,"highGearInnings":13}]}];
+    const SPECS = [{"key":"battingAverage","field":"battingAverage","title":"Batting average","minimum":60,"maximum":260,"stepSize":50},{"key":"ballsPerDismissal","field":"ballsPerDismissal","title":"Balls per dismissal","minimum":50,"maximum":210,"stepSize":50}];
+    const COLORS = { Home: "#2f7a5d", Away: "#c7603c" };
+    const PLAYER_LABELS = Object.fromEntries(
+      RECORDS.filter(row => row.context === "Home").map(row => [row.y, row.shortName])
+    );
+    let chart = null;
+
+    const dumbbellPlugin = {
+      id: "dumbbellPlugin",
+
+      beforeDatasetsDraw(activeChart) {
+        const { ctx, chartArea, scales } = activeChart;
+        if (!chartArea) return;
+        const x = scales.x;
+        const y = scales.y;
+        const spec = activeChart.options.plugins.dumbbellPlugin.spec;
+        ctx.save();
+
+        for (let row = 0; row < 4; row += 1) {
+          const center = y.getPixelForValue(row);
+          const rowHeight = Math.abs(y.getPixelForValue(Math.min(row + 1, 3)) - center) || 62;
+          if (row % 2 === 1) {
+            ctx.fillStyle = "rgba(76, 91, 103, 0.045)";
+            ctx.fillRect(chartArea.left, center - rowHeight / 2, chartArea.width, rowHeight);
+          }
+        }
+
+        const players = [...new Set(RECORDS.map(row => row.batter))];
+        ctx.strokeStyle = "#aeb8bf";
+        ctx.lineWidth = 2;
+        ctx.lineCap = "round";
+        players.forEach(batter => {
+          const rows = RECORDS.filter(row => row.batter === batter);
+          if (rows.length !== 2) return;
+          const py = y.getPixelForValue(rows[0].y);
+          const first = x.getPixelForValue(rows[0][spec.field]);
+          const second = x.getPixelForValue(rows[1][spec.field]);
+          ctx.beginPath();
+          ctx.moveTo(first, py);
+          ctx.lineTo(second, py);
+          ctx.stroke();
+        });
+        ctx.restore();
+      },
+
+      afterDatasetsDraw(activeChart) {
+        const { ctx, scales } = activeChart;
+        const spec = activeChart.options.plugins.dumbbellPlugin.spec;
+        ctx.save();
+        ctx.font = "700 10px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        RECORDS.forEach(row => {
+          const px = scales.x.getPixelForValue(row[spec.field]);
+          const py = scales.y.getPixelForValue(row.y);
+          ctx.fillStyle = COLORS[row.context];
+          ctx.fillText(
+            Number(row[spec.field]).toFixed(1),
+            px,
+            row.context === "Home" ? py - 13 : py + 14
+          );
+        });
+        ctx.restore();
+      }
+    };
+
+    Chart.register(dumbbellPlugin);
+
+    function pointsFor(context, spec) {
+      return RECORDS.filter(row => row.context === context).map(row => ({
+        x: row[spec.field],
+        y: row.y,
+        ...row
+      }));
+    }
+
+    function contextDataset(context, spec) {
+      return {
+        type: "scatter",
+        label: context,
+        data: pointsFor(context, spec),
+        parsing: false,
+        pointStyle: context === "Home" ? "circle" : "rect",
+        pointRadius: 6,
+        pointHoverRadius: 8,
+        pointHitRadius: 10,
+        pointBackgroundColor: COLORS[context],
+        pointBorderColor: "#ffffff",
+        pointBorderWidth: 1.4
+      };
+    }
+
+    function opponentTooltip(row) {
+      return row.opponentBreakdown.map(item => {
+        const outLabel = item.dismissals === 1 ? "dismissal" : "dismissals";
+        return `${item.opposition}: ${item.runs.toLocaleString()} runs, ${item.balls.toLocaleString()} balls, ${item.dismissals} ${outLabel}`;
+      });
+    }
+
+    function buildChart(spec) {
+      return new Chart(document.getElementById("metricChart"), {
+        type: "scatter",
+        data: {
+          datasets: [contextDataset("Home", spec), contextDataset("Away", spec)]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 180 },
+          layout: { padding: { top: 12, right: 12, bottom: 0 } },
+          interaction: { mode: "nearest", axis: "xy", intersect: true },
+          plugins: {
+            legend: { display: false },
+            dumbbellPlugin: { spec },
+            tooltip: {
+              displayColors: true,
+              backgroundColor: "rgba(23, 33, 43, 0.97)",
+              padding: 10,
+              titleFont: { size: 12 },
+              bodyFont: { size: 10.5 },
+              callbacks: {
+                title(items) {
+                  const row = items[0].raw;
+                  return `${row.player} - ${row.context}`;
+                },
+                label(context) {
+                  const row = context.raw;
+                  return [
+                    ` ${spec.title}: ${Number(row[spec.field]).toFixed(1)}`,
+                    ` ${row.runs.toLocaleString()} runs | ${row.balls.toLocaleString()} balls | ${row.dismissals} dismissals`,
+                    ` ${row.highGearInnings} innings containing a high-gear segment`
+                  ];
+                },
+                afterLabel(context) {
+                  return opponentTooltip(context.raw);
+                },
+                footer(items) {
+                  const row = items[0].raw;
+                  return row.context === "Home"
+                    ? `Tests in ${row.homeCountry}`
+                    : "Tests in the opponent's country";
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              type: "linear",
+              min: spec.minimum,
+              max: spec.maximum,
+              title: {
+                display: true,
+                text: spec.title,
+                color: "#42515e",
+                font: { weight: "bold", size: 10 }
+              },
+              ticks: {
+                stepSize: spec.stepSize,
+                color: "#61707d",
+                font: { size: 9 }
+              },
+              grid: { color: "rgba(217, 224, 229, 0.82)" },
+              border: { color: "#8a98a4" }
+            },
+            y: {
+              type: "linear",
+              min: -0.5,
+              max: 3.5,
+              afterBuildTicks(scale) {
+                scale.ticks = [0, 1, 2, 3].map(value => ({ value }));
+              },
+              ticks: {
+                color: "#3f4e5a",
+                font: { size: 11, weight: "700" },
+                padding: 8,
+                callback(value) { return PLAYER_LABELS[value] || ""; }
+              },
+              grid: { display: false },
+              border: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    function setMetric(metricKey) {
+      const spec = SPECS.find(item => item.key === metricKey) || SPECS[0];
+      document.querySelectorAll(".mode-button").forEach(button => {
+        button.setAttribute("aria-pressed", String(button.dataset.metric === spec.key));
+      });
+      if (chart) chart.destroy();
+      chart = buildChart(spec);
+    }
+
+    document.querySelectorAll(".mode-button").forEach(button => {
+      button.addEventListener("click", () => setMetric(button.dataset.metric));
+    });
+
+    const requestedMetric = new URLSearchParams(window.location.search).get("metric");
+    setMetric(requestedMetric || SPECS[0].key);
+  </script>
+</body>
+</html>

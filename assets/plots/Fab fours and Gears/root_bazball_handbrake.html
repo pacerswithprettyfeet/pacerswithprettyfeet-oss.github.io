@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Joe Root's changing gearbox</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background: #ffffff;
+      color: #17212b;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    figure {
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 6px 8px 0;
+      overflow: hidden;
+    }
+
+    .gear-legend {
+      display: flex;
+      min-height: 24px;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      color: #566571;
+      font-size: 9px;
+      line-height: 1;
+    }
+
+    .legend-key {
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .legend-swatch {
+      width: 9px;
+      height: 9px;
+      margin-right: 4px;
+    }
+
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+      min-width: 0;
+      height: 245px;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+      width: 100% !important;
+      max-width: 100%;
+    }
+
+    figcaption {
+      padding: 6px 12px 0 91px;
+      color: #61707d;
+      font-size: 10px;
+      font-weight: 400;
+      line-height: 1.42;
+      letter-spacing: 0;
+    }
+
+    @media (max-width: 720px) {
+      figure {
+        width: 100vw;
+        max-width: 100vw;
+        padding: 4px 5px 0;
+      }
+
+      .chart-wrap { height: 255px; }
+
+      figcaption {
+        padding: 6px 7px 0;
+        font-size: 9px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <figure>
+    <div class="gear-legend" aria-label="Gear groups">
+      <span class="legend-key"><span class="legend-swatch" style="background:#3f6f9f"></span>Low (G0-1)</span>
+      <span class="legend-key"><span class="legend-swatch" style="background:#4b8b69"></span>Middle (G2-4)</span>
+      <span class="legend-key"><span class="legend-swatch" style="background:#c45e45"></span>High (G5-6)</span>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="bandChart" aria-label="Joe Root low, middle and high gear ball shares up to 2020, in 2021 and from 2022 onward"></canvas>
+    </div>
+
+    <figcaption>Joe Root's ball share across three phases of his career. His extraordinary 2021 was a transition rather than Bazball arriving early: the low gears still accounted for 41.3% of his deliveries, while his high-gear share was unchanged at 18.9%. The decisive shift came from 2022 onward, when the low gears fell to 32.5% and the middle gears rose to 46.0%; the high gears increased only modestly to 21.5%. Bazball did not give Root a new top gear. It dragged him out of the bottom two.</figcaption>
+  </figure>
+
+  <script>
+    const PERIODS = [{"key":"through_2020","label":"Up to 2020","totalBalls":14356,"groups":[{"key":"low","shortLabel":"Low","label":"Low (G0-1)","balls":6465,"share":45.033435497353025,"color":"#3f6f9f","textColor":"#ffffff"},{"key":"middle","shortLabel":"Middle","label":"Middle (G2-4)","balls":5184,"share":36.11033714126498,"color":"#4b8b69","textColor":"#ffffff"},{"key":"high","shortLabel":"High","label":"High (G5-6)","balls":2707,"share":18.856227361382,"color":"#c45e45","textColor":"#ffffff"}]},{"key":"2021","label":"2021","totalBalls":3004,"groups":[{"key":"low","shortLabel":"Low","label":"Low (G0-1)","balls":1241,"share":41.31158455392809,"color":"#3f6f9f","textColor":"#ffffff"},{"key":"middle","shortLabel":"Middle","label":"Middle (G2-4)","balls":1195,"share":39.78029294274301,"color":"#4b8b69","textColor":"#ffffff"},{"key":"high","shortLabel":"High","label":"High (G5-6)","balls":568,"share":18.908122503328894,"color":"#c45e45","textColor":"#ffffff"}]},{"key":"2022_onward","label":"2022 onward","totalBalls":6909,"groups":[{"key":"low","shortLabel":"Low","label":"Low (G0-1)","balls":2242,"share":32.45042697930236,"color":"#3f6f9f","textColor":"#ffffff"},{"key":"middle","shortLabel":"Middle","label":"Middle (G2-4)","balls":3181,"share":46.04139528151686,"color":"#4b8b69","textColor":"#ffffff"},{"key":"high","shortLabel":"High","label":"High (G5-6)","balls":1486,"share":21.50817773918078,"color":"#c45e45","textColor":"#ffffff"}]}];
+    const GROUPS = PERIODS[0].groups.map((group, index) => ({
+      key: group.key,
+      shortLabel: group.shortLabel,
+      label: group.label,
+      color: group.color,
+      textColor: group.textColor,
+      index
+    }));
+
+    const stackLabels = {
+      id: "stackLabels",
+      afterDatasetsDraw(chart) {
+        const { ctx } = chart;
+        ctx.save();
+        chart.data.datasets.forEach((dataset, datasetIndex) => {
+          const meta = chart.getDatasetMeta(datasetIndex);
+          meta.data.forEach((bar, periodIndex) => {
+            const value = Number(dataset.data[periodIndex]);
+            const props = bar.getProps(["x", "base", "y"], true);
+            ctx.fillStyle = dataset.textColor;
+            ctx.font = `bold ${window.innerWidth <= 520 ? 9 : 10}px Arial`;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(
+              `${value.toFixed(1)}%`,
+              (props.x + props.base) / 2,
+              props.y
+            );
+          });
+        });
+        ctx.restore();
+      }
+    };
+
+    Chart.register(stackLabels);
+
+    const datasets = GROUPS.map((group, groupIndex) => ({
+      label: group.label,
+      shortLabel: group.shortLabel,
+      textColor: group.textColor,
+      data: PERIODS.map(period => period.groups[groupIndex].share),
+      backgroundColor: group.color,
+      borderColor: "#ffffff",
+      borderWidth: 1,
+      borderSkipped: false,
+      barThickness: window.innerWidth <= 720 ? 42 : 46
+    }));
+
+    new Chart(document.getElementById("bandChart"), {
+      type: "bar",
+      data: {
+        labels: PERIODS.map(period => period.label),
+        datasets
+      },
+      options: {
+        indexAxis: "y",
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 180 },
+        layout: { padding: { top: 18, right: 8, bottom: 8 } },
+        interaction: { mode: "nearest", intersect: true },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            displayColors: true,
+            backgroundColor: "rgba(23, 33, 43, 0.97)",
+            padding: 10,
+            titleFont: { size: 12 },
+            bodyFont: { size: 11 },
+            callbacks: {
+              title(items) { return PERIODS[items[0].dataIndex].label; },
+              label(context) {
+                const period = PERIODS[context.dataIndex];
+                const group = period.groups[context.datasetIndex];
+                return `${group.label}: ${group.share.toFixed(1)}% (${group.balls.toLocaleString()} balls)`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            stacked: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 25,
+              color: "#61707d",
+              font: { size: 9 },
+              callback(value) { return `${value}%`; }
+            },
+            grid: { color: "rgba(217, 224, 229, 0.68)" },
+            border: { color: "#8a98a4" }
+          },
+          y: {
+            stacked: true,
+            ticks: {
+              color: "#3f4e5a",
+              font: { size: 11, weight: "bold" },
+              padding: 7
+            },
+            grid: { display: false },
+            border: { display: false }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

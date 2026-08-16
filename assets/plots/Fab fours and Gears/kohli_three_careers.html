@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kohli: Three careers in one body</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background: #ffffff;
+      color: #17212b;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    figure {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 6px 8px 0;
+      overflow: hidden;
+    }
+
+    .gear-legend {
+      display: flex;
+      min-height: 31px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 6px 16px;
+      color: #53616d;
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .legend-swatch {
+      width: 18px;
+      height: 4px;
+      margin-right: 5px;
+      border-radius: 1px;
+    }
+
+    .share-wrap,
+    .metric-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .share-wrap { height: 225px; }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      width: 100%;
+      max-width: 100%;
+      margin-top: 9px;
+    }
+
+    .metric-panel {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .metric-wrap { height: 275px; }
+
+    canvas {
+      display: block;
+      width: 100% !important;
+      max-width: 100%;
+    }
+
+    figcaption {
+      padding: 6px 8px 0 58px;
+      color: #61707d;
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.43;
+      letter-spacing: 0;
+    }
+
+    @media (max-width: 680px) {
+      figure {
+        width: 100vw;
+        max-width: 100vw;
+        padding: 4px 5px 0;
+      }
+
+      .gear-legend {
+        min-height: 32px;
+        gap: 5px 11px;
+      }
+
+      .share-wrap { height: 220px; }
+
+      .metric-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 8px;
+        margin-top: 7px;
+      }
+
+      .metric-wrap { height: 245px; }
+
+      figcaption {
+        padding: 5px 7px 0;
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <figure>
+    <div class="gear-legend" id="gearLegend" aria-label="Gear-group key"></div>
+
+    <section class="share-panel">
+      <div class="share-wrap">
+        <canvas id="shareChart" aria-label="Virat Kohli low, middle and high gear ball shares across three career phases"></canvas>
+      </div>
+    </section>
+
+    <div class="metric-grid">
+      <section class="metric-panel">
+        <div class="metric-wrap">
+          <canvas id="averageChart" aria-label="Virat Kohli batting average by gear group and career phase"></canvas>
+        </div>
+      </section>
+
+      <section class="metric-panel">
+        <div class="metric-wrap">
+          <canvas id="bpdChart" aria-label="Virat Kohli balls per dismissal by gear group and career phase"></canvas>
+        </div>
+      </section>
+    </div>
+
+    <figcaption>
+      Virat Kohli across three career phases, showing where he spent his deliveries and what those gears returned. His 2014-19 peak was built on the middle and high gears: 42.6% of his balls came in the middle gears, where he averaged 73.9 and lasted 114.3 balls per dismissal, while another 20.4% came in the high gears. Outside that peak, the middle gears were far weaker: he averaged 36.5 before 2014 and 33.0 from 2020 onward, with balls per dismissal around 55 in both periods. His high gears survived the twilight years far better, still producing an average of 144.0 and 117.8 balls per dismissal after 2020. Kohli was never especially good at defending; to find his one genuinely strong low-gear survival phase, you have to return to his first three years, when he lasted 116.1 balls per dismissal.
+    </figcaption>
+
+  </figure>
+
+  <script>
+    const RECORDS = [{"periodKey":"through_2013","period":"Through 2013","periodOrder":0,"yearStart":2011,"yearEnd":2013,"totalBalls":3074,"groups":{"low":{"balls":1626,"runs":301,"dismissals":14,"ballShare":52.895250487963565,"battingAverage":21.5,"ballsPerDismissal":116.14285714285714,"strikeRate":18.51168511685117},"middle":{"balls":993,"runs":657,"dismissals":18,"ballShare":32.3031880286272,"battingAverage":36.5,"ballsPerDismissal":55.166666666666664,"strikeRate":66.16314199395771},"high":{"balls":455,"runs":549,"dismissals":2,"ballShare":14.80156148340924,"battingAverage":274.5,"ballsPerDismissal":227.5,"strikeRate":120.65934065934066}}},{"periodKey":"2014_19","period":"2014-19","periodOrder":1,"yearStart":2014,"yearEnd":2019,"totalBalls":9383,"groups":{"low":{"balls":3474,"runs":623,"dismissals":48,"ballShare":37.024405840349566,"battingAverage":12.979166666666666,"ballsPerDismissal":72.375,"strikeRate":17.93321819228555},"middle":{"balls":3999,"runs":2587,"dismissals":35,"ballShare":42.6196312480017,"battingAverage":73.91428571428571,"ballsPerDismissal":114.25714285714285,"strikeRate":64.6911727931983},"high":{"balls":1910,"runs":2485,"dismissals":14,"ballShare":20.355962911648728,"battingAverage":177.5,"ballsPerDismissal":136.42857142857142,"strikeRate":130.10471204188482}}},{"periodKey":"2020_plus","period":"2020+","periodOrder":2,"yearStart":2020,"yearEnd":2025,"totalBalls":4151,"groups":{"low":{"balls":2139,"runs":372,"dismissals":36,"ballShare":51.529751867019996,"battingAverage":10.333333333333334,"ballsPerDismissal":59.416666666666664,"strikeRate":17.391304347826086},"middle":{"balls":1305,"runs":792,"dismissals":24,"ballShare":31.438207660804625,"battingAverage":33.0,"ballsPerDismissal":54.375,"strikeRate":60.689655172413794},"high":{"balls":707,"runs":864,"dismissals":6,"ballShare":17.032040472175378,"battingAverage":144.0,"ballsPerDismissal":117.83333333333333,"strikeRate":122.2065063649222}}}];
+    const GEAR_GROUPS = [{"key":"low","label":"Low (G0-1)","tooltipLabel":"Low gears","color":"#3f6f9f","offset":0.17},{"key":"middle","label":"Middle (G2-4)","tooltipLabel":"Middle gears","color":"#4b8b69","offset":0},{"key":"high","label":"High (G5-6)","tooltipLabel":"High gears","color":"#c45e45","offset":-0.17}];
+    const PERIOD_LABELS = Object.fromEntries(
+      RECORDS.map((record, index) => [2 - index, record.period])
+    );
+
+    document.getElementById("gearLegend").innerHTML = GEAR_GROUPS.map(group => `
+      <span class="legend-item">
+        <span class="legend-swatch" style="background:${group.color}"></span>${group.label}
+      </span>
+    `).join("");
+
+    const shareLabelsPlugin = {
+      id: "shareLabels",
+      afterDatasetsDraw(chart) {
+        if (chart.canvas.id !== "shareChart") return;
+        const { ctx } = chart;
+        ctx.save();
+        chart.data.datasets.forEach((dataset, datasetIndex) => {
+          const meta = chart.getDatasetMeta(datasetIndex);
+          meta.data.forEach((bar, index) => {
+            const value = Number(dataset.data[index]);
+            const properties = bar.getProps(["x", "base", "y"], true);
+            const centerX = (properties.x + properties.base) / 2;
+            ctx.fillStyle = "#ffffff";
+            ctx.font = datasetIndex === 1 ? "bold 10px Arial" : "10px Arial";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(`${value.toFixed(1)}%`, centerX, properties.y);
+          });
+        });
+        ctx.restore();
+      }
+    };
+
+    const rowBandsPlugin = {
+      id: "rowBands",
+      beforeDatasetsDraw(chart) {
+        if (!new Set(["averageChart", "bpdChart"]).has(chart.canvas.id)) return;
+        const { ctx, chartArea, scales } = chart;
+        if (!chartArea) return;
+        const y = scales.y;
+        const rowHeight = Math.abs(y.getPixelForValue(2) - y.getPixelForValue(1));
+        ctx.save();
+        ctx.fillStyle = "rgba(242, 246, 244, 0.72)";
+        [2, 0].forEach(value => {
+          const center = y.getPixelForValue(value);
+          ctx.fillRect(
+            chartArea.left,
+            center - rowHeight / 2,
+            chartArea.width,
+            rowHeight
+          );
+        });
+        ctx.restore();
+      }
+    };
+
+    const metricLabelsPlugin = {
+      id: "metricLabels",
+      afterDatasetsDraw(chart) {
+        if (!new Set(["averageChart", "bpdChart"]).has(chart.canvas.id)) return;
+        const { ctx, chartArea } = chart;
+        ctx.save();
+        chart.data.datasets.forEach(dataset => {
+          const meta = chart.getDatasetMeta(dataset.datasetIndex);
+          meta.data.forEach((point, index) => {
+            const raw = dataset.data[index];
+            const properties = point.getProps(["x", "y"], true);
+            const alignRight = properties.x > chartArea.right - 36;
+            ctx.fillStyle = dataset.borderColor;
+            ctx.font = "9px Arial";
+            ctx.textAlign = alignRight ? "right" : "left";
+            ctx.textBaseline = "middle";
+            ctx.fillText(
+              raw.x.toFixed(1),
+              properties.x + (alignRight ? -7 : 7),
+              properties.y
+            );
+          });
+        });
+        ctx.restore();
+      }
+    };
+
+    Chart.register(shareLabelsPlugin, rowBandsPlugin, metricLabelsPlugin);
+
+    const shareDatasets = GEAR_GROUPS.map(group => ({
+      label: group.tooltipLabel,
+      groupKey: group.key,
+      data: RECORDS.map(record => record.groups[group.key].ballShare),
+      backgroundColor: group.color,
+      borderColor: "#ffffff",
+      borderWidth: 0.7,
+      borderSkipped: false,
+      barThickness: window.innerWidth <= 680 ? 30 : 34
+    }));
+
+    new Chart(document.getElementById("shareChart"), {
+      type: "bar",
+      data: {
+        labels: RECORDS.map(record => record.period),
+        datasets: shareDatasets
+      },
+      options: {
+        indexAxis: "y",
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 170 },
+        layout: { padding: { top: 2, right: 7 } },
+        interaction: { mode: "nearest", intersect: true },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            displayColors: true,
+            backgroundColor: "rgba(23, 33, 43, 0.97)",
+            padding: 10,
+            titleFont: { size: 12 },
+            bodyFont: { size: 11 },
+            callbacks: {
+              title(items) { return RECORDS[items[0].dataIndex].period; },
+              label(context) {
+                const record = RECORDS[context.dataIndex];
+                const value = record.groups[context.dataset.groupKey];
+                return [
+                  ` ${context.dataset.label}: ${value.ballShare.toFixed(1)}%`,
+                  ` ${value.balls.toLocaleString()} of ${record.totalBalls.toLocaleString()} balls`
+                ];
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            stacked: true,
+            min: 0,
+            max: 100,
+            title: {
+              display: true,
+              text: "Ball share by career phase",
+              color: "#42515e",
+              font: { weight: "bold", size: 10 }
+            },
+            ticks: {
+              stepSize: 20,
+              color: "#61707d",
+              font: { size: 9 },
+              callback(value) { return `${value}%`; }
+            },
+            grid: { color: "rgba(217, 224, 229, 0.75)" },
+            border: { color: "#8a98a4" }
+          },
+          y: {
+            stacked: true,
+            ticks: {
+              color: "#44535f",
+              font: { size: 10, weight: "600" },
+              padding: 7
+            },
+            grid: { display: false },
+            border: { display: false }
+          }
+        }
+      }
+    });
+
+    function metricDatasets(field) {
+      return GEAR_GROUPS.map((group, datasetIndex) => ({
+        datasetIndex,
+        label: group.tooltipLabel,
+        groupKey: group.key,
+        borderColor: group.color,
+        backgroundColor: group.color,
+        pointBackgroundColor: group.color,
+        pointBorderColor: group.color,
+        pointBorderWidth: 1.2,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        data: RECORDS.map((record, index) => {
+          const value = record.groups[group.key];
+          return {
+            x: value[field],
+            y: 2 - index + group.offset,
+            period: record.period,
+            ...value
+          };
+        })
+      }));
+    }
+
+    function makeMetricChart(canvasId, spec) {
+      return new Chart(document.getElementById(canvasId), {
+        type: "scatter",
+        data: { datasets: metricDatasets(spec.field) },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 170 },
+          layout: { padding: { top: 7, right: 7 } },
+          interaction: { mode: "nearest", intersect: true },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              displayColors: true,
+              backgroundColor: "rgba(23, 33, 43, 0.97)",
+              padding: 10,
+              titleFont: { size: 12 },
+              bodyFont: { size: 11 },
+              callbacks: {
+                title(items) {
+                  return `${items[0].raw.period}, ${items[0].dataset.label.toLowerCase()}`;
+                },
+                label(context) {
+                  const point = context.raw;
+                  return [
+                    ` ${spec.tooltipLabel}: ${point[spec.field].toFixed(1)}`,
+                    ` ${point.runs.toLocaleString()} runs | ${point.balls.toLocaleString()} balls`,
+                    ` ${point.dismissals.toLocaleString()} dismissals`
+                  ];
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              min: 0,
+              max: spec.maximum,
+              title: {
+                display: true,
+                text: spec.axisTitle,
+                color: "#42515e",
+                font: { weight: "bold", size: 10 }
+              },
+              ticks: {
+                stepSize: 50,
+                color: "#61707d",
+                font: { size: 9 }
+              },
+              grid: { color: "rgba(217, 224, 229, 0.78)" },
+              border: { color: "#8a98a4" }
+            },
+            y: {
+              type: "linear",
+              min: -0.5,
+              max: 2.5,
+              afterBuildTicks(scale) {
+                scale.ticks = [0, 1, 2].map(value => ({ value }));
+              },
+              ticks: {
+                color: "#44535f",
+                font: { size: 10, weight: "600" },
+                padding: 7,
+                callback(value) { return PERIOD_LABELS[value] || ""; }
+              },
+              grid: { display: false },
+              border: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    makeMetricChart("averageChart", {
+      field: "battingAverage",
+      tooltipLabel: "Batting average",
+      axisTitle: "Batting average",
+      maximum: 300
+    });
+
+    makeMetricChart("bpdChart", {
+      field: "ballsPerDismissal",
+      tooltipLabel: "Balls per dismissal",
+      axisTitle: "Balls per dismissal",
+      maximum: 250
+    });
+  </script>
+</body>
+</html>

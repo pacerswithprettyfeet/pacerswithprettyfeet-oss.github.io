@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test cricket's arsonists</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background: #ffffff;
+      color: #17212b;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    figure {
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+      min-width: 0;
+      height: 575px;
+      padding: 0 4px 0 0;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+      width: 100% !important;
+      max-width: 100%;
+    }
+
+    figcaption {
+      padding: 4px 10px 0 119px;
+      color: #61707d;
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0;
+    }
+
+    @media (max-width: 620px) {
+      .chart-wrap { height: 575px; }
+      figcaption {
+        padding: 4px 7px 0 94px;
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <figure>
+    <div class="chart-wrap">
+      <canvas id="monasteriesChart" aria-label="Top 15 fractions of balls in gear 6 among men's Test batters with at least 1,500 runs"></canvas>
+    </div>
+    <figcaption>Test cricket's arsonists. Highest fractions of balls in gear 6 among men's Test batters with at least 1,500 runs in the available ball-by-ball data.</figcaption>
+  </figure>
+
+  <script>
+    const PLAYERS = [{"rank":1,"batter":"AC Gilchrist","careerRuns":2005,"totalBalls":2380,"gearBalls":583,"gearShare":24.5,"highlight":true},{"rank":2,"batter":"TG Southee","careerRuns":2245,"totalBalls":2715,"gearBalls":638,"gearShare":23.5,"highlight":true},{"rank":3,"batter":"BM Duckett","careerRuns":3126,"totalBalls":3638,"gearBalls":786,"gearShare":21.61,"highlight":true},{"rank":4,"batter":"HC Brook","careerRuns":3234,"totalBalls":3735,"gearBalls":803,"gearShare":21.5,"highlight":true},{"rank":5,"batter":"V Sehwag","careerRuns":5969,"totalBalls":7017,"gearBalls":1478,"gearShare":21.06,"highlight":true},{"rank":6,"batter":"RR Pant","careerRuns":3476,"totalBalls":4682,"gearBalls":891,"gearShare":19.03,"highlight":true},{"rank":7,"batter":"CH Gayle","careerRuns":3927,"totalBalls":5834,"gearBalls":973,"gearShare":16.68,"highlight":false},{"rank":8,"batter":"DA Warner","careerRuns":8786,"totalBalls":12517,"gearBalls":1974,"gearShare":15.77,"highlight":false},{"rank":9,"batter":"YBK Jaiswal","careerRuns":2511,"totalBalls":3803,"gearBalls":573,"gearShare":15.07,"highlight":false},{"rank":10,"batter":"SCJ Broad","careerRuns":3662,"totalBalls":5607,"gearBalls":833,"gearShare":14.86,"highlight":false},{"rank":11,"batter":"Z Crawley","careerRuns":3586,"totalBalls":5475,"gearBalls":748,"gearShare":13.66,"highlight":false},{"rank":12,"batter":"TM Head","careerRuns":4592,"totalBalls":6576,"gearBalls":895,"gearShare":13.61,"highlight":false},{"rank":13,"batter":"Q de Kock","careerRuns":3300,"totalBalls":4652,"gearBalls":624,"gearShare":13.41,"highlight":false},{"rank":14,"batter":"OJ Pope","careerRuns":3732,"totalBalls":5793,"gearBalls":766,"gearShare":13.22,"highlight":false},{"rank":15,"batter":"BC Lara","careerRuns":2036,"totalBalls":3140,"gearBalls":411,"gearShare":13.09,"highlight":false}];
+    const TOP7_BASELINE = 7.11111541;
+    const BASE_COLOR = "#687680";
+    const BASELINE_COLOR = "#26323d";
+
+    const lollipopPlugin = {
+      id: "lollipop",
+      beforeDatasetsDraw(chart) {
+        const { ctx, chartArea, scales } = chart;
+        const meta = chart.getDatasetMeta(0);
+        if (!chartArea || !meta.data.length) return;
+
+        ctx.save();
+        const baselineX = scales.x.getPixelForValue(TOP7_BASELINE);
+        ctx.strokeStyle = "rgba(38, 50, 61, 0.72)";
+        ctx.lineWidth = 1.2;
+        ctx.setLineDash([5, 4]);
+        ctx.beginPath();
+        ctx.moveTo(baselineX, chartArea.top);
+        ctx.lineTo(baselineX, chartArea.bottom);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        meta.data.forEach((point, index) => {
+          const player = PLAYERS[index];
+          const zeroX = scales.x.getPixelForValue(0);
+          const valueX = scales.x.getPixelForValue(player.gearShare);
+          ctx.strokeStyle = "rgba(104, 118, 128, 0.52)";
+          ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          ctx.moveTo(zeroX, point.y);
+          ctx.lineTo(valueX, point.y);
+          ctx.stroke();
+        });
+        ctx.restore();
+      },
+      afterDatasetsDraw(chart) {
+        const { ctx, chartArea, scales } = chart;
+        const meta = chart.getDatasetMeta(0);
+        if (!chartArea || !meta.data.length) return;
+
+        ctx.save();
+        meta.data.forEach((point, index) => {
+          const player = PLAYERS[index];
+          const x = scales.x.getPixelForValue(player.gearShare) + 8;
+          ctx.fillStyle = "#52606c";
+          ctx.font = "10.5px Arial";
+          ctx.textAlign = "left";
+          ctx.textBaseline = "middle";
+          ctx.fillText(`${player.gearShare.toFixed(1)}%`, x, point.y);
+        });
+
+        const baselineX = scales.x.getPixelForValue(TOP7_BASELINE);
+        const label = `Top-seven baseline: ${TOP7_BASELINE.toFixed(1)}%`;
+        ctx.font = "700 10.5px Arial";
+        const labelWidth = ctx.measureText(label).width;
+        const labelX = Math.min(
+          Math.max(baselineX + 6, chartArea.left + 4),
+          chartArea.right - labelWidth - 4
+        );
+        ctx.fillStyle = BASELINE_COLOR;
+        ctx.textAlign = "left";
+        ctx.textBaseline = "bottom";
+        ctx.fillText(label, labelX, chartArea.top - 7);
+        ctx.restore();
+      }
+    };
+
+    Chart.register(lollipopPlugin);
+
+    new Chart(document.getElementById("monasteriesChart"), {
+      type: "scatter",
+      data: {
+        datasets: [{
+          data: PLAYERS.map(player => ({
+            x: player.gearShare,
+            y: player.batter,
+            ...player
+          })),
+          parsing: false,
+          pointRadius: 4.5,
+          pointHoverRadius: 7,
+          pointBackgroundColor: BASE_COLOR,
+          pointBorderColor: "#ffffff",
+          pointBorderWidth: 1.2,
+          showLine: false
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 180 },
+        layout: { padding: { top: 28, right: 43 } },
+        interaction: { mode: "nearest", axis: "y", intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            displayColors: false,
+            backgroundColor: "rgba(23, 33, 43, 0.96)",
+            padding: 10,
+            titleFont: { size: 12 },
+            bodyFont: { size: 11 },
+            callbacks: {
+              title(items) {
+                return items[0].raw.batter;
+              },
+              label(context) {
+                const player = context.raw;
+                return [
+                  `Gear 6: ${player.gearShare.toFixed(2)}%`,
+                  `${player.gearBalls.toLocaleString()} of ${player.totalBalls.toLocaleString()} balls`,
+                  `${player.careerRuns.toLocaleString()} runs in the available data`
+                ];
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            type: "linear",
+            min: 0,
+            max: 28,
+            title: {
+              display: true,
+              text: "Fraction of balls in gear 6",
+              color: "#42515e",
+              font: { weight: "bold" }
+            },
+            ticks: {
+              stepSize: 5,
+              color: "#61707d",
+              callback(value) { return `${value}%`; }
+            },
+            grid: { color: "rgba(217, 224, 229, 0.82)" },
+            border: { color: "#8a98a4" }
+          },
+          y: {
+            type: "category",
+            labels: PLAYERS.map(player => player.batter),
+            reverse: false,
+            offset: true,
+            ticks: {
+              autoSkip: false,
+              padding: 7,
+              color: "#42515e",
+              font: {
+                family: "Arial",
+                size: 11,
+                weight: "400"
+              }
+            },
+            grid: { display: false },
+            border: { display: false }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

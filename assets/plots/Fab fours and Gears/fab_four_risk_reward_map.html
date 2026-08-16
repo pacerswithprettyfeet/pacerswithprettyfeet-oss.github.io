@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fab Four risk-reward map</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background: #ffffff;
+      color: #17212b;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    figure {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 4px 7px 0;
+    }
+
+    .figure-legend {
+      display: flex;
+      min-height: 37px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 6px 13px;
+      color: #53616d;
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    .legend-item,
+    .size-item {
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .swatch {
+      width: 9px;
+      height: 9px;
+      margin-right: 4px;
+      border-radius: 2px;
+    }
+
+    .size-legend {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-left: 5px;
+      padding-left: 11px;
+      border-left: 1px solid #d8dee2;
+    }
+
+    .size-circle {
+      display: inline-block;
+      margin-right: 4px;
+      border: 1px solid #687680;
+      border-radius: 50%;
+      background: rgba(104, 118, 128, 0.08);
+    }
+
+    .size-10 { width: 20px; height: 20px; }
+    .size-20 { width: 29px; height: 29px; }
+
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px 18px;
+      min-width: 0;
+    }
+
+    .panel { min-width: 0; }
+
+    .panel-title {
+      min-height: 20px;
+      padding: 2px 4px 0;
+      color: #33414d;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.2;
+      text-align: center;
+    }
+
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+      min-width: 0;
+      height: 260px;
+    }
+
+    canvas {
+      display: block;
+      width: 100% !important;
+      max-width: 100%;
+    }
+
+    figcaption {
+      padding: 5px 8px 0 43px;
+      color: #61707d;
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0;
+    }
+
+    @media (max-width: 620px) {
+      figure { padding: 3px 5px 0; }
+
+      .figure-legend {
+        min-height: 52px;
+        gap: 5px 9px;
+      }
+
+      .size-legend {
+        width: 100%;
+        justify-content: center;
+        margin: 0;
+        padding: 3px 0 0;
+        border: 0;
+      }
+
+      .chart-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 8px;
+      }
+
+      .chart-wrap { height: 230px; }
+
+      figcaption {
+        padding: 3px 7px 0 40px;
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <figure>
+    <div class="figure-legend" id="figureLegend" aria-label="Gear colors and bubble-size legend"></div>
+    <div class="chart-grid">
+      <section class="panel">
+        <div class="panel-title">Joe Root</div>
+        <div class="chart-wrap"><canvas id="riskReward0" aria-label="Joe Root risk-reward map"></canvas></div>
+      </section>
+      <section class="panel">
+        <div class="panel-title">Kane Williamson</div>
+        <div class="chart-wrap"><canvas id="riskReward1" aria-label="Kane Williamson risk-reward map"></canvas></div>
+      </section>
+      <section class="panel">
+        <div class="panel-title">Steve Smith</div>
+        <div class="chart-wrap"><canvas id="riskReward2" aria-label="Steve Smith risk-reward map"></canvas></div>
+      </section>
+      <section class="panel">
+        <div class="panel-title">Virat Kohli</div>
+        <div class="chart-wrap"><canvas id="riskReward3" aria-label="Virat Kohli risk-reward map"></canvas></div>
+      </section>
+    </div>
+    <figcaption>Strike rate against balls per dismissal for every Fab Four batter-gear. Bubble area represents ball share; the balls-per-dismissal axis is logarithmic.</figcaption>
+  </figure>
+
+  <script>
+    const RECORDS = [{"batter":"JE Root","entity":"Joe Root","values":[{"gear":0,"balls":5190,"ballShare":21.3853,"runs":404,"dismissals":61,"strikeRate":7.7842,"ballsPerDismissal":85.082},{"gear":1,"balls":4758,"ballShare":19.6053,"runs":1403,"dismissals":51,"strikeRate":29.4872,"ballsPerDismissal":93.2941},{"gear":2,"balls":4165,"ballShare":17.1618,"runs":1974,"dismissals":51,"strikeRate":47.395,"ballsPerDismissal":81.6667},{"gear":3,"balls":3296,"ballShare":13.5811,"runs":2235,"dismissals":49,"strikeRate":67.8095,"ballsPerDismissal":67.2653},{"gear":4,"balls":2099,"ballShare":8.6489,"runs":1786,"dismissals":27,"strikeRate":85.0881,"ballsPerDismissal":77.7407},{"gear":5,"balls":2878,"ballShare":11.8587,"runs":3162,"dismissals":24,"strikeRate":109.868,"ballsPerDismissal":119.9167},{"gear":6,"balls":1883,"ballShare":7.7589,"runs":2988,"dismissals":12,"strikeRate":158.683,"ballsPerDismissal":156.9167}]},{"batter":"KS Williamson","entity":"Kane Williamson","values":[{"gear":0,"balls":4855,"ballShare":26.5214,"runs":353,"dismissals":51,"strikeRate":7.2709,"ballsPerDismissal":95.1961},{"gear":1,"balls":4039,"ballShare":22.0638,"runs":1137,"dismissals":39,"strikeRate":28.1505,"ballsPerDismissal":103.5641},{"gear":2,"balls":2878,"ballShare":15.7216,"runs":1395,"dismissals":31,"strikeRate":48.4712,"ballsPerDismissal":92.8387},{"gear":3,"balls":2077,"ballShare":11.346,"runs":1418,"dismissals":22,"strikeRate":68.2715,"ballsPerDismissal":94.4091},{"gear":4,"balls":1280,"ballShare":6.9922,"runs":1102,"dismissals":13,"strikeRate":86.0938,"ballsPerDismissal":98.4615},{"gear":5,"balls":1848,"ballShare":10.0951,"runs":1993,"dismissals":12,"strikeRate":107.8463,"ballsPerDismissal":154.0},{"gear":6,"balls":1329,"ballShare":7.2599,"runs":2117,"dismissals":8,"strikeRate":159.2927,"ballsPerDismissal":166.125}]},{"batter":"SPD Smith","entity":"Steve Smith","values":[{"gear":0,"balls":4844,"ballShare":24.4227,"runs":360,"dismissals":46,"strikeRate":7.4319,"ballsPerDismissal":105.3043},{"gear":1,"balls":4288,"ballShare":21.6194,"runs":1237,"dismissals":23,"strikeRate":28.8479,"ballsPerDismissal":186.4348},{"gear":2,"balls":3212,"ballShare":16.1944,"runs":1567,"dismissals":39,"strikeRate":48.7858,"ballsPerDismissal":82.359},{"gear":3,"balls":2486,"ballShare":12.534,"runs":1695,"dismissals":27,"strikeRate":68.1818,"ballsPerDismissal":92.0741},{"gear":4,"balls":1498,"ballShare":7.5527,"runs":1297,"dismissals":15,"strikeRate":86.5821,"ballsPerDismissal":99.8667},{"gear":5,"balls":2096,"ballShare":10.5677,"runs":2262,"dismissals":24,"strikeRate":107.9198,"ballsPerDismissal":87.3333},{"gear":6,"balls":1410,"ballShare":7.109,"runs":2245,"dismissals":14,"strikeRate":159.2199,"ballsPerDismissal":100.7143}]},{"batter":"V Kohli","entity":"Virat Kohli","values":[{"gear":0,"balls":3794,"ballShare":22.8444,"runs":282,"dismissals":52,"strikeRate":7.4328,"ballsPerDismissal":72.9615},{"gear":1,"balls":3445,"ballShare":20.743,"runs":1014,"dismissals":46,"strikeRate":29.434,"ballsPerDismissal":74.8913},{"gear":2,"balls":2611,"ballShare":15.7213,"runs":1265,"dismissals":31,"strikeRate":48.4489,"ballsPerDismissal":84.2258},{"gear":3,"balls":2374,"ballShare":14.2943,"runs":1638,"dismissals":29,"strikeRate":68.9975,"ballsPerDismissal":81.8621},{"gear":4,"balls":1312,"ballShare":7.8998,"runs":1133,"dismissals":17,"strikeRate":86.3567,"ballsPerDismissal":77.1765},{"gear":5,"balls":1804,"ballShare":10.8622,"runs":1954,"dismissals":18,"strikeRate":108.3149,"ballsPerDismissal":100.2222},{"gear":6,"balls":1268,"ballShare":7.6349,"runs":1944,"dismissals":4,"strikeRate":153.3123,"ballsPerDismissal":317.0}]}];
+    const GEAR_COLORS = ["#5b6770", "#4878a8", "#3e9f8f", "#76a842", "#d79a2b", "#c85f4d", "#8e5ea2"];
+    const GEAR_TEXT = ["#ffffff", "#ffffff", "#ffffff", "#17212b", "#17212b", "#ffffff", "#ffffff"];
+    const BPD_TICKS = [60, 75, 100, 150, 200, 300];
+
+    document.getElementById("figureLegend").innerHTML = [
+      ...GEAR_COLORS.map((color, gear) =>
+        `<span class="legend-item"><span class="swatch" style="background:${color}"></span>G${gear}</span>`
+      ),
+      `<span class="size-legend"><span>Ball share</span><span class="size-item"><span class="size-circle size-10"></span>10%</span><span class="size-item"><span class="size-circle size-20"></span>20%</span></span>`
+    ].join("");
+
+    function bubbleRadius(ballShare) {
+      return 3.2 * Math.sqrt(ballShare);
+    }
+
+    const gearLabels = {
+      id: "gearLabels",
+      afterDatasetsDraw(chart) {
+        const datasetIndex = chart.data.datasets.findIndex(dataset => dataset.role === "bubbles");
+        if (datasetIndex < 0) return;
+        const dataset = chart.data.datasets[datasetIndex];
+        const meta = chart.getDatasetMeta(datasetIndex);
+        const { ctx } = chart;
+        ctx.save();
+        ctx.font = "700 8px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        dataset.data.forEach((point, index) => {
+          const element = meta.data[index];
+          if (!element) return;
+          ctx.fillStyle = GEAR_TEXT[point.gear];
+          ctx.fillText(`G${point.gear}`, element.x, element.y);
+        });
+        ctx.restore();
+      }
+    };
+
+    Chart.register(gearLabels);
+
+    function buildChart(record, index) {
+      const points = record.values.map(value => ({
+        x: value.strikeRate,
+        y: value.ballsPerDismissal,
+        r: bubbleRadius(value.ballShare),
+        ...value
+      }));
+
+      return new Chart(document.getElementById(`riskReward${index}`), {
+        type: "bubble",
+        data: {
+          datasets: [
+            {
+              type: "line",
+              role: "path",
+              data: points.map(point => ({ x: point.x, y: point.y })),
+              parsing: false,
+              borderColor: "rgba(65, 77, 87, 0.46)",
+              borderWidth: 1.25,
+              pointRadius: 0,
+              pointHitRadius: 0,
+              tension: 0,
+              order: 10
+            },
+            {
+              type: "bubble",
+              role: "bubbles",
+              label: record.entity,
+              data: points,
+              backgroundColor: context => {
+                const gear = context.raw ? context.raw.gear : 0;
+                return GEAR_COLORS[gear];
+              },
+              borderColor: "#ffffff",
+              borderWidth: 1.3,
+              hoverBorderColor: "#17212b",
+              hoverBorderWidth: 1.4,
+              order: 0
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 180 },
+          layout: { padding: { top: 7, right: 7 } },
+          interaction: { mode: "nearest", axis: "xy", intersect: true },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              displayColors: false,
+              filter(context) { return context.dataset.role === "bubbles"; },
+              backgroundColor: "rgba(23, 33, 43, 0.96)",
+              padding: 10,
+              titleFont: { size: 12 },
+              bodyFont: { size: 11 },
+              callbacks: {
+                title(items) {
+                  return `${record.entity}, gear ${items[0].raw.gear}`;
+                },
+                label(context) {
+                  const point = context.raw;
+                  return [
+                    `Strike rate: ${point.strikeRate.toFixed(1)}`,
+                    `Balls per dismissal: ${point.ballsPerDismissal.toFixed(1)}`,
+                    `Ball share: ${point.ballShare.toFixed(1)}%`,
+                    `${point.runs.toLocaleString()} runs | ${point.dismissals.toLocaleString()} dismissals`,
+                    `${point.balls.toLocaleString()} balls`
+                  ];
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              type: "linear",
+              min: 0,
+              max: 180,
+              title: {
+                display: true,
+                text: "Strike rate",
+                color: "#42515e",
+                font: { weight: "bold", size: 10 }
+              },
+              ticks: {
+                stepSize: 30,
+                color: "#61707d",
+                font: { size: 9 }
+              },
+              grid: { color: "rgba(217, 224, 229, 0.76)" },
+              border: { color: "#8a98a4" }
+            },
+            y: {
+              type: "logarithmic",
+              min: 60,
+              max: 350,
+              afterBuildTicks(scale) {
+                scale.ticks = BPD_TICKS.map(value => ({ value }));
+              },
+              title: {
+                display: true,
+                text: "Balls per dismissal",
+                color: "#42515e",
+                font: { weight: "bold", size: 10 }
+              },
+              ticks: {
+                autoSkip: false,
+                color: "#61707d",
+                font: { size: 9 },
+                callback(value) { return BPD_TICKS.includes(Number(value)) ? value : ""; }
+              },
+              grid: { color: "rgba(217, 224, 229, 0.76)" },
+              border: { color: "#8a98a4" }
+            }
+          }
+        }
+      });
+    }
+
+    RECORDS.forEach(buildChart);
+  </script>
+</body>
+</html>

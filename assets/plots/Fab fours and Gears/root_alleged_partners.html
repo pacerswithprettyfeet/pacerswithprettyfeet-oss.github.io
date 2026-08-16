@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Joe Root's gear share by partner group</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      width: 100%; margin: 0; padding: 0; overflow-x: hidden;
+      background: #ffffff; color: #17212b;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    figure {
+      width: 100%; max-width: 1040px; margin: 0 auto; padding: 6px 8px 0; overflow: hidden;
+    }
+    .gear-key {
+      display: flex; min-height: 30px; align-items: center; justify-content: center;
+      flex-wrap: wrap; gap: 5px 15px; color: #53616d; font-size: 10px; line-height: 1;
+    }
+    .key-item { display: inline-flex; align-items: center; white-space: nowrap; }
+    .line-key { position: relative; width: 23px; height: 10px; margin-right: 5px; color: var(--color); }
+    .line-key::before { position: absolute; top: 4px; left: 0; width: 23px; height: 2px; background: currentColor; content: ""; }
+    .line-key::after { position: absolute; top: 2px; left: 8px; width: 6px; height: 6px; border: 1px solid #fff; border-radius: 50%; background: currentColor; content: ""; }
+    .era-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; width: 100%; }
+    .era-panel { min-width: 0; overflow: hidden; }
+    .era-label { min-height: 22px; color: #33414d; font-size: 11px; font-weight: 700; line-height: 1.3; text-align: center; }
+    svg { display: block; width: 100%; height: 225px; overflow: visible; }
+    .grid-line { stroke: #e1e6ea; stroke-width: 1; }
+    .axis-line { stroke: #8e9aa4; stroke-width: 1; }
+    .slope-line { fill: none; stroke-width: 2.5; stroke-linecap: round; }
+    .point { stroke: #ffffff; stroke-width: 1.4; }
+    .tick-label, .partner-label, .value-label {
+      font-family: Arial, Helvetica, sans-serif; letter-spacing: 0;
+    }
+    .tick-label { fill: #61707d; font-size: 8px; }
+    .partner-label { fill: #465560; font-size: 9px; font-weight: 700; }
+    .value-label {
+      stroke: #ffffff; stroke-width: 3px; paint-order: stroke;
+      font-size: 8px; font-weight: 700;
+    }
+    .hit-target { fill: transparent; cursor: default; outline: none; }
+    .focus-ring { display: none; fill: none; stroke: #17212b; stroke-width: 1.4; }
+    .hit-target:focus + .focus-ring { display: block; }
+    .tooltip {
+      position: fixed; z-index: 20; display: none; max-width: 270px;
+      padding: 9px 10px; border-radius: 4px; background: rgba(23,33,43,.97);
+      color: #fff; font-size: 10px; line-height: 1.42; pointer-events: none;
+    }
+    .tooltip strong { display: block; margin-bottom: 2px; font-size: 11px; }
+    figcaption {
+      padding: 6px 8px 2px 43px; color: #61707d; font-size: 9px;
+      font-weight: 400; line-height: 1.42; letter-spacing: 0;
+    }
+    @media (max-width: 720px) {
+      figure { width: 100vw; max-width: 100vw; padding: 5px 6px 0; }
+      .gear-key { min-height: 38px; gap: 5px 11px; font-size: 9px; }
+      .era-grid { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+      .era-panel + .era-panel { padding-top: 7px; border-top: 1px solid #e2e7ea; }
+      .era-label { min-height: 20px; font-size: 10px; }
+      svg { height: 220px; }
+      figcaption { padding: 6px 7px 2px; font-size: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <figure>
+    <div class="gear-key">
+      <span class="key-item"><span class="line-key" style="--color:#3f6f9f"></span>Low (G0-1)</span>
+      <span class="key-item"><span class="line-key" style="--color:#4b8b69"></span>Middle (G2-4)</span>
+      <span class="key-item"><span class="line-key" style="--color:#c45e45"></span>High (G5-6)</span>
+    </div>
+    <div class="era-grid" id="eraGrid"></div>
+    <figcaption>Joe Root's gear distribution with top-five and Nos. 6-8 partners across three eras.</figcaption>
+  </figure>
+  <div class="tooltip" id="tooltip" role="tooltip"></div>
+  <script>
+    const RECORDS = [{"key":"2014-19","label":"2014-19","start":2014,"end":2019,"bands":[{"key":"low","label":"Low","longLabel":"Low gears","gearLabel":"Gears 0-1","gears":[0,1],"color":"#3f6f9f","points":[{"key":"top-five","source":"Top five (1-5)","label":"Top five","balls":3636,"partnerTotalBalls":8135,"ballShare":44.69575906576521,"runs":651,"dismissals":40,"ballsPerDismissal":90.9,"battingAverage":16.275},{"key":"lower-middle","source":"Lower middle (6-8)","label":"Nos. 6-8","balls":1021,"partnerTotalBalls":2501,"ballShare":40.823670531787286,"runs":199,"dismissals":11,"ballsPerDismissal":92.81818181818181,"battingAverage":18.09090909090909}]},{"key":"middle","label":"Middle","longLabel":"Middle gears","gearLabel":"Gears 2-4","gears":[2,3,4],"color":"#4b8b69","points":[{"key":"top-five","source":"Top five (1-5)","label":"Top five","balls":2876,"partnerTotalBalls":8135,"ballShare":35.35341118623233,"runs":1797,"dismissals":40,"ballsPerDismissal":71.9,"battingAverage":44.925},{"key":"lower-middle","source":"Lower middle (6-8)","label":"Nos. 6-8","balls":947,"partnerTotalBalls":2501,"ballShare":37.86485405837665,"runs":598,"dismissals":13,"ballsPerDismissal":72.84615384615384,"battingAverage":46.0}]},{"key":"high","label":"High","longLabel":"High gears","gearLabel":"Gears 5-6","gears":[5,6],"color":"#c45e45","points":[{"key":"top-five","source":"Top five (1-5)","label":"Top five","balls":1623,"partnerTotalBalls":8135,"ballShare":19.95082974800246,"runs":2052,"dismissals":15,"ballsPerDismissal":108.2,"battingAverage":136.8},{"key":"lower-middle","source":"Lower middle (6-8)","label":"Nos. 6-8","balls":533,"partnerTotalBalls":2501,"ballShare":21.311475409836067,"runs":719,"dismissals":4,"ballsPerDismissal":133.25,"battingAverage":179.75}]}]},{"key":"2020-21","label":"2020-21","start":2020,"end":2021,"bands":[{"key":"low","label":"Low","longLabel":"Low gears","gearLabel":"Gears 0-1","gears":[0,1],"color":"#3f6f9f","points":[{"key":"top-five","source":"Top five (1-5)","label":"Top five","balls":1197,"partnerTotalBalls":2837,"ballShare":42.19245682058512,"runs":231,"dismissals":7,"ballsPerDismissal":171.0,"battingAverage":33.0},{"key":"lower-middle","source":"Lower middle (6-8)","label":"Nos. 6-8","balls":320,"partnerTotalBalls":884,"ballShare":36.199095022624434,"runs":57,"dismissals":6,"ballsPerDismissal":53.333333333333336,"battingAverage":9.5}]},{"key":"middle","label":"Middle","longLabel":"Middle gears","gearLabel":"Gears 2-4","gears":[2,3,4],"color":"#4b8b69","points":[{"key":"top-five","source":"Top five (1-5)","label":"Top five","balls":1112,"partnerTotalBalls":2837,"ballShare":39.196334155798375,"runs":726,"dismissals":13,"ballsPerDismissal":85.53846153846153,"battingAverage":55.84615384615385},{"key":"lower-middle","source":"Lower middle (6-8)","label":"Nos. 6-8","balls":429,"partnerTotalBalls":884,"ballShare":48.529411764705884,"runs":248,"dismissals":6,"ballsPerDismissal":71.5,"battingAverage":41.333333333333336}]},{"key":"high","label":"High","longLabel":"High gears","gearLabel":"Gears 5-6","gears":[5,6],"color":"#c45e45","points":[{"key":"top-five","source":"Top five (1-5)","label":"Top five","balls":528,"partnerTotalBalls":2837,"ballShare":18.611209023616496,"runs":676,"dismissals":3,"ballsPerDismissal":176.0,"battingAverage":225.33333333333334},{"key":"lower-middle","source":"Lower middle (6-8)","label":"Nos. 6-8","balls":135,"partnerTotalBalls":884,"ballShare":15.271493212669684,"runs":158,"dismissals":0,"ballsPerDismissal":null,"battingAverage":null}]}]},{"key":"2022-onward","label":"2022 onward","start":2022,"end":9999,"bands":[{"key":"low","label":"Low","longLabel":"Low gears","gearLabel":"Gears 0-1","gears":[0,1],"color":"#3f6f9f","points":[{"key":"top-five","source":"Top five (1-5)","label":"Top five","balls":1604,"partnerTotalBalls":4784,"ballShare":33.52842809364549,"runs":330,"dismissals":20,"ballsPerDismissal":80.2,"battingAverage":16.5},{"key":"lower-middle","source":"Lower middle (6-8)","label":"Nos. 6-8","balls":581,"partnerTotalBalls":1874,"ballShare":31.003201707577375,"runs":101,"dismissals":7,"ballsPerDismissal":83.0,"battingAverage":14.428571428571429}]},{"key":"middle","label":"Middle","longLabel":"Middle gears","gearLabel":"Gears 2-4","gears":[2,3,4],"color":"#4b8b69","points":[{"key":"top-five","source":"Top five (1-5)","label":"Top five","balls":2187,"partnerTotalBalls":4784,"ballShare":45.71488294314381,"runs":1390,"dismissals":33,"ballsPerDismissal":66.27272727272727,"battingAverage":42.121212121212125},{"key":"lower-middle","source":"Lower middle (6-8)","label":"Nos. 6-8","balls":889,"partnerTotalBalls":1874,"ballShare":47.43863393810032,"runs":551,"dismissals":11,"ballsPerDismissal":80.81818181818181,"battingAverage":50.09090909090909}]},{"key":"high","label":"High","longLabel":"High gears","gearLabel":"Gears 5-6","gears":[5,6],"color":"#c45e45","points":[{"key":"top-five","source":"Top five (1-5)","label":"Top five","balls":993,"partnerTotalBalls":4784,"ballShare":20.756688963210703,"runs":1273,"dismissals":6,"ballsPerDismissal":165.5,"battingAverage":212.16666666666666},{"key":"lower-middle","source":"Lower middle (6-8)","label":"Nos. 6-8","balls":404,"partnerTotalBalls":1874,"ballShare":21.558164354322304,"runs":549,"dismissals":3,"ballsPerDismissal":134.66666666666666,"battingAverage":183.0}]}]}];
+    const NS = "http://www.w3.org/2000/svg";
+    const WIDTH = 320;
+    const HEIGHT = 240;
+    const X = { "top-five": 105, "lower-middle": 225 };
+    const Y_MAX = 60;
+    const TOP = 14;
+    const BOTTOM = 204;
+
+    function svgElement(name, attributes = {}, text = "") {
+      const element = document.createElementNS(NS, name);
+      Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
+      if (text) element.textContent = text;
+      return element;
+    }
+
+    function y(value) { return TOP + ((Y_MAX - value) / Y_MAX) * (BOTTOM - TOP); }
+
+    function spreadLabels(items) {
+      const sorted = [...items].sort((a, b) => a.targetY - b.targetY);
+      const gap = 12;
+      sorted.forEach((item, index) => {
+        item.labelY = index === 0 ? Math.max(TOP + 2, item.targetY) : Math.max(item.targetY, sorted[index - 1].labelY + gap);
+      });
+      const overflow = sorted.at(-1).labelY - (BOTTOM - 2);
+      if (overflow > 0) sorted.forEach(item => { item.labelY -= overflow; });
+      for (let index = sorted.length - 2; index >= 0; index -= 1) {
+        sorted[index].labelY = Math.min(sorted[index].labelY, sorted[index + 1].labelY - gap);
+      }
+      return sorted;
+    }
+
+    function tooltipText(era, band, point) {
+      return [
+        `<strong>${era.label} | ${band.longLabel}</strong>`,
+        point.label,
+        `${point.ballShare.toFixed(1)}% of deliveries`,
+        `${point.balls.toLocaleString()} of ${point.partnerTotalBalls.toLocaleString()} balls`
+      ].join("<br>");
+    }
+
+    function addPoint(svg, era, band, point) {
+      const pointX = X[point.key];
+      const pointY = y(point.ballShare);
+      svg.appendChild(svgElement("circle", { class: "point", cx: pointX, cy: pointY, r: 5, fill: band.color }));
+      const hit = svgElement("circle", {
+        class: "hit-target", cx: pointX, cy: pointY, r: 13, tabindex: 0,
+        "aria-label": `${era.label}, ${band.longLabel}, ${point.label}: ${point.ballShare.toFixed(1)}% of deliveries`
+      });
+      hit.dataset.tooltip = tooltipText(era, band, point);
+      svg.appendChild(hit);
+      svg.appendChild(svgElement("circle", { class: "focus-ring", cx: pointX, cy: pointY, r: 9 }));
+    }
+
+    function buildPanel(era) {
+      const panel = document.createElement("section");
+      panel.className = "era-panel";
+      const label = document.createElement("div");
+      label.className = "era-label";
+      label.textContent = era.label;
+      panel.appendChild(label);
+      const svg = svgElement("svg", { viewBox: `0 0 ${WIDTH} ${HEIGHT}`, role: "img", "aria-label": `Joe Root partner comparison, ${era.label}` });
+
+      [0, 15, 30, 45, 60].forEach(value => {
+        const position = y(value);
+        svg.appendChild(svgElement("line", { class: "grid-line", x1: 48, x2: 276, y1: position, y2: position }));
+        svg.appendChild(svgElement("text", { class: "tick-label", x: 40, y: position + 3, "text-anchor": "end" }, String(value)));
+      });
+      svg.appendChild(svgElement("line", { class: "axis-line", x1: 48, x2: 276, y1: BOTTOM, y2: BOTTOM }));
+      svg.appendChild(svgElement("text", { class: "partner-label", x: X["top-five"], y: 229, "text-anchor": "middle" }, "Top five"));
+      svg.appendChild(svgElement("text", { class: "partner-label", x: X["lower-middle"], y: 229, "text-anchor": "middle" }, "Nos. 6-8"));
+
+      era.bands.forEach(band => {
+        const points = band.points;
+        if (points.length === 2) {
+          svg.appendChild(svgElement("line", {
+            class: "slope-line", x1: X[points[0].key], y1: y(points[0].ballShare),
+            x2: X[points[1].key], y2: y(points[1].ballShare), stroke: band.color
+          }));
+        }
+        points.forEach(point => addPoint(svg, era, band, point));
+      });
+
+      ["top-five", "lower-middle"].forEach((partnerKey, sideIndex) => {
+        const labels = era.bands.flatMap(band => {
+          const point = band.points.find(item => item.key === partnerKey);
+          if (!point) return [];
+          return [{ band, point, targetY: y(point.ballShare) }];
+        });
+        spreadLabels(labels).forEach(item => {
+          const left = sideIndex === 0;
+          const pointX = X[partnerKey];
+          const labelX = pointX + (left ? -9 : 9);
+          svg.appendChild(svgElement("line", {
+            x1: pointX + (left ? -4 : 4), y1: item.targetY,
+            x2: labelX + (left ? 2 : -2), y2: item.labelY,
+            stroke: item.band.color, "stroke-width": 1, opacity: 0.55
+          }));
+          const text = left
+            ? `${item.band.label} ${item.point.ballShare.toFixed(1)}%`
+            : `${item.point.ballShare.toFixed(1)}%`;
+          svg.appendChild(svgElement("text", {
+            class: "value-label", x: labelX, y: item.labelY + 3,
+            fill: item.band.color, "text-anchor": left ? "end" : "start"
+          }, text));
+        });
+      });
+
+      panel.appendChild(svg);
+      return panel;
+    }
+
+    const grid = document.getElementById("eraGrid");
+    RECORDS.forEach(era => grid.appendChild(buildPanel(era)));
+
+    const tooltip = document.getElementById("tooltip");
+    function placeTooltip(clientX, clientY) {
+      tooltip.style.left = "0px"; tooltip.style.top = "0px";
+      const bounds = tooltip.getBoundingClientRect();
+      const left = Math.min(clientX + 12, window.innerWidth - bounds.width - 8);
+      const top = Math.min(clientY + 12, window.innerHeight - bounds.height - 8);
+      tooltip.style.left = `${Math.max(8, left)}px`;
+      tooltip.style.top = `${Math.max(8, top)}px`;
+    }
+    document.querySelectorAll(".hit-target").forEach(target => {
+      target.addEventListener("mouseenter", event => { tooltip.innerHTML = target.dataset.tooltip; tooltip.style.display = "block"; placeTooltip(event.clientX, event.clientY); });
+      target.addEventListener("mousemove", event => placeTooltip(event.clientX, event.clientY));
+      target.addEventListener("mouseleave", () => { tooltip.style.display = "none"; });
+      target.addEventListener("focus", () => { tooltip.innerHTML = target.dataset.tooltip; tooltip.style.display = "block"; const bounds = target.getBoundingClientRect(); placeTooltip(bounds.right, bounds.bottom); });
+      target.addEventListener("blur", () => { tooltip.style.display = "none"; });
+    });
+  </script>
+</body>
+</html>

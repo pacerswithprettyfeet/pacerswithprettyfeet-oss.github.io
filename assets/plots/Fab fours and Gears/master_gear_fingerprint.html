@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fab Four gear-share comparison</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background: #ffffff;
+      color: #17212b;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    figure {
+      width: 100%;
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 3px 7px 0;
+    }
+
+    .gear-legend {
+      display: flex;
+      min-height: 24px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 5px 13px;
+      margin-bottom: 3px;
+      color: #53616d;
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    .legend-item,
+    .band-key {
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .swatch {
+      width: 9px;
+      height: 9px;
+      margin-right: 4px;
+      border-radius: 2px;
+    }
+
+    .chart-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.42fr) minmax(295px, 1fr);
+      gap: 20px;
+      min-width: 0;
+    }
+
+    .panel { min-width: 0; }
+
+    .panel-head {
+      display: flex;
+      min-height: 21px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 0 4px 2px;
+    }
+
+    .panel-title {
+      color: #33414d;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .band-legend {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #65727d;
+      font-size: 9px;
+      line-height: 1;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      margin-right: 3px;
+      border-radius: 50%;
+    }
+
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+      min-width: 0;
+      height: 286px;
+    }
+
+    canvas {
+      display: block;
+      width: 100% !important;
+      max-width: 100%;
+    }
+
+    figcaption {
+      padding: 4px 8px 0 116px;
+      color: #61707d;
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0;
+    }
+
+    @media (max-width: 720px) {
+      figure { padding: 3px 5px 0; }
+
+      .gear-legend {
+        min-height: 34px;
+        gap: 5px 9px;
+        margin-bottom: 1px;
+      }
+
+      .chart-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 10px;
+      }
+
+      .chart-wrap { height: 254px; }
+
+      figcaption {
+        padding: 3px 7px 0;
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <figure>
+    <div class="gear-legend" id="gearLegend" aria-label="Gear color legend"></div>
+    <div class="chart-grid">
+      <section class="panel" aria-label="Seven-gear ball-share fingerprints">
+        <div class="panel-head">
+          <span class="panel-title">All seven gears</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="fingerprintChart" aria-label="One hundred percent stacked bars of gear shares"></canvas>
+        </div>
+      </section>
+
+      <section class="panel" aria-label="Low-gear, middle-gear and high-gear comparison">
+        <div class="panel-head">
+          <span class="panel-title">Grouped gears</span>
+          <span class="band-legend">
+            <span class="band-key"><span class="dot" style="background:#3f6f9f"></span>Low (0-1)</span>
+            <span class="band-key"><span class="dot" style="background:#4b8b69"></span>Middle (2-4)</span>
+            <span class="band-key"><span class="dot" style="background:#c45e45"></span>High (5-6)</span>
+          </span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="dumbbellChart" aria-label="Chart comparing low-gear, middle-gear and high-gear shares"></canvas>
+        </div>
+      </section>
+    </div>
+    <figcaption>Ball shares for the Fab Four and the top-seven men's Test baseline. The baseline pools every delivery faced by batters in positions 1-7 in the men's Tests covered by the available ball-by-ball data. The stacked bars show all seven gears individually; the right-hand panel groups them into low (0-1), middle (2-4) and high (5-6) gears. From Williamson through Smith and Kohli to Root, low-gear share falls as middle-gear share rises, producing a clear staircase. Their high-gear shares, however, remain strikingly similar despite those different preferences lower down the gearbox.</figcaption>
+  </figure>
+
+  <script>
+    const ROWS = [{"entity":"Kane Williamson","kind":"player","runs":9515,"totalBalls":18306,"gearShares":[26.5214,22.0638,15.7216,11.346,6.9922,10.0951,7.2599],"gearBalls":[4855,4039,2878,2077,1280,1848,1329],"lowShare":48.5852,"middleShare":34.0599,"highShare":17.355},{"entity":"Steve Smith","kind":"player","runs":10763,"totalBalls":19966,"gearShares":[24.3614,21.6668,16.1274,12.5814,7.5028,10.608,7.1522],"gearBalls":[4864,4326,3220,2512,1498,2118,1428],"lowShare":46.0282,"middleShare":36.2116,"highShare":17.7602},{"entity":"Virat Kohli","kind":"player","runs":9230,"totalBalls":16608,"gearShares":[22.8444,20.743,15.7213,14.2943,7.8998,10.8622,7.6349],"gearBalls":[3794,3445,2611,2374,1312,1804,1268],"lowShare":43.5874,"middleShare":37.9155,"highShare":18.4971},{"entity":"Joe Root","kind":"player","runs":13952,"totalBalls":24269,"gearShares":[21.3853,19.6053,17.1618,13.5811,8.6489,11.8587,7.7589],"gearBalls":[5190,4758,4165,3296,2099,2878,1883],"lowShare":40.9906,"middleShare":39.3918,"highShare":19.6176},{"entity":"Top-seven baseline","kind":"baseline","runs":751682,"totalBalls":1448971,"gearShares":[26.912,21.3625,15.4454,12.0317,7.4013,9.7359,7.1111],"gearBalls":[389947,309537,223800,174336,107242,141071,103038],"lowShare":48.2745,"middleShare":34.8784,"highShare":16.8471}];
+    const GEAR_COLORS = ["#5b6770", "#4878a8", "#3e9f8f", "#76a842", "#d79a2b", "#c85f4d", "#8e5ea2"];
+    const STACK_TEXT_COLORS = ["#ffffff", "#ffffff", "#ffffff", "#17212b", "#17212b", "#ffffff", "#ffffff"];
+    const LOW_COLOR = "#3f6f9f";
+    const MIDDLE_COLOR = "#4b8b69";
+    const HIGH_COLOR = "#c45e45";
+    const BASELINE_INDEX = ROWS.findIndex(row => row.kind === "baseline");
+    const mobileQuery = window.matchMedia("(max-width: 720px)");
+
+    document.getElementById("gearLegend").innerHTML = GEAR_COLORS.map((color, gear) =>
+      `<span class="legend-item"><span class="swatch" style="background:${color}"></span>Gear ${gear}</span>`
+    ).join("");
+
+    function separatorY(chart) {
+      const scale = chart.scales.y;
+      if (!scale || BASELINE_INDEX < 1) return null;
+      const baseline = scale.getPixelForValue(ROWS[BASELINE_INDEX].entity);
+      const previous = scale.getPixelForValue(ROWS[BASELINE_INDEX - 1].entity);
+      if (!Number.isFinite(baseline) || !Number.isFinite(previous)) return null;
+      return (baseline + previous) / 2;
+    }
+
+    const baselineSeparator = {
+      id: "baselineSeparator",
+      beforeDatasetsDraw(chart) {
+        const y = separatorY(chart);
+        if (y === null) return;
+        const { ctx, chartArea } = chart;
+        ctx.save();
+        ctx.strokeStyle = "rgba(63, 75, 85, 0.42)";
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(chartArea.left, y);
+        ctx.lineTo(chartArea.right, y);
+        ctx.stroke();
+        ctx.restore();
+      }
+    };
+
+    const stackValueLabels = {
+      id: "stackValueLabels",
+      afterDatasetsDraw(chart) {
+        if (chart.canvas.id !== "fingerprintChart") return;
+        const { ctx } = chart;
+        const fontSize = chart.width < 480 ? 8 : 9;
+        ctx.save();
+        ctx.font = `700 ${fontSize}px Arial`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        chart.data.datasets.forEach((dataset, gear) => {
+          const meta = chart.getDatasetMeta(gear);
+          meta.data.forEach((bar, rowIndex) => {
+            const value = Number(dataset.data[rowIndex]);
+            const props = bar.getProps(["x", "base", "y"], true);
+            if (Math.abs(props.x - props.base) < 20) return;
+            ctx.fillStyle = STACK_TEXT_COLORS[gear];
+            ctx.fillText(value.toFixed(1), (props.x + props.base) / 2, props.y);
+          });
+        });
+        ctx.restore();
+      }
+    };
+
+    Chart.register(baselineSeparator, stackValueLabels);
+
+    const sharedTooltip = {
+      displayColors: true,
+      backgroundColor: "rgba(23, 33, 43, 0.96)",
+      padding: 10,
+      titleFont: { size: 12 },
+      bodyFont: { size: 11 }
+    };
+
+    const fingerprintChart = new Chart(document.getElementById("fingerprintChart"), {
+      type: "bar",
+      data: {
+        labels: ROWS.map(row => row.entity),
+        datasets: GEAR_COLORS.map((color, gear) => ({
+          label: `Gear ${gear}`,
+          data: ROWS.map(row => row.gearShares[gear]),
+          backgroundColor: color,
+          borderColor: context => context.dataIndex === BASELINE_INDEX ? "rgba(23, 33, 43, 0.72)" : color,
+          borderWidth: context => context.dataIndex === BASELINE_INDEX ? 0.7 : 0,
+          borderSkipped: false,
+          barPercentage: 0.62,
+          categoryPercentage: 0.9
+        }))
+      },
+      options: {
+        indexAxis: "y",
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 180 },
+        layout: { padding: { top: 4, right: 2 } },
+        interaction: { mode: "nearest", axis: "y", intersect: true },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            ...sharedTooltip,
+            callbacks: {
+              title(items) { return ROWS[items[0].dataIndex].entity; },
+              label(context) {
+                const row = ROWS[context.dataIndex];
+                const gear = context.datasetIndex;
+                return ` Gear ${gear}: ${row.gearShares[gear].toFixed(2)}% (${row.gearBalls[gear].toLocaleString()} balls)`;
+              },
+              afterBody(items) {
+                const row = ROWS[items[0].dataIndex];
+                return `${row.totalBalls.toLocaleString()} total balls in the available data`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            stacked: true,
+            min: 0,
+            max: 100,
+            title: {
+              display: true,
+              text: "Ball share",
+              color: "#42515e",
+              font: { weight: "bold", size: 10 }
+            },
+            ticks: {
+              stepSize: 20,
+              color: "#61707d",
+              font: { size: 9 },
+              callback(value) { return `${value}%`; }
+            },
+            grid: { color: "rgba(217, 224, 229, 0.78)" },
+            border: { color: "#8a98a4" }
+          },
+          y: {
+            stacked: true,
+            offset: true,
+            ticks: {
+              autoSkip: false,
+              padding: 6,
+              color: context => context.index === BASELINE_INDEX ? "#26323d" : "#42515e",
+              font: context => ({
+                family: "Arial",
+                size: 10,
+                weight: context.index === BASELINE_INDEX ? "700" : "400"
+              })
+            },
+            grid: { display: false },
+            border: { display: false }
+          }
+        }
+      }
+    });
+
+    const connectors = ROWS.map((row, index) => ({
+      type: "scatter",
+      label: row.entity,
+      role: "connector",
+      data: [
+        { x: row.highShare, y: row.entity, rowIndex: index },
+        { x: row.middleShare, y: row.entity, rowIndex: index },
+        { x: row.lowShare, y: row.entity, rowIndex: index }
+      ],
+      showLine: true,
+      borderColor: row.kind === "baseline" ? "#56616b" : "rgba(112, 125, 135, 0.48)",
+      borderWidth: row.kind === "baseline" ? 1.5 : 2,
+      borderDash: row.kind === "baseline" ? [4, 3] : [],
+      pointRadius: 0,
+      pointHoverRadius: 0,
+      pointHitRadius: 0
+    }));
+
+    const dumbbellValueLabels = {
+      id: "dumbbellValueLabels",
+      afterDatasetsDraw(chart) {
+        if (chart.canvas.id !== "dumbbellChart") return;
+        const lowMeta = chart.getDatasetMeta(ROWS.length);
+        const middleMeta = chart.getDatasetMeta(ROWS.length + 1);
+        const highMeta = chart.getDatasetMeta(ROWS.length + 2);
+        if (!lowMeta || !middleMeta || !highMeta) return;
+        const { ctx } = chart;
+        ctx.save();
+        ctx.font = "700 9px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ROWS.forEach((row, index) => {
+          const lowPoint = lowMeta.data[index];
+          const middlePoint = middleMeta.data[index];
+          const highPoint = highMeta.data[index];
+          if (!lowPoint || !middlePoint || !highPoint) return;
+          ctx.fillStyle = LOW_COLOR;
+          ctx.fillText(`${row.lowShare.toFixed(1)}%`, lowPoint.x, lowPoint.y - 11);
+          ctx.fillStyle = MIDDLE_COLOR;
+          ctx.fillText(`${row.middleShare.toFixed(1)}%`, middlePoint.x, middlePoint.y + 12);
+          ctx.fillStyle = HIGH_COLOR;
+          ctx.fillText(`${row.highShare.toFixed(1)}%`, highPoint.x, highPoint.y - 11);
+        });
+        ctx.restore();
+      }
+    };
+
+    Chart.register(dumbbellValueLabels);
+
+    const dumbbellChart = new Chart(document.getElementById("dumbbellChart"), {
+      type: "scatter",
+      data: {
+        labels: ROWS.map(row => row.entity),
+        datasets: [
+          ...connectors,
+          {
+            label: "Low gears (0-1)",
+            role: "point",
+            data: ROWS.map((row, index) => ({ x: row.lowShare, y: row.entity, rowIndex: index })),
+            pointRadius: context => context.raw && ROWS[context.raw.rowIndex].kind === "baseline" ? 5.5 : 5,
+            pointHoverRadius: 7,
+            pointHitRadius: 10,
+            pointBackgroundColor: LOW_COLOR,
+            pointBorderColor: "#ffffff",
+            pointBorderWidth: 1.2
+          },
+          {
+            label: "Middle gears (2-4)",
+            role: "point",
+            data: ROWS.map((row, index) => ({ x: row.middleShare, y: row.entity, rowIndex: index })),
+            pointRadius: context => context.raw && ROWS[context.raw.rowIndex].kind === "baseline" ? 5.5 : 5,
+            pointHoverRadius: 7,
+            pointHitRadius: 10,
+            pointBackgroundColor: MIDDLE_COLOR,
+            pointBorderColor: "#ffffff",
+            pointBorderWidth: 1.2
+          },
+          {
+            label: "High gears (5-6)",
+            role: "point",
+            data: ROWS.map((row, index) => ({ x: row.highShare, y: row.entity, rowIndex: index })),
+            pointRadius: context => context.raw && ROWS[context.raw.rowIndex].kind === "baseline" ? 5.5 : 5,
+            pointHoverRadius: 7,
+            pointHitRadius: 10,
+            pointBackgroundColor: HIGH_COLOR,
+            pointBorderColor: "#ffffff",
+            pointBorderWidth: 1.2
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 180 },
+        layout: { padding: { top: 4, left: 1, right: 10 } },
+        interaction: { mode: "nearest", axis: "xy", intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            ...sharedTooltip,
+            filter(context) { return context.dataset.role === "point"; },
+            callbacks: {
+              title(items) { return ROWS[items[0].raw.rowIndex].entity; },
+              label(context) {
+                const row = ROWS[context.raw.rowIndex];
+                return [
+                  `Low gears (0-1): ${row.lowShare.toFixed(2)}%`,
+                  `Middle gears (2-4): ${row.middleShare.toFixed(2)}%`,
+                  `High gears (5-6): ${row.highShare.toFixed(2)}%`,
+                  `Low - middle: ${(row.lowShare - row.middleShare).toFixed(2)} points`
+                ];
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            type: "linear",
+            min: 15,
+            max: 50,
+            title: {
+              display: true,
+              text: "Ball share",
+              color: "#42515e",
+              font: { weight: "bold", size: 10 }
+            },
+            ticks: {
+              stepSize: 5,
+              color: "#61707d",
+              font: { size: 9 },
+              callback(value) { return `${value}%`; }
+            },
+            grid: { color: "rgba(217, 224, 229, 0.78)" },
+            border: { color: "#8a98a4" }
+          },
+          y: {
+            type: "category",
+            labels: ROWS.map(row => row.entity),
+            offset: true,
+            ticks: {
+              display: mobileQuery.matches,
+              autoSkip: false,
+              padding: 6,
+              color: context => context.index === BASELINE_INDEX ? "#26323d" : "#42515e",
+              font: context => ({
+                family: "Arial",
+                size: 10,
+                weight: context.index === BASELINE_INDEX ? "700" : "400"
+              })
+            },
+            grid: { display: false },
+            border: { display: false }
+          }
+        }
+      }
+    });
+
+    function syncDumbbellLabels() {
+      dumbbellChart.options.scales.y.ticks.display = mobileQuery.matches;
+      dumbbellChart.update("none");
+    }
+
+    if (mobileQuery.addEventListener) {
+      mobileQuery.addEventListener("change", syncDumbbellLabels);
+    } else {
+      mobileQuery.addListener(syncDumbbellLabels);
+    }
+  </script>
+</body>
+</html>

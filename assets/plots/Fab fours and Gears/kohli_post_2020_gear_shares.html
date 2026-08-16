@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virat Kohli's gear shares after 2020</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background: #ffffff;
+      color: #17212b;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    figure {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 7px 10px 0;
+      overflow: hidden;
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+
+    .grid-line {
+      stroke: #e0e6ea;
+      stroke-width: 1;
+    }
+
+    .axis-line {
+      stroke: #8d99a3;
+      stroke-width: 1;
+    }
+
+    .series-line {
+      fill: none;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .tick-label,
+    .year-label,
+    .axis-title,
+    .series-label,
+    .value-label {
+      font-family: Arial, Helvetica, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .tick-label,
+    .year-label {
+      fill: #5f6e79;
+      font-size: 11px;
+    }
+
+    .year-label { font-weight: 700; }
+
+    .axis-title {
+      fill: #52616d;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .series-label,
+    .value-label {
+      stroke: #ffffff;
+      stroke-width: 4px;
+      paint-order: stroke;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .data-point {
+      stroke: #ffffff;
+      stroke-width: 1.5;
+    }
+
+    .hit-target {
+      fill: transparent;
+      cursor: default;
+      outline: none;
+    }
+
+    .focus-ring {
+      display: none;
+      fill: none;
+      stroke: #17212b;
+      stroke-width: 1.5;
+    }
+
+    .hit-target:focus + .focus-ring { display: block; }
+
+    .tooltip {
+      position: fixed;
+      z-index: 20;
+      display: none;
+      max-width: 260px;
+      padding: 9px 10px;
+      border-radius: 4px;
+      background: rgba(23, 33, 43, 0.97);
+      color: #ffffff;
+      font-size: 11px;
+      line-height: 1.42;
+      pointer-events: none;
+    }
+
+    .tooltip strong {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 12px;
+    }
+
+    figcaption {
+      padding: 1px 8px 2px 66px;
+      color: #61707d;
+      font-size: 9px;
+      line-height: 1.4;
+      letter-spacing: 0;
+    }
+
+    @media (max-width: 720px) {
+      figure {
+        width: 100vw;
+        max-width: 100vw;
+        padding: 5px 5px 0;
+      }
+
+      .series-line { stroke-width: 5; }
+      .tick-label,
+      .year-label,
+      .axis-title { font-size: 20px; }
+      .series-label,
+      .value-label {
+        font-size: 21px;
+        stroke-width: 7px;
+      }
+      .data-point { stroke-width: 3; }
+
+      figcaption {
+        padding: 1px 7px 2px;
+        font-size: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <figure>
+    <svg id="chart" viewBox="0 0 820 350" role="img" aria-label="Virat Kohli's low, middle and high gear ball shares from 2021 to 2024"></svg>
+    <figcaption>Virat Kohli's share of deliveries in the low, middle and high gears, 2021-24.</figcaption>
+  </figure>
+  <div class="tooltip" id="tooltip" role="tooltip"></div>
+
+  <script>
+    const RECORDS = [{"year":2021,"totalBalls":1216,"groups":[{"key":"low","label":"Low gears","shortLabel":"Low","gears":[0,1],"gearLabel":"Gears 0-1","color":"#3f6f9f","balls":655,"runs":108,"share":53.86513157894737},{"key":"middle","label":"Middle gears","shortLabel":"Middle","gears":[2,3,4],"gearLabel":"Gears 2-4","color":"#4b8b69","balls":426,"runs":254,"share":35.0328947368421},{"key":"high","label":"High gears","shortLabel":"High","gears":[5,6],"gearLabel":"Gears 5-6","color":"#c45e45","balls":135,"runs":174,"share":11.101973684210526}]},{"year":2022,"totalBalls":672,"groups":[{"key":"low","label":"Low gears","shortLabel":"Low","gears":[0,1],"gearLabel":"Gears 0-1","color":"#3f6f9f","balls":414,"runs":72,"share":61.607142857142854},{"key":"middle","label":"Middle gears","shortLabel":"Middle","gears":[2,3,4],"gearLabel":"Gears 2-4","color":"#4b8b69","balls":173,"runs":95,"share":25.74404761904762},{"key":"high","label":"High gears","shortLabel":"High","gears":[5,6],"gearLabel":"Gears 5-6","color":"#c45e45","balls":85,"runs":98,"share":12.648809523809524}]},{"year":2023,"totalBalls":1226,"groups":[{"key":"low","label":"Low gears","shortLabel":"Low","gears":[0,1],"gearLabel":"Gears 0-1","color":"#3f6f9f","balls":569,"runs":97,"share":46.411092985318106},{"key":"middle","label":"Middle gears","shortLabel":"Middle","gears":[2,3,4],"gearLabel":"Gears 2-4","color":"#4b8b69","balls":399,"runs":261,"share":32.54486133768352},{"key":"high","label":"High gears","shortLabel":"High","gears":[5,6],"gearLabel":"Gears 5-6","color":"#c45e45","balls":258,"runs":313,"share":21.04404567699837}]},{"year":2024,"totalBalls":673,"groups":[{"key":"low","label":"Low gears","shortLabel":"Low","gears":[0,1],"gearLabel":"Gears 0-1","color":"#3f6f9f","balls":256,"runs":44,"share":38.03863298662704},{"key":"middle","label":"Middle gears","shortLabel":"Middle","gears":[2,3,4],"gearLabel":"Gears 2-4","color":"#4b8b69","balls":232,"runs":141,"share":34.472511144130756},{"key":"high","label":"High gears","shortLabel":"High","gears":[5,6],"gearLabel":"Gears 5-6","color":"#c45e45","balls":185,"runs":232,"share":27.488855869242197}]}];
+    const NS = "http://www.w3.org/2000/svg";
+    const svg = document.getElementById("chart");
+    const tooltip = document.getElementById("tooltip");
+    const width = 820;
+    const height = 350;
+    const margin = { left: 66, right: 114, top: 25, bottom: 47 };
+    const plotWidth = width - margin.left - margin.right;
+    const plotHeight = height - margin.top - margin.bottom;
+    const yMax = 70;
+
+    function svgElement(name, attributes = {}, text = "") {
+      const element = document.createElementNS(NS, name);
+      Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
+      if (text) element.textContent = text;
+      return element;
+    }
+
+    function x(index) {
+      return margin.left + (index / (RECORDS.length - 1)) * plotWidth;
+    }
+
+    function y(value) {
+      return margin.top + ((yMax - value) / yMax) * plotHeight;
+    }
+
+    [0, 20, 40, 60].forEach(value => {
+      const position = y(value);
+      svg.appendChild(svgElement("line", {
+        class: "grid-line",
+        x1: margin.left,
+        x2: width - margin.right,
+        y1: position,
+        y2: position
+      }));
+      svg.appendChild(svgElement("text", {
+        class: "tick-label",
+        x: margin.left - 10,
+        y: position + 4,
+        "text-anchor": "end"
+      }, `${value}%`));
+    });
+
+    svg.appendChild(svgElement("line", {
+      class: "axis-line",
+      x1: margin.left,
+      x2: width - margin.right,
+      y1: y(0),
+      y2: y(0)
+    }));
+
+    const yCenter = margin.top + plotHeight / 2;
+    svg.appendChild(svgElement("text", {
+      class: "axis-title",
+      x: 14,
+      y: yCenter,
+      transform: `rotate(-90 14 ${yCenter})`,
+      "text-anchor": "middle"
+    }, "Share of balls"));
+
+    RECORDS.forEach((record, index) => {
+      svg.appendChild(svgElement("text", {
+        class: "year-label",
+        x: x(index),
+        y: height - 16,
+        "text-anchor": "middle"
+      }, String(record.year)));
+    });
+
+    const series = RECORDS[0].groups.map((group, groupIndex) => ({
+      ...group,
+      values: RECORDS.map(record => ({
+        year: record.year,
+        totalBalls: record.totalBalls,
+        ...record.groups[groupIndex]
+      }))
+    }));
+
+    function addPoint(pointX, pointY, color, datum) {
+      svg.appendChild(svgElement("circle", {
+        class: "data-point",
+        cx: pointX,
+        cy: pointY,
+        r: 6,
+        fill: color
+      }));
+      const hit = svgElement("circle", {
+        class: "hit-target",
+        cx: pointX,
+        cy: pointY,
+        r: 16,
+        tabindex: 0,
+        "aria-label": `${datum.year}, ${datum.label}: ${datum.share.toFixed(1)} percent of balls`
+      });
+      hit.dataset.tooltip = [
+        `<strong>${datum.year} | ${datum.label}</strong>`,
+        `${datum.share.toFixed(1)}% of deliveries`,
+        `${datum.balls.toLocaleString()} of ${datum.totalBalls.toLocaleString()} balls`,
+        datum.gearLabel
+      ].join("<br>");
+      svg.appendChild(hit);
+      svg.appendChild(svgElement("circle", {
+        class: "focus-ring",
+        cx: pointX,
+        cy: pointY,
+        r: 10
+      }));
+    }
+
+    series.forEach(group => {
+      const path = group.values.map((datum, index) => {
+        const command = index === 0 ? "M" : "L";
+        return `${command} ${x(index)} ${y(datum.share)}`;
+      }).join(" ");
+      svg.appendChild(svgElement("path", {
+        class: "series-line",
+        d: path,
+        stroke: group.color
+      }));
+
+      group.values.forEach((datum, index) => {
+        const pointX = x(index);
+        const pointY = y(datum.share);
+        addPoint(pointX, pointY, group.color, datum);
+
+        const showLow = group.key === "low" && (datum.year === 2021 || datum.year === 2022);
+        const showHigh = group.key === "high" && (datum.year === 2023 || datum.year === 2024);
+        if (showLow || showHigh) {
+          svg.appendChild(svgElement("text", {
+            class: "value-label",
+            x: pointX + (datum.year === 2024 ? -10 : 0),
+            y: pointY + (showLow ? -12 : 18),
+            fill: group.color,
+            "text-anchor": datum.year === 2024 ? "end" : "middle"
+          }, `${datum.share.toFixed(1)}%`));
+        }
+      });
+
+      const last = group.values[group.values.length - 1];
+      const offsets = { low: -8, middle: 15, high: 4 };
+      svg.appendChild(svgElement("text", {
+        class: "series-label",
+        x: x(group.values.length - 1) + 16,
+        y: y(last.share) + offsets[group.key],
+        fill: group.color,
+        "text-anchor": "start"
+      }, group.shortLabel));
+    });
+
+    function placeTooltip(clientX, clientY) {
+      tooltip.style.left = "0px";
+      tooltip.style.top = "0px";
+      const bounds = tooltip.getBoundingClientRect();
+      const left = Math.min(clientX + 12, window.innerWidth - bounds.width - 8);
+      const top = Math.min(clientY + 12, window.innerHeight - bounds.height - 8);
+      tooltip.style.left = `${Math.max(8, left)}px`;
+      tooltip.style.top = `${Math.max(8, top)}px`;
+    }
+
+    document.querySelectorAll(".hit-target").forEach(target => {
+      target.addEventListener("mouseenter", event => {
+        tooltip.innerHTML = target.dataset.tooltip;
+        tooltip.style.display = "block";
+        placeTooltip(event.clientX, event.clientY);
+      });
+      target.addEventListener("mousemove", event => placeTooltip(event.clientX, event.clientY));
+      target.addEventListener("mouseleave", () => { tooltip.style.display = "none"; });
+      target.addEventListener("focus", () => {
+        tooltip.innerHTML = target.dataset.tooltip;
+        tooltip.style.display = "block";
+        const bounds = target.getBoundingClientRect();
+        placeTooltip(bounds.right, bounds.bottom);
+      });
+      target.addEventListener("blur", () => { tooltip.style.display = "none"; });
+    });
+  </script>
+</body>
+</html>

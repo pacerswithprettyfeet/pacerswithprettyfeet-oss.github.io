@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smith: Immortality below 40, mortality above 100</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background: #ffffff;
+      color: #17212b;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    figure {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 6px 8px 0;
+      overflow: hidden;
+    }
+
+    .gear-legend {
+      display: flex;
+      min-height: 31px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 6px 16px;
+      color: #53616d;
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .legend-swatch {
+      width: 18px;
+      height: 4px;
+      margin-right: 5px;
+      border-radius: 1px;
+    }
+
+    .slope-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .slope-wrap { height: 340px; }
+
+    canvas {
+      display: block;
+      width: 100% !important;
+      max-width: 100%;
+    }
+
+    figcaption {
+      padding: 6px 8px 0 58px;
+      color: #61707d;
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.42;
+      letter-spacing: 0;
+    }
+
+    @media (max-width: 680px) {
+      figure {
+        width: 100vw;
+        max-width: 100vw;
+        padding: 4px 5px 0;
+      }
+
+      .gear-legend {
+        min-height: 32px;
+        gap: 5px 11px;
+      }
+
+      .slope-wrap { height: 310px; }
+
+      figcaption {
+        padding: 5px 7px 0;
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <figure>
+    <div class="gear-legend" id="gearLegend" aria-label="Gear-group key"></div>
+
+    <section class="slope-panel">
+      <div class="slope-wrap">
+        <canvas id="slopeChart" aria-label="Steve Smith balls per dismissal by gear group before and after 2020"></canvas>
+      </div>
+    </section>
+
+    <figcaption>
+      Steve Smith, 2014-19 versus 2020+. Smith was still fine in his low gears even after 2020; the collapse came in the middle gears, from 125.1 balls per dismissal in 2014-19 to 74.8.
+    </figcaption>
+  </figure>
+
+  <script>
+    const PERIOD_RECORDS = [{"key":"low","label":"Low (G0-1)","tooltipLabel":"Low gears","color":"#3f6f9f","values":[{"period":"2014-19","balls":4745,"dismissals":32,"ballsPerDismissal":148.28125},{"period":"2020+","balls":3368,"dismissals":29,"ballsPerDismissal":116.13793103448276}],"absoluteChange":-32.14331896551724,"percentChange":-21.677264634279283},{"key":"middle","label":"Middle (G2-4)","tooltipLabel":"Middle gears","color":"#4b8b69","values":[{"period":"2014-19","balls":4002,"dismissals":32,"ballsPerDismissal":125.0625},{"period":"2020+","balls":2617,"dismissals":35,"ballsPerDismissal":74.77142857142857}],"absoluteChange":-50.29107142857143,"percentChange":-40.2127507674734},{"key":"high","label":"High (G5-6)","tooltipLabel":"High gears","color":"#c45e45","values":[{"period":"2014-19","balls":2133,"dismissals":22,"ballsPerDismissal":96.95454545454545},{"period":"2020+","balls":1095,"dismissals":14,"ballsPerDismissal":78.21428571428571}],"absoluteChange":-18.740259740259745,"percentChange":-19.328912999799087}];
+    const GEAR_GROUPS = [{"key":"low","label":"Low (G0-1)","tooltipLabel":"Low gears","color":"#3f6f9f"},{"key":"middle","label":"Middle (G2-4)","tooltipLabel":"Middle gears","color":"#4b8b69"},{"key":"high","label":"High (G5-6)","tooltipLabel":"High gears","color":"#c45e45"}];
+    const PERIOD_LABELS = ["2014-19", "2020+"];
+
+    document.getElementById("gearLegend").innerHTML = GEAR_GROUPS.map(group => `
+      <span class="legend-item">
+        <span class="legend-swatch" style="background:${group.color}"></span>${group.label}
+      </span>
+    `).join("");
+
+    const slopeLabelsPlugin = {
+      id: "slopeLabels",
+      afterDatasetsDraw(chart) {
+        if (chart.canvas.id !== "slopeChart") return;
+        const { ctx } = chart;
+        ctx.save();
+        chart.data.datasets.forEach(dataset => {
+          const meta = chart.getDatasetMeta(dataset.index);
+          meta.data.forEach((point, pointIndex) => {
+            const value = Number(dataset.data[pointIndex].y);
+            const properties = point.getProps(["x", "y"], true);
+            let yOffset = -10;
+            if (pointIndex === 1 && dataset.groupKey === "middle") yOffset = 15;
+            if (pointIndex === 1 && dataset.groupKey === "high") yOffset = -12;
+            ctx.fillStyle = dataset.borderColor;
+            ctx.font = "bold 10px Arial";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(value.toFixed(1), properties.x, properties.y + yOffset);
+          });
+        });
+        ctx.restore();
+      }
+    };
+
+    Chart.register(slopeLabelsPlugin);
+
+    const slopeDatasets = PERIOD_RECORDS.map((record, index) => ({
+      index,
+      label: record.tooltipLabel,
+      groupKey: record.key,
+      borderColor: record.color,
+      backgroundColor: record.color,
+      borderWidth: 2.6,
+      pointRadius: 5,
+      pointHoverRadius: 7,
+      pointBackgroundColor: record.color,
+      pointBorderColor: "#ffffff",
+      pointBorderWidth: 1.4,
+      tension: 0,
+      data: record.values.map((value, pointIndex) => ({
+        x: pointIndex,
+        y: value.ballsPerDismissal,
+        ...value,
+        absoluteChange: record.absoluteChange,
+        percentChange: record.percentChange
+      }))
+    }));
+
+    new Chart(document.getElementById("slopeChart"), {
+      type: "line",
+      data: { datasets: slopeDatasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 170 },
+        layout: { padding: { top: 10, right: 34, bottom: 1, left: 9 } },
+        interaction: { mode: "index", axis: "x", intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            displayColors: true,
+            backgroundColor: "rgba(23, 33, 43, 0.97)",
+            padding: 10,
+            titleFont: { size: 12 },
+            bodyFont: { size: 11 },
+            callbacks: {
+              title(items) { return items[0].raw.period; },
+              label(context) {
+                const point = context.raw;
+                return [
+                  ` ${context.dataset.label}: ${point.ballsPerDismissal.toFixed(1)} balls per dismissal`,
+                  ` ${point.balls.toLocaleString()} balls | ${point.dismissals.toLocaleString()} dismissals`
+                ];
+              },
+              afterBody(items) {
+                if (items[0].raw.period !== "2020+") return [];
+                return items.map(item => {
+                  const point = item.raw;
+                  return `${item.dataset.label} change: ${point.absoluteChange.toFixed(1)} (${point.percentChange.toFixed(1)}%)`;
+                });
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            type: "linear",
+            min: -0.08,
+            max: 1.08,
+            afterBuildTicks(scale) {
+              scale.ticks = [0, 1].map(value => ({ value }));
+            },
+            ticks: {
+              color: "#44535f",
+              font: { size: 10, weight: "700" },
+              callback(value) { return PERIOD_LABELS[value] || ""; }
+            },
+            grid: { display: false },
+            border: { color: "#8a98a4" }
+          },
+          y: {
+            min: 50,
+            max: 160,
+            title: {
+              display: true,
+              text: "Balls per dismissal",
+              color: "#42515e",
+              font: { weight: "bold", size: 10 }
+            },
+            ticks: {
+              stepSize: 20,
+              color: "#61707d",
+              font: { size: 9 }
+            },
+            grid: { color: "rgba(217, 224, 229, 0.8)" },
+            border: { color: "#8a98a4" }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

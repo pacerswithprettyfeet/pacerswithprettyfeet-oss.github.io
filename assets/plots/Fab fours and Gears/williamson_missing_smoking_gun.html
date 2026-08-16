@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Williamson's missing smoking gun</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background: #ffffff;
+      color: #17212b;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    figure {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 5px 8px 0;
+      overflow: hidden;
+    }
+
+    .player-legend {
+      display: flex;
+      min-height: 32px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 6px 15px;
+      color: #53616d;
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .line-swatch {
+      width: 18px;
+      height: 3px;
+      margin-right: 5px;
+      border-radius: 2px;
+    }
+
+    .band-swatch {
+      width: 12px;
+      height: 12px;
+      margin-right: 5px;
+      border: 1px solid rgba(184, 145, 25, 0.28);
+      background: rgba(225, 190, 76, 0.2);
+    }
+
+    .panel-title {
+      min-height: 24px;
+      padding-top: 2px;
+      color: #33414d;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.25;
+      text-align: center;
+    }
+
+    .over-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .over-wrap { height: 360px; }
+
+    canvas {
+      display: block;
+      width: 100% !important;
+      max-width: 100%;
+    }
+
+    figcaption {
+      padding: 5px 8px 0 70px;
+      color: #61707d;
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.42;
+      letter-spacing: 0;
+    }
+
+    @media (max-width: 680px) {
+      figure {
+        width: 100vw;
+        max-width: 100vw;
+        padding: 4px 5px 0;
+      }
+
+      .player-legend {
+        min-height: 45px;
+        gap: 5px 11px;
+      }
+
+      .over-wrap { height: 325px; }
+
+      figcaption {
+        padding: 4px 7px 0;
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <figure>
+    <div class="player-legend" id="playerLegend" aria-label="Batter and highlighted-interval key"></div>
+
+    <section class="over-panel">
+      <div class="panel-title">High-gear ball share by ten-over interval</div>
+      <div class="over-wrap">
+        <canvas id="overChart" aria-label="High-gear ball share by innings over for the Fab Four"></canvas>
+      </div>
+    </section>
+
+    <figcaption>
+      High-gear ball share for the Fab Four across ten-over phases of an innings. Williamson is the most attacking batter in three phases: overs 21-30, 51-60 and 71-80. Outside those windows, he sits at or near the bottom, ranking last in five of the remaining seven phases; only Root in overs 0-10 and Smith in overs 41-50 attack less. Intervals after over 100 are omitted because the samples become sparse. Hover over a point for the underlying high-gear and total deliveries.
+    </figcaption>
+  </figure>
+
+  <script>
+    const OVER_RECORDS = [{"batter":"JE Root","entity":"Joe Root","shortName":"Root","color":"#2f6fb3","overBandOrder":0,"overBand":"0-10","highGearBalls":182,"totalBalls":1558,"highGearBallShare":11.681643132220795},{"batter":"JE Root","entity":"Joe Root","shortName":"Root","color":"#2f6fb3","overBandOrder":1,"overBand":"11-20","highGearBalls":614,"totalBalls":3470,"highGearBallShare":17.694524495677232},{"batter":"JE Root","entity":"Joe Root","shortName":"Root","color":"#2f6fb3","overBandOrder":2,"overBand":"21-30","highGearBalls":676,"totalBalls":3721,"highGearBallShare":18.167159365761893},{"batter":"JE Root","entity":"Joe Root","shortName":"Root","color":"#2f6fb3","overBandOrder":3,"overBand":"31-40","highGearBalls":605,"totalBalls":3385,"highGearBallShare":17.872968980797637},{"batter":"JE Root","entity":"Joe Root","shortName":"Root","color":"#2f6fb3","overBandOrder":4,"overBand":"41-50","highGearBalls":569,"totalBalls":2914,"highGearBallShare":19.526424159231297},{"batter":"JE Root","entity":"Joe Root","shortName":"Root","color":"#2f6fb3","overBandOrder":5,"overBand":"51-60","highGearBalls":487,"totalBalls":2459,"highGearBallShare":19.80479869865799},{"batter":"JE Root","entity":"Joe Root","shortName":"Root","color":"#2f6fb3","overBandOrder":6,"overBand":"61-70","highGearBalls":480,"totalBalls":2014,"highGearBallShare":23.833167825223438},{"batter":"JE Root","entity":"Joe Root","shortName":"Root","color":"#2f6fb3","overBandOrder":7,"overBand":"71-80","highGearBalls":345,"totalBalls":1521,"highGearBallShare":22.682445759368836},{"batter":"JE Root","entity":"Joe Root","shortName":"Root","color":"#2f6fb3","overBandOrder":8,"overBand":"81-90","highGearBalls":192,"totalBalls":860,"highGearBallShare":22.325581395348838},{"batter":"JE Root","entity":"Joe Root","shortName":"Root","color":"#2f6fb3","overBandOrder":9,"overBand":"91-100","highGearBalls":148,"totalBalls":622,"highGearBallShare":23.79421221864952},{"batter":"KS Williamson","entity":"Kane Williamson","shortName":"Williamson","color":"#2f7a5d","overBandOrder":0,"overBand":"0-10","highGearBalls":211,"totalBalls":1758,"highGearBallShare":12.002275312855518},{"batter":"KS Williamson","entity":"Kane Williamson","shortName":"Williamson","color":"#2f7a5d","overBandOrder":1,"overBand":"11-20","highGearBalls":401,"totalBalls":2706,"highGearBallShare":14.818920916481893},{"batter":"KS Williamson","entity":"Kane Williamson","shortName":"Williamson","color":"#2f7a5d","overBandOrder":2,"overBand":"21-30","highGearBalls":464,"totalBalls":2494,"highGearBallShare":18.6046511627907},{"batter":"KS Williamson","entity":"Kane Williamson","shortName":"Williamson","color":"#2f7a5d","overBandOrder":3,"overBand":"31-40","highGearBalls":386,"totalBalls":2332,"highGearBallShare":16.552315608919383},{"batter":"KS Williamson","entity":"Kane Williamson","shortName":"Williamson","color":"#2f7a5d","overBandOrder":4,"overBand":"41-50","highGearBalls":361,"totalBalls":1914,"highGearBallShare":18.861024033437825},{"batter":"KS Williamson","entity":"Kane Williamson","shortName":"Williamson","color":"#2f7a5d","overBandOrder":5,"overBand":"51-60","highGearBalls":347,"totalBalls":1671,"highGearBallShare":20.766008378216636},{"batter":"KS Williamson","entity":"Kane Williamson","shortName":"Williamson","color":"#2f7a5d","overBandOrder":6,"overBand":"61-70","highGearBalls":201,"totalBalls":1308,"highGearBallShare":15.36697247706422},{"batter":"KS Williamson","entity":"Kane Williamson","shortName":"Williamson","color":"#2f7a5d","overBandOrder":7,"overBand":"71-80","highGearBalls":251,"totalBalls":1080,"highGearBallShare":23.24074074074074},{"batter":"KS Williamson","entity":"Kane Williamson","shortName":"Williamson","color":"#2f7a5d","overBandOrder":8,"overBand":"81-90","highGearBalls":134,"totalBalls":873,"highGearBallShare":15.349369988545247},{"batter":"KS Williamson","entity":"Kane Williamson","shortName":"Williamson","color":"#2f7a5d","overBandOrder":9,"overBand":"91-100","highGearBalls":66,"totalBalls":610,"highGearBallShare":10.819672131147541},{"batter":"SPD Smith","entity":"Steve Smith","shortName":"Smith","color":"#b87813","overBandOrder":0,"overBand":"0-10","highGearBalls":173,"totalBalls":901,"highGearBallShare":19.20088790233074},{"batter":"SPD Smith","entity":"Steve Smith","shortName":"Smith","color":"#b87813","overBandOrder":1,"overBand":"11-20","highGearBalls":319,"totalBalls":1893,"highGearBallShare":16.851558372952987},{"batter":"SPD Smith","entity":"Steve Smith","shortName":"Smith","color":"#b87813","overBandOrder":2,"overBand":"21-30","highGearBalls":366,"totalBalls":2541,"highGearBallShare":14.403778040141676},{"batter":"SPD Smith","entity":"Steve Smith","shortName":"Smith","color":"#b87813","overBandOrder":3,"overBand":"31-40","highGearBalls":458,"totalBalls":2278,"highGearBallShare":20.105355575065847},{"batter":"SPD Smith","entity":"Steve Smith","shortName":"Smith","color":"#b87813","overBandOrder":4,"overBand":"41-50","highGearBalls":313,"totalBalls":2305,"highGearBallShare":13.579175704989154},{"batter":"SPD Smith","entity":"Steve Smith","shortName":"Smith","color":"#b87813","overBandOrder":5,"overBand":"51-60","highGearBalls":276,"totalBalls":2255,"highGearBallShare":12.239467849223946},{"batter":"SPD Smith","entity":"Steve Smith","shortName":"Smith","color":"#b87813","overBandOrder":6,"overBand":"61-70","highGearBalls":349,"totalBalls":1885,"highGearBallShare":18.514588859416445},{"batter":"SPD Smith","entity":"Steve Smith","shortName":"Smith","color":"#b87813","overBandOrder":7,"overBand":"71-80","highGearBalls":247,"totalBalls":1654,"highGearBallShare":14.933494558645707},{"batter":"SPD Smith","entity":"Steve Smith","shortName":"Smith","color":"#b87813","overBandOrder":8,"overBand":"81-90","highGearBalls":269,"totalBalls":1269,"highGearBallShare":21.19779353821907},{"batter":"SPD Smith","entity":"Steve Smith","shortName":"Smith","color":"#b87813","overBandOrder":9,"overBand":"91-100","highGearBalls":192,"totalBalls":1053,"highGearBallShare":18.233618233618234},{"batter":"V Kohli","entity":"Virat Kohli","shortName":"Kohli","color":"#bd463e","overBandOrder":0,"overBand":"0-10","highGearBalls":63,"totalBalls":484,"highGearBallShare":13.016528925619836},{"batter":"V Kohli","entity":"Virat Kohli","shortName":"Kohli","color":"#bd463e","overBandOrder":1,"overBand":"11-20","highGearBalls":291,"totalBalls":1597,"highGearBallShare":18.221665623043208},{"batter":"V Kohli","entity":"Virat Kohli","shortName":"Kohli","color":"#bd463e","overBandOrder":2,"overBand":"21-30","highGearBalls":339,"totalBalls":2049,"highGearBallShare":16.544655929721817},{"batter":"V Kohli","entity":"Virat Kohli","shortName":"Kohli","color":"#bd463e","overBandOrder":3,"overBand":"31-40","highGearBalls":429,"totalBalls":2216,"highGearBallShare":19.359205776173287},{"batter":"V Kohli","entity":"Virat Kohli","shortName":"Kohli","color":"#bd463e","overBandOrder":4,"overBand":"41-50","highGearBalls":443,"totalBalls":2041,"highGearBallShare":21.705046545810877},{"batter":"V Kohli","entity":"Virat Kohli","shortName":"Kohli","color":"#bd463e","overBandOrder":5,"overBand":"51-60","highGearBalls":340,"totalBalls":1655,"highGearBallShare":20.54380664652568},{"batter":"V Kohli","entity":"Virat Kohli","shortName":"Kohli","color":"#bd463e","overBandOrder":6,"overBand":"61-70","highGearBalls":253,"totalBalls":1517,"highGearBallShare":16.677653263019117},{"batter":"V Kohli","entity":"Virat Kohli","shortName":"Kohli","color":"#bd463e","overBandOrder":7,"overBand":"71-80","highGearBalls":251,"totalBalls":1210,"highGearBallShare":20.743801652892564},{"batter":"V Kohli","entity":"Virat Kohli","shortName":"Kohli","color":"#bd463e","overBandOrder":8,"overBand":"81-90","highGearBalls":176,"totalBalls":988,"highGearBallShare":17.813765182186234},{"batter":"V Kohli","entity":"Virat Kohli","shortName":"Kohli","color":"#bd463e","overBandOrder":9,"overBand":"91-100","highGearBalls":129,"totalBalls":758,"highGearBallShare":17.018469656992085}];
+    const PLAYERS = [{"batter":"JE Root","entity":"Joe Root","shortName":"Root","color":"#2f6fb3"},{"batter":"KS Williamson","entity":"Kane Williamson","shortName":"Williamson","color":"#2f7a5d"},{"batter":"SPD Smith","entity":"Steve Smith","shortName":"Smith","color":"#b87813"},{"batter":"V Kohli","entity":"Virat Kohli","shortName":"Kohli","color":"#bd463e"}];
+    const BAND_LABELS = [...new Set(
+      OVER_RECORDS
+        .slice()
+        .sort((a, b) => a.overBandOrder - b.overBandOrder)
+        .map(row => row.overBand)
+    )];
+    const HIGHLIGHTED_BANDS = new Set([2, 5, 7]);
+
+    document.getElementById("playerLegend").innerHTML = [
+      ...PLAYERS.map(player => `
+        <span class="legend-item">
+          <span class="line-swatch" style="background:${player.color}"></span>${player.shortName}
+        </span>
+      `),
+      `<span class="legend-item"><span class="band-swatch"></span>Williamson leads</span>`
+    ].join("");
+
+    const highlightedBandsPlugin = {
+      id: "highlightedBands",
+      beforeDatasetsDraw(chart) {
+        if (chart.canvas.id !== "overChart") return;
+        const { ctx, chartArea, scales } = chart;
+        if (!chartArea) return;
+        const x = scales.x;
+        const step = Math.abs(x.getPixelForValue(1) - x.getPixelForValue(0));
+        ctx.save();
+        ctx.fillStyle = "rgba(225, 190, 76, 0.14)";
+        ctx.strokeStyle = "rgba(184, 145, 25, 0.22)";
+        ctx.lineWidth = 1;
+        HIGHLIGHTED_BANDS.forEach(value => {
+          const center = x.getPixelForValue(value);
+          const left = center - step / 2;
+          ctx.fillRect(left, chartArea.top, step, chartArea.height);
+          ctx.strokeRect(left, chartArea.top, step, chartArea.height);
+        });
+        ctx.restore();
+      }
+    };
+
+    Chart.register(highlightedBandsPlugin);
+
+    const overDatasets = PLAYERS.map(player => {
+      const rows = OVER_RECORDS
+        .filter(row => row.batter === player.batter)
+        .sort((a, b) => a.overBandOrder - b.overBandOrder);
+      const isWilliamson = player.batter === "KS Williamson";
+      return {
+        label: player.entity,
+        data: rows.map(row => ({ x: row.overBandOrder, y: row.highGearBallShare, ...row })),
+        borderColor: player.color,
+        backgroundColor: player.color,
+        borderWidth: isWilliamson ? 3 : 1.8,
+        pointRadius: isWilliamson ? 4.2 : 3.2,
+        pointHoverRadius: isWilliamson ? 6.2 : 5.2,
+        pointBorderColor: "#ffffff",
+        pointBorderWidth: 1.2,
+        tension: 0,
+        spanGaps: false
+      };
+    });
+
+    new Chart(document.getElementById("overChart"), {
+      type: "line",
+      data: { datasets: overDatasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 170 },
+        layout: { padding: { top: 6, right: 7 } },
+        interaction: { mode: "index", axis: "x", intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            displayColors: true,
+            backgroundColor: "rgba(23, 33, 43, 0.97)",
+            padding: 10,
+            titleFont: { size: 12 },
+            bodyFont: { size: 11 },
+            itemSort(a, b) {
+              return PLAYERS.findIndex(player => player.entity === a.dataset.label)
+                - PLAYERS.findIndex(player => player.entity === b.dataset.label);
+            },
+            callbacks: {
+              title(items) { return `Overs ${items[0].raw.overBand}`; },
+              label(context) {
+                const row = context.raw;
+                return ` ${row.shortName}: ${row.highGearBallShare.toFixed(1)}% (${row.highGearBalls.toLocaleString()} of ${row.totalBalls.toLocaleString()} balls)`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            type: "linear",
+            min: -0.35,
+            max: 9.35,
+            afterBuildTicks(scale) {
+              scale.ticks = BAND_LABELS.map((_, value) => ({ value }));
+            },
+            title: {
+              display: true,
+              text: "Innings over",
+              color: "#42515e",
+              font: { weight: "bold", size: 10 }
+            },
+            ticks: {
+              autoSkip: false,
+              maxRotation: 0,
+              minRotation: 0,
+              color(context) {
+                const value = context.tick ? Number(context.tick.value) : -1;
+                return HIGHLIGHTED_BANDS.has(value)
+                  ? "#745c12"
+                  : "#61707d";
+              },
+              font(context) {
+                const value = context.tick ? Number(context.tick.value) : -1;
+                return {
+                  size: window.innerWidth <= 680 ? 8 : 9,
+                  weight: HIGHLIGHTED_BANDS.has(value) ? "700" : "400"
+                };
+              },
+              callback(value) { return BAND_LABELS[value] || ""; }
+            },
+            grid: { display: false },
+            border: { color: "#8a98a4" }
+          },
+          y: {
+            min: 0,
+            max: 30,
+            title: {
+              display: true,
+              text: "High-gear ball share",
+              color: "#42515e",
+              font: { weight: "bold", size: 10 }
+            },
+            ticks: {
+              stepSize: 5,
+              color: "#61707d",
+              font: { size: 9 },
+              callback(value) { return `${value}%`; }
+            },
+            grid: { color: "rgba(217, 224, 229, 0.82)" },
+            border: { color: "#8a98a4" }
+          }
+        }
+      }
+    });
+
+  </script>
+</body>
+</html>

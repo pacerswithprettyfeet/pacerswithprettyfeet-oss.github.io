@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Innings-wise batting average</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      width: 100%; margin: 0; padding: 0; overflow-x: hidden;
+      background: #ffffff; color: #17212b;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    figure {
+      width: 100%; max-width: 940px; margin: 0 auto; padding: 6px 8px 0; overflow: hidden;
+    }
+    .player-key {
+      display: flex; min-height: 30px; align-items: center; justify-content: center;
+      flex-wrap: wrap; gap: 5px 16px; color: #53616d; font-size: 10px; line-height: 1;
+    }
+    .key-item { display: inline-flex; align-items: center; white-space: nowrap; }
+    .swatch { width: 10px; height: 10px; margin-right: 5px; }
+    .chart-wrap { position: relative; width: 100%; height: 315px; overflow: hidden; }
+    canvas { display: block; width: 100% !important; max-width: 100%; }
+    figcaption {
+      padding: 5px 8px 0 73px; color: #61707d; font-size: 10px;
+      font-weight: 400; line-height: 1.42; letter-spacing: 0;
+    }
+    @media (max-width: 700px) {
+      figure { width: 100vw; max-width: 100vw; padding: 4px 5px 0; }
+      .player-key { min-height: 42px; gap: 5px 11px; font-size: 9px; }
+      .chart-wrap { height: 330px; }
+      figcaption { padding: 5px 7px 0; font-size: 9px; }
+    }
+  </style>
+</head>
+<body>
+  <figure>
+    <div class="player-key" id="playerKey"></div>
+    <div class="chart-wrap">
+      <canvas id="averageChart" aria-label="Fab Four batting average in each innings of a Test"></canvas>
+    </div>
+    <figcaption>Innings-wise batting average. Smith's average falls as the game progresses, from 81.3 in the first innings to 31.7 in the fourth. Kohli follows a different pattern: he averages 61.8 in the second innings and rebounds to 42.4 in the fourth, compared with 45.7 and 36.0 in the first and third. Hover over a bar for the underlying runs and dismissals.</figcaption>
+  </figure>
+  <script>
+    const PLAYERS = [{"batter":"JE Root","entity":"Joe Root","shortName":"Root","color":"#2f6fb3","innings":[{"inningsNumber":1,"innings":88,"runs":4322,"balls":7457,"dismissals":83,"battingAverage":52.0722891566265,"ballsPerDismissal":89.8433734939759,"groups":{"low":{"key":"low","label":"Low gears","runs":484,"balls":2793,"dismissals":27,"ballShare":37.45474051227035,"battingAverage":17.925925925925927,"ballsPerDismissal":103.44444444444444},"middle":{"key":"middle","label":"Middle gears","runs":1972,"balls":3192,"dismissals":42,"ballShare":42.805417728308974,"battingAverage":46.95238095238095,"ballsPerDismissal":76.0},"high":{"key":"high","label":"High gears","runs":1866,"balls":1472,"dismissals":14,"ballShare":19.739841759420678,"battingAverage":133.28571428571428,"ballsPerDismissal":105.14285714285714}}},{"inningsNumber":2,"innings":76,"runs":4190,"balls":7120,"dismissals":71,"battingAverage":59.014084507042256,"ballsPerDismissal":100.28169014084509,"groups":{"low":{"key":"low","label":"Low gears","runs":592,"balls":3117,"dismissals":31,"ballShare":43.77808988764045,"battingAverage":19.096774193548388,"ballsPerDismissal":100.54838709677419},"middle":{"key":"middle","label":"Middle gears","runs":1618,"balls":2483,"dismissals":32,"ballShare":34.87359550561798,"battingAverage":50.5625,"ballsPerDismissal":77.59375},"high":{"key":"high","label":"High gears","runs":1980,"balls":1520,"dismissals":8,"ballShare":21.348314606741575,"battingAverage":247.5,"ballsPerDismissal":190.0}}},{"inningsNumber":3,"innings":81,"runs":3538,"balls":5901,"dismissals":77,"battingAverage":45.94805194805195,"ballsPerDismissal":76.63636363636364,"groups":{"low":{"key":"low","label":"Low gears","runs":394,"balls":2155,"dismissals":31,"ballShare":36.519234028130825,"battingAverage":12.709677419354838,"ballsPerDismissal":69.51612903225806},"middle":{"key":"middle","label":"Middle gears","runs":1586,"balls":2540,"dismissals":36,"ballShare":43.04355194034909,"battingAverage":44.05555555555556,"ballsPerDismissal":70.55555555555556},"high":{"key":"high","label":"High gears","runs":1558,"balls":1206,"dismissals":10,"ballShare":20.43721403152008,"battingAverage":155.8,"ballsPerDismissal":120.6}}},{"inningsNumber":4,"innings":55,"runs":1902,"balls":3791,"dismissals":44,"battingAverage":43.22727272727273,"ballsPerDismissal":86.1590909090909,"groups":{"low":{"key":"low","label":"Low gears","runs":337,"balls":1883,"dismissals":23,"ballShare":49.6702716961224,"battingAverage":14.652173913043478,"ballsPerDismissal":81.8695652173913},"middle":{"key":"middle","label":"Middle gears","runs":819,"balls":1345,"dismissals":17,"ballShare":35.478765497230285,"battingAverage":48.1764705882353,"ballsPerDismissal":79.11764705882354},"high":{"key":"high","label":"High gears","runs":746,"balls":563,"dismissals":4,"ballShare":14.850962806647322,"battingAverage":186.5,"ballsPerDismissal":140.75}}}]},{"batter":"KS Williamson","entity":"Kane Williamson","shortName":"Williamson","color":"#2f7a5d","innings":[{"inningsNumber":1,"innings":54,"runs":2665,"balls":5347,"dismissals":54,"battingAverage":49.351851851851855,"ballsPerDismissal":99.01851851851852,"groups":{"low":{"key":"low","label":"Low gears","runs":496,"balls":2858,"dismissals":28,"ballShare":53.45053300916402,"battingAverage":17.714285714285715,"ballsPerDismissal":102.07142857142857},"middle":{"key":"middle","label":"Middle gears","runs":1026,"balls":1606,"dismissals":18,"ballShare":30.035533944267815,"battingAverage":57.0,"ballsPerDismissal":89.22222222222223},"high":{"key":"high","label":"High gears","runs":1143,"balls":883,"dismissals":8,"ballShare":16.51393304656817,"battingAverage":142.875,"ballsPerDismissal":110.375}}},{"inningsNumber":2,"innings":56,"runs":3264,"balls":5990,"dismissals":52,"battingAverage":62.76923076923077,"ballsPerDismissal":115.1923076923077,"groups":{"low":{"key":"low","label":"Low gears","runs":425,"balls":2607,"dismissals":20,"ballShare":43.52253756260434,"battingAverage":21.25,"ballsPerDismissal":130.35},"middle":{"key":"middle","label":"Middle gears","runs":1402,"balls":2287,"dismissals":26,"ballShare":38.180300500834726,"battingAverage":53.92307692307692,"ballsPerDismissal":87.96153846153847},"high":{"key":"high","label":"High gears","runs":1437,"balls":1096,"dismissals":6,"ballShare":18.297161936560936,"battingAverage":239.5,"ballsPerDismissal":182.66666666666666}}},{"inningsNumber":3,"innings":54,"runs":2469,"balls":4992,"dismissals":48,"battingAverage":51.4375,"ballsPerDismissal":104.0,"groups":{"low":{"key":"low","label":"Low gears","runs":428,"balls":2525,"dismissals":29,"ballShare":50.58092948717949,"battingAverage":14.758620689655173,"ballsPerDismissal":87.06896551724138},"middle":{"key":"middle","label":"Middle gears","runs":1061,"balls":1690,"dismissals":16,"ballShare":33.854166666666664,"battingAverage":66.3125,"ballsPerDismissal":105.625},"high":{"key":"high","label":"High gears","runs":980,"balls":777,"dismissals":3,"ballShare":15.564903846153847,"battingAverage":326.6666666666667,"ballsPerDismissal":259.0}}},{"inningsNumber":4,"innings":31,"runs":1117,"balls":1977,"dismissals":22,"battingAverage":50.77272727272727,"ballsPerDismissal":89.86363636363636,"groups":{"low":{"key":"low","label":"Low gears","runs":141,"balls":904,"dismissals":13,"ballShare":45.72584724329793,"battingAverage":10.846153846153847,"ballsPerDismissal":69.53846153846153},"middle":{"key":"middle","label":"Middle gears","runs":426,"balls":652,"dismissals":6,"ballShare":32.97926150733434,"battingAverage":71.0,"ballsPerDismissal":108.66666666666667},"high":{"key":"high","label":"High gears","runs":550,"balls":421,"dismissals":3,"ballShare":21.29489124936773,"battingAverage":183.33333333333334,"ballsPerDismissal":140.33333333333334}}}]},{"batter":"SPD Smith","entity":"Steve Smith","shortName":"Smith","color":"#b87813","innings":[{"inningsNumber":1,"innings":72,"runs":5283,"balls":10010,"dismissals":65,"battingAverage":81.27692307692308,"ballsPerDismissal":154.0,"groups":{"low":{"key":"low","label":"Low gears","runs":798,"balls":4759,"dismissals":27,"ballShare":47.54245754245754,"battingAverage":29.555555555555557,"ballsPerDismissal":176.25925925925927},"middle":{"key":"middle","label":"Middle gears","runs":2191,"balls":3456,"dismissals":23,"ballShare":34.52547452547453,"battingAverage":95.26086956521739,"ballsPerDismissal":150.2608695652174},"high":{"key":"high","label":"High gears","runs":2294,"balls":1795,"dismissals":15,"ballShare":17.93206793206793,"battingAverage":152.93333333333334,"ballsPerDismissal":119.66666666666667}}},{"inningsNumber":2,"innings":50,"runs":2507,"balls":4707,"dismissals":48,"battingAverage":52.22916666666666,"ballsPerDismissal":98.0625,"groups":{"low":{"key":"low","label":"Low gears","runs":378,"balls":2104,"dismissals":18,"ballShare":44.699383896324626,"battingAverage":21.0,"ballsPerDismissal":116.88888888888889},"middle":{"key":"middle","label":"Middle gears","runs":1108,"balls":1784,"dismissals":24,"ballShare":37.9009985128532,"battingAverage":46.166666666666664,"ballsPerDismissal":74.33333333333333},"high":{"key":"high","label":"High gears","runs":1021,"balls":819,"dismissals":6,"ballShare":17.399617590822178,"battingAverage":170.16666666666666,"ballsPerDismissal":136.5}}},{"inningsNumber":3,"innings":64,"runs":2150,"balls":3655,"dismissals":53,"battingAverage":40.56603773584906,"ballsPerDismissal":68.9622641509434,"groups":{"low":{"key":"low","label":"Low gears","runs":292,"balls":1541,"dismissals":15,"ballShare":42.16142270861833,"battingAverage":19.466666666666665,"ballsPerDismissal":102.73333333333333},"middle":{"key":"middle","label":"Middle gears","runs":947,"balls":1451,"dismissals":29,"ballShare":39.69904240766074,"battingAverage":32.6551724137931,"ballsPerDismissal":50.03448275862069},"high":{"key":"high","label":"High gears","runs":911,"balls":663,"dismissals":9,"ballShare":18.13953488372093,"battingAverage":101.22222222222223,"ballsPerDismissal":73.66666666666667}}},{"inningsNumber":4,"innings":34,"runs":823,"balls":1594,"dismissals":26,"battingAverage":31.653846153846157,"ballsPerDismissal":61.30769230769231,"groups":{"low":{"key":"low","label":"Low gears","runs":144,"balls":786,"dismissals":11,"ballShare":49.3099121706399,"battingAverage":13.090909090909092,"ballsPerDismissal":71.45454545454545},"middle":{"key":"middle","label":"Middle gears","runs":334,"balls":539,"dismissals":6,"ballShare":33.814303638644915,"battingAverage":55.666666666666664,"ballsPerDismissal":89.83333333333333},"high":{"key":"high","label":"High gears","runs":345,"balls":269,"dismissals":9,"ballShare":16.875784190715184,"battingAverage":38.333333333333336,"ballsPerDismissal":29.88888888888889}}}]},{"batter":"V Kohli","entity":"Virat Kohli","shortName":"Kohli","color":"#bd463e","innings":[{"inningsNumber":1,"innings":69,"runs":3106,"balls":5523,"dismissals":68,"battingAverage":45.6764705882353,"ballsPerDismissal":81.22058823529412,"groups":{"low":{"key":"low","label":"Low gears","runs":429,"balls":2260,"dismissals":35,"ballShare":40.91978996921963,"battingAverage":12.257142857142858,"ballsPerDismissal":64.57142857142857},"middle":{"key":"middle","label":"Middle gears","runs":1492,"balls":2323,"dismissals":27,"ballShare":42.060474379866015,"battingAverage":55.25925925925926,"ballsPerDismissal":86.03703703703704},"high":{"key":"high","label":"High gears","runs":1185,"balls":940,"dismissals":6,"ballShare":17.01973565091436,"battingAverage":197.5,"ballsPerDismissal":156.66666666666666}}},{"inningsNumber":2,"innings":52,"runs":3151,"balls":5648,"dismissals":51,"battingAverage":61.78431372549019,"ballsPerDismissal":110.74509803921568,"groups":{"low":{"key":"low","label":"Low gears","runs":444,"balls":2512,"dismissals":25,"ballShare":44.475920679886684,"battingAverage":17.76,"ballsPerDismissal":100.48},"middle":{"key":"middle","label":"Middle gears","runs":1378,"balls":2105,"dismissals":18,"ballShare":37.26983002832861,"battingAverage":76.55555555555556,"ballsPerDismissal":116.94444444444444},"high":{"key":"high","label":"High gears","runs":1329,"balls":1031,"dismissals":8,"ballShare":18.254249291784703,"battingAverage":166.125,"ballsPerDismissal":128.875}}},{"inningsNumber":3,"innings":57,"runs":1871,"balls":3535,"dismissals":52,"battingAverage":35.98076923076923,"ballsPerDismissal":67.98076923076923,"groups":{"low":{"key":"low","label":"Low gears","runs":285,"balls":1651,"dismissals":25,"ballShare":46.7043847241867,"battingAverage":11.4,"ballsPerDismissal":66.04},"middle":{"key":"middle","label":"Middle gears","runs":720,"balls":1194,"dismissals":21,"ballShare":33.77652050919377,"battingAverage":34.285714285714285,"ballsPerDismissal":56.857142857142854},"high":{"key":"high","label":"High gears","runs":866,"balls":690,"dismissals":6,"ballShare":19.51909476661952,"battingAverage":144.33333333333334,"ballsPerDismissal":115.0}}},{"inningsNumber":4,"innings":32,"runs":1102,"balls":1902,"dismissals":26,"battingAverage":42.38461538461539,"ballsPerDismissal":73.15384615384616,"groups":{"low":{"key":"low","label":"Low gears","runs":138,"balls":816,"dismissals":13,"ballShare":42.90220820189275,"battingAverage":10.615384615384615,"ballsPerDismissal":62.76923076923077},"middle":{"key":"middle","label":"Middle gears","runs":446,"balls":675,"dismissals":11,"ballShare":35.488958990536275,"battingAverage":40.54545454545455,"ballsPerDismissal":61.36363636363637},"high":{"key":"high","label":"High gears","runs":518,"balls":411,"dismissals":2,"ballShare":21.608832807570977,"battingAverage":259.0,"ballsPerDismissal":205.5}}}]}];
+    document.getElementById("playerKey").innerHTML = PLAYERS.map(player =>
+      `<span class="key-item"><span class="swatch" style="background:${player.color}"></span>${player.shortName}</span>`
+    ).join("");
+
+    const datasets = PLAYERS.map(player => ({
+      label: player.shortName,
+      data: player.innings.map(row => ({ x: `Innings ${row.inningsNumber}`, y: row.battingAverage, row })),
+      backgroundColor: player.color,
+      borderColor: player.color,
+      borderWidth: 0,
+      borderRadius: 2,
+      borderSkipped: false,
+      categoryPercentage: 0.76,
+      barPercentage: 0.84
+    }));
+
+    new Chart(document.getElementById("averageChart"), {
+      type: "bar",
+      data: { datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 180 },
+        layout: { padding: { top: 8, right: 7, bottom: 0, left: 2 } },
+        interaction: { mode: "nearest", intersect: true },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            displayColors: true,
+            backgroundColor: "rgba(23, 33, 43, 0.97)",
+            padding: 10,
+            titleFont: { size: 12 },
+            bodyFont: { size: 11 },
+            callbacks: {
+              title(items) { return items[0].raw.x; },
+              label(context) { return `${context.dataset.label}: average ${context.raw.y.toFixed(1)}`; },
+              afterLabel(context) {
+                const row = context.raw.row;
+                return `${row.runs.toLocaleString()} runs | ${row.dismissals} dismissals | ${row.innings} innings`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            type: "category",
+            labels: ["Innings 1", "Innings 2", "Innings 3", "Innings 4"],
+            ticks: { color: "#42515e", font: { size: 10, weight: "bold" } },
+            grid: { display: false },
+            border: { color: "#8a98a4" }
+          },
+          y: {
+            min: 0,
+            max: 90,
+            title: {
+              display: true, text: "Batting average", color: "#42515e",
+              font: { size: 10, weight: "bold" }
+            },
+            ticks: { stepSize: 15, color: "#61707d", font: { size: 9 } },
+            grid: { color: "rgba(217, 224, 229, 0.74)" },
+            border: { display: false }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

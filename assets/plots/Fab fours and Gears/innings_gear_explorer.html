@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smith and Kohli by innings and gear</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      width: 100%; margin: 0; padding: 0; overflow-x: hidden;
+      background: #ffffff; color: #17212b;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    figure {
+      width: 100%; max-width: 1080px; margin: 0 auto; padding: 6px 8px 0; overflow: hidden;
+    }
+    .toolbar {
+      display: flex; min-height: 38px; align-items: center; justify-content: center;
+      flex-wrap: wrap; gap: 10px 18px;
+    }
+    .metric-toggle {
+      display: inline-flex; padding: 2px; border: 1px solid #cbd5dc;
+      border-radius: 5px; background: #f4f7f8;
+    }
+    .metric-button {
+      min-height: 27px; padding: 4px 10px; border: 0; border-radius: 3px;
+      background: transparent; color: #53616d; cursor: pointer;
+      font: 700 9px/1 Arial, Helvetica, sans-serif;
+    }
+    .metric-button.is-active { background: #ffffff; color: #17212b; box-shadow: 0 1px 3px rgba(23,33,43,.16); }
+    .player-key { display: flex; align-items: center; gap: 13px; color: #53616d; font-size: 10px; }
+    .key-item { display: inline-flex; align-items: center; white-space: nowrap; }
+    .line-key { position: relative; width: 22px; height: 10px; margin-right: 5px; color: var(--color); }
+    .line-key::before { position: absolute; top: 4px; left: 0; width: 22px; height: 2px; background: currentColor; content: ""; }
+    .line-key::after { position: absolute; top: 2px; left: 8px; width: 6px; height: 6px; border: 1px solid #fff; border-radius: 50%; background: currentColor; content: ""; }
+    .panel-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; width: 100%; }
+    .panel { min-width: 0; overflow: hidden; }
+    .panel-label { min-height: 22px; color: #43515d; font-size: 10px; font-weight: 700; line-height: 1.3; text-align: center; }
+    .chart-wrap { position: relative; width: 100%; height: 245px; overflow: hidden; }
+    canvas { display: block; width: 100% !important; max-width: 100%; }
+    figcaption {
+      padding: 6px 8px 0 45px; color: #61707d; font-size: 10px;
+      font-weight: 400; line-height: 1.42; letter-spacing: 0;
+    }
+    @media (max-width: 700px) {
+      figure { width: 100vw; max-width: 100vw; padding: 4px 5px 0; }
+      .toolbar { min-height: 72px; gap: 7px 12px; }
+      .metric-button { padding: 4px 7px; font-size: 8px; }
+      .player-key { font-size: 9px; }
+      .panel-grid { grid-template-columns: minmax(0, 1fr); gap: 7px; }
+      .chart-wrap { height: 205px; }
+      figcaption { padding: 6px 7px 0; font-size: 9px; }
+    }
+  </style>
+</head>
+<body>
+  <figure>
+    <div class="toolbar">
+      <div class="metric-toggle" role="group" aria-label="Metric">
+        <button class="metric-button is-active" type="button" data-metric="ballShare">Ball share</button>
+        <button class="metric-button" type="button" data-metric="battingAverage">Batting average</button>
+        <button class="metric-button" type="button" data-metric="ballsPerDismissal">Balls per dismissal</button>
+      </div>
+      <div class="player-key" id="playerKey"></div>
+    </div>
+    <div class="panel-grid">
+      <section class="panel"><div class="panel-label">Low gears</div><div class="chart-wrap"><canvas id="lowChart"></canvas></div></section>
+      <section class="panel"><div class="panel-label">Middle gears</div><div class="chart-wrap"><canvas id="middleChart"></canvas></div></section>
+      <section class="panel"><div class="panel-label">High gears</div><div class="chart-wrap"><canvas id="highChart"></canvas></div></section>
+    </div>
+    <figcaption>Innings-wise gear share, batting average and balls per dismissal for Steve Smith and Virat Kohli. Use the buttons to switch between the three metrics. Smith uses roughly the same mix of gears in the first and fourth innings, but his returns collapse in the fourth. Kohli is far more fluid, altering his gear distribution as the match progresses. Hover over a point for the underlying runs, balls and dismissals.</figcaption>
+  </figure>
+  <script>
+    const PLAYERS = [{"batter":"SPD Smith","entity":"Steve Smith","shortName":"Smith","color":"#b87813","innings":[{"inningsNumber":1,"innings":72,"runs":5283,"balls":10010,"dismissals":65,"battingAverage":81.27692307692308,"ballsPerDismissal":154.0,"groups":{"low":{"key":"low","label":"Low gears","runs":798,"balls":4759,"dismissals":27,"ballShare":47.54245754245754,"battingAverage":29.555555555555557,"ballsPerDismissal":176.25925925925927},"middle":{"key":"middle","label":"Middle gears","runs":2191,"balls":3456,"dismissals":23,"ballShare":34.52547452547453,"battingAverage":95.26086956521739,"ballsPerDismissal":150.2608695652174},"high":{"key":"high","label":"High gears","runs":2294,"balls":1795,"dismissals":15,"ballShare":17.93206793206793,"battingAverage":152.93333333333334,"ballsPerDismissal":119.66666666666667}}},{"inningsNumber":2,"innings":50,"runs":2507,"balls":4707,"dismissals":48,"battingAverage":52.22916666666666,"ballsPerDismissal":98.0625,"groups":{"low":{"key":"low","label":"Low gears","runs":378,"balls":2104,"dismissals":18,"ballShare":44.699383896324626,"battingAverage":21.0,"ballsPerDismissal":116.88888888888889},"middle":{"key":"middle","label":"Middle gears","runs":1108,"balls":1784,"dismissals":24,"ballShare":37.9009985128532,"battingAverage":46.166666666666664,"ballsPerDismissal":74.33333333333333},"high":{"key":"high","label":"High gears","runs":1021,"balls":819,"dismissals":6,"ballShare":17.399617590822178,"battingAverage":170.16666666666666,"ballsPerDismissal":136.5}}},{"inningsNumber":3,"innings":64,"runs":2150,"balls":3655,"dismissals":53,"battingAverage":40.56603773584906,"ballsPerDismissal":68.9622641509434,"groups":{"low":{"key":"low","label":"Low gears","runs":292,"balls":1541,"dismissals":15,"ballShare":42.16142270861833,"battingAverage":19.466666666666665,"ballsPerDismissal":102.73333333333333},"middle":{"key":"middle","label":"Middle gears","runs":947,"balls":1451,"dismissals":29,"ballShare":39.69904240766074,"battingAverage":32.6551724137931,"ballsPerDismissal":50.03448275862069},"high":{"key":"high","label":"High gears","runs":911,"balls":663,"dismissals":9,"ballShare":18.13953488372093,"battingAverage":101.22222222222223,"ballsPerDismissal":73.66666666666667}}},{"inningsNumber":4,"innings":34,"runs":823,"balls":1594,"dismissals":26,"battingAverage":31.653846153846157,"ballsPerDismissal":61.30769230769231,"groups":{"low":{"key":"low","label":"Low gears","runs":144,"balls":786,"dismissals":11,"ballShare":49.3099121706399,"battingAverage":13.090909090909092,"ballsPerDismissal":71.45454545454545},"middle":{"key":"middle","label":"Middle gears","runs":334,"balls":539,"dismissals":6,"ballShare":33.814303638644915,"battingAverage":55.666666666666664,"ballsPerDismissal":89.83333333333333},"high":{"key":"high","label":"High gears","runs":345,"balls":269,"dismissals":9,"ballShare":16.875784190715184,"battingAverage":38.333333333333336,"ballsPerDismissal":29.88888888888889}}}]},{"batter":"V Kohli","entity":"Virat Kohli","shortName":"Kohli","color":"#bd463e","innings":[{"inningsNumber":1,"innings":69,"runs":3106,"balls":5523,"dismissals":68,"battingAverage":45.6764705882353,"ballsPerDismissal":81.22058823529412,"groups":{"low":{"key":"low","label":"Low gears","runs":429,"balls":2260,"dismissals":35,"ballShare":40.91978996921963,"battingAverage":12.257142857142858,"ballsPerDismissal":64.57142857142857},"middle":{"key":"middle","label":"Middle gears","runs":1492,"balls":2323,"dismissals":27,"ballShare":42.060474379866015,"battingAverage":55.25925925925926,"ballsPerDismissal":86.03703703703704},"high":{"key":"high","label":"High gears","runs":1185,"balls":940,"dismissals":6,"ballShare":17.01973565091436,"battingAverage":197.5,"ballsPerDismissal":156.66666666666666}}},{"inningsNumber":2,"innings":52,"runs":3151,"balls":5648,"dismissals":51,"battingAverage":61.78431372549019,"ballsPerDismissal":110.74509803921568,"groups":{"low":{"key":"low","label":"Low gears","runs":444,"balls":2512,"dismissals":25,"ballShare":44.475920679886684,"battingAverage":17.76,"ballsPerDismissal":100.48},"middle":{"key":"middle","label":"Middle gears","runs":1378,"balls":2105,"dismissals":18,"ballShare":37.26983002832861,"battingAverage":76.55555555555556,"ballsPerDismissal":116.94444444444444},"high":{"key":"high","label":"High gears","runs":1329,"balls":1031,"dismissals":8,"ballShare":18.254249291784703,"battingAverage":166.125,"ballsPerDismissal":128.875}}},{"inningsNumber":3,"innings":57,"runs":1871,"balls":3535,"dismissals":52,"battingAverage":35.98076923076923,"ballsPerDismissal":67.98076923076923,"groups":{"low":{"key":"low","label":"Low gears","runs":285,"balls":1651,"dismissals":25,"ballShare":46.7043847241867,"battingAverage":11.4,"ballsPerDismissal":66.04},"middle":{"key":"middle","label":"Middle gears","runs":720,"balls":1194,"dismissals":21,"ballShare":33.77652050919377,"battingAverage":34.285714285714285,"ballsPerDismissal":56.857142857142854},"high":{"key":"high","label":"High gears","runs":866,"balls":690,"dismissals":6,"ballShare":19.51909476661952,"battingAverage":144.33333333333334,"ballsPerDismissal":115.0}}},{"inningsNumber":4,"innings":32,"runs":1102,"balls":1902,"dismissals":26,"battingAverage":42.38461538461539,"ballsPerDismissal":73.15384615384616,"groups":{"low":{"key":"low","label":"Low gears","runs":138,"balls":816,"dismissals":13,"ballShare":42.90220820189275,"battingAverage":10.615384615384615,"ballsPerDismissal":62.76923076923077},"middle":{"key":"middle","label":"Middle gears","runs":446,"balls":675,"dismissals":11,"ballShare":35.488958990536275,"battingAverage":40.54545454545455,"ballsPerDismissal":61.36363636363637},"high":{"key":"high","label":"High gears","runs":518,"balls":411,"dismissals":2,"ballShare":21.608832807570977,"battingAverage":259.0,"ballsPerDismissal":205.5}}}]}];
+    const GROUPS = [
+      { key: "low", label: "Low gears" },
+      { key: "middle", label: "Middle gears" },
+      { key: "high", label: "High gears" }
+    ];
+    const METRICS = {
+      ballShare: { label: "Ball share", suffix: "%", decimals: 1, maxima: { low: 60, middle: 50, high: 30 }, steps: { low: 15, middle: 10, high: 10 } },
+      battingAverage: { label: "Batting average", suffix: "", decimals: 1, maxima: { low: 40, middle: 120, high: 300 }, steps: { low: 10, middle: 30, high: 75 } },
+      ballsPerDismissal: { label: "Balls per dismissal", suffix: "", decimals: 1, maxima: { low: 200, middle: 180, high: 240 }, steps: { low: 50, middle: 45, high: 60 } }
+    };
+    let currentMetric = "ballShare";
+    const charts = {};
+
+    document.getElementById("playerKey").innerHTML = PLAYERS.map(player =>
+      `<span class="key-item"><span class="line-key" style="--color:${player.color}"></span>${player.shortName}</span>`
+    ).join("");
+
+    function datasets(groupKey, metric) {
+      return PLAYERS.map(player => ({
+        label: player.shortName,
+        data: player.innings.map(row => ({ x: row.inningsNumber, y: row.groups[groupKey][metric], row, player })),
+        borderColor: player.color,
+        backgroundColor: player.color,
+        pointBackgroundColor: player.color,
+        pointBorderColor: "#ffffff",
+        pointBorderWidth: 1.2,
+        pointRadius: 4.2,
+        pointHoverRadius: 6.5,
+        borderWidth: 2.2,
+        tension: 0.12
+      }));
+    }
+
+    function makeChart(group) {
+      const spec = METRICS[currentMetric];
+      return new Chart(document.getElementById(`${group.key}Chart`), {
+        type: "line",
+        data: { datasets: datasets(group.key, currentMetric) },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 180 },
+          layout: { padding: { top: 5, right: 6, bottom: 0, left: 0 } },
+          interaction: { mode: "nearest", intersect: true },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              displayColors: true,
+              backgroundColor: "rgba(23, 33, 43, 0.97)",
+              padding: 10,
+              titleFont: { size: 12 },
+              bodyFont: { size: 11 },
+              callbacks: {
+                title(items) { return `Innings ${items[0].raw.row.inningsNumber} | ${group.label}`; },
+                label(context) {
+                  const metric = METRICS[currentMetric];
+                  return `${context.dataset.label}: ${metric.label} ${context.raw.y.toFixed(metric.decimals)}${metric.suffix}`;
+                },
+                afterLabel(context) {
+                  const values = context.raw.row.groups[group.key];
+                  return `${values.runs.toLocaleString()} runs | ${values.balls.toLocaleString()} balls | ${values.dismissals} dismissals`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              type: "linear", min: 0.92, max: 4.08,
+              afterBuildTicks(scale) { scale.ticks = [1, 2, 3, 4].map(value => ({ value })); },
+              title: { display: true, text: "Innings number", color: "#42515e", font: { size: 9, weight: "bold" } },
+              ticks: { color: "#42515e", font: { size: 9, weight: "bold" }, callback(value) { return value; } },
+              grid: { display: false }, border: { color: "#8a98a4" }
+            },
+            y: {
+              min: 0, max: spec.maxima[group.key],
+              ticks: {
+                stepSize: spec.steps[group.key], color: "#61707d", font: { size: 8 },
+                callback(value) { return currentMetric === "ballShare" ? `${value}%` : value; }
+              },
+              grid: { color: "rgba(217, 224, 229, 0.72)" }, border: { display: false }
+            }
+          }
+        }
+      });
+    }
+
+    GROUPS.forEach(group => { charts[group.key] = makeChart(group); });
+
+    function setMetric(metric) {
+      currentMetric = metric;
+      const spec = METRICS[metric];
+      document.querySelectorAll(".metric-button").forEach(button => {
+        button.classList.toggle("is-active", button.dataset.metric === metric);
+      });
+      GROUPS.forEach(group => {
+        const chart = charts[group.key];
+        chart.data.datasets.forEach((dataset, playerIndex) => {
+          dataset.data = PLAYERS[playerIndex].innings.map(row => ({
+            x: row.inningsNumber,
+            y: row.groups[group.key][metric],
+            row,
+            player: PLAYERS[playerIndex]
+          }));
+        });
+        chart.options.scales.y.max = spec.maxima[group.key];
+        chart.options.scales.y.ticks.stepSize = spec.steps[group.key];
+        chart.update();
+      });
+    }
+
+    document.querySelectorAll(".metric-button").forEach(button => {
+      button.addEventListener("click", () => setMetric(button.dataset.metric));
+    });
+  </script>
+</body>
+</html>

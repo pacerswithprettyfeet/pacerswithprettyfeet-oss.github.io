@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ben Stokes at Headingley: innings segmentation</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background: #ffffff;
+      color: #17212b;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    figure {
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    figcaption {
+      padding: 4px 8px 0 44px;
+      color: #61707d;
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0;
+    }
+
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+      min-width: 0;
+      height: 490px;
+      padding: 0 7px 0 2px;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+      width: 100% !important;
+      max-width: 100%;
+    }
+
+    @media (max-width: 620px) {
+      figcaption {
+        padding: 4px 7px 0 43px;
+        font-size: 10px;
+      }
+
+      .chart-wrap {
+        height: 470px;
+        padding-right: 2px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <figure>
+    <div class="chart-wrap">
+      <canvas id="headingleyChart" aria-label="Runs per ball in Ben Stokes's Headingley innings, divided into PELT gear segments"></canvas>
+    </div>
+    <figcaption>Gear-by-gear breakdown of Ben Stokes' 135 off 219 at Headingley, 2019.</figcaption>
+  </figure>
+
+  <script>
+    const SEGMENTS = [{"index":0,"number":1,"start":1,"end":80,"balls":80,"gear":0,"modelRuns":8,"modelSR":10.0},{"index":1,"number":2,"start":81,"end":103,"balls":23,"gear":5,"modelRuns":23,"modelSR":100.0},{"index":2,"number":3,"start":104,"end":128,"balls":25,"gear":0,"modelRuns":3,"modelSR":12.0},{"index":3,"number":4,"start":129,"end":137,"balls":9,"gear":5,"modelRuns":11,"modelSR":122.2},{"index":4,"number":5,"start":138,"end":165,"balls":28,"gear":1,"modelRuns":8,"modelSR":28.6},{"index":5,"number":6,"start":166,"end":174,"balls":9,"gear":5,"modelRuns":9,"modelSR":100.0},{"index":6,"number":7,"start":175,"end":183,"balls":9,"gear":3,"modelRuns":7,"modelSR":77.8},{"index":7,"number":8,"start":184,"end":203,"balls":20,"gear":6,"modelRuns":47,"modelSR":235.0},{"index":8,"number":9,"start":204,"end":219,"balls":16,"gear":5,"modelRuns":20,"modelSR":125.0}];
+    const BALLS = [{"ball":1,"modelRun":0,"modelCumulative":0,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":60,"delivery":4,"legByes":0},{"ball":2,"modelRun":0,"modelCumulative":0,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":60,"delivery":5,"legByes":0},{"ball":3,"modelRun":0,"modelCumulative":0,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":60,"delivery":6,"legByes":0},{"ball":4,"modelRun":0,"modelCumulative":0,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":62,"delivery":1,"legByes":0},{"ball":5,"modelRun":0,"modelCumulative":0,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":62,"delivery":2,"legByes":0},{"ball":6,"modelRun":0,"modelCumulative":0,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":62,"delivery":3,"legByes":0},{"ball":7,"modelRun":0,"modelCumulative":0,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":62,"delivery":4,"legByes":0},{"ball":8,"modelRun":0,"modelCumulative":0,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":62,"delivery":5,"legByes":0},{"ball":9,"modelRun":1,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":62,"delivery":6,"legByes":0},{"ball":10,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":63,"delivery":1,"legByes":0},{"ball":11,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":63,"delivery":2,"legByes":0},{"ball":12,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":63,"delivery":3,"legByes":0},{"ball":13,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":63,"delivery":4,"legByes":0},{"ball":14,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":63,"delivery":5,"legByes":0},{"ball":15,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":63,"delivery":6,"legByes":0},{"ball":16,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"JL Pattinson","over":64,"delivery":2,"legByes":0},{"ball":17,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"JL Pattinson","over":64,"delivery":3,"legByes":0},{"ball":18,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"JL Pattinson","over":64,"delivery":4,"legByes":0},{"ball":19,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"JL Pattinson","over":64,"delivery":5,"legByes":0},{"ball":20,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"JL Pattinson","over":64,"delivery":6,"legByes":0},{"ball":21,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":65,"delivery":2,"legByes":0},{"ball":22,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":65,"delivery":3,"legByes":0},{"ball":23,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":65,"delivery":4,"legByes":0},{"ball":24,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":65,"delivery":5,"legByes":0},{"ball":25,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":65,"delivery":6,"legByes":0},{"ball":26,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"JL Pattinson","over":66,"delivery":4,"legByes":0},{"ball":27,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"JL Pattinson","over":66,"delivery":5,"legByes":0},{"ball":28,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"JL Pattinson","over":66,"delivery":6,"legByes":0},{"ball":29,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":67,"delivery":2,"legByes":0},{"ball":30,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":67,"delivery":3,"legByes":0},{"ball":31,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":67,"delivery":4,"legByes":0},{"ball":32,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":67,"delivery":5,"legByes":0},{"ball":33,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":67,"delivery":6,"legByes":0},{"ball":34,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"JL Pattinson","over":68,"delivery":5,"legByes":0},{"ball":35,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"JL Pattinson","over":68,"delivery":6,"legByes":0},{"ball":36,"modelRun":0,"modelCumulative":1,"segmentIndex":0,"gear":0,"bowler":"M Labuschagne","over":70,"delivery":1,"legByes":0},{"ball":37,"modelRun":1,"modelCumulative":2,"segmentIndex":0,"gear":0,"bowler":"M Labuschagne","over":70,"delivery":2,"legByes":1},{"ball":38,"modelRun":0,"modelCumulative":2,"segmentIndex":0,"gear":0,"bowler":"M Labuschagne","over":70,"delivery":4,"legByes":0},{"ball":39,"modelRun":0,"modelCumulative":2,"segmentIndex":0,"gear":0,"bowler":"M Labuschagne","over":70,"delivery":5,"legByes":0},{"ball":40,"modelRun":1,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"M Labuschagne","over":70,"delivery":6,"legByes":0},{"ball":41,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"PJ Cummins","over":71,"delivery":1,"legByes":0},{"ball":42,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"PJ Cummins","over":71,"delivery":2,"legByes":0},{"ball":43,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"PJ Cummins","over":71,"delivery":3,"legByes":0},{"ball":44,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"PJ Cummins","over":71,"delivery":5,"legByes":0},{"ball":45,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"PJ Cummins","over":71,"delivery":6,"legByes":0},{"ball":46,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"PJ Cummins","over":71,"delivery":7,"legByes":0},{"ball":47,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":72,"delivery":3,"legByes":0},{"ball":48,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":72,"delivery":4,"legByes":0},{"ball":49,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":72,"delivery":5,"legByes":0},{"ball":50,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":72,"delivery":6,"legByes":0},{"ball":51,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":74,"delivery":1,"legByes":0},{"ball":52,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":74,"delivery":2,"legByes":0},{"ball":53,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":74,"delivery":3,"legByes":0},{"ball":54,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":74,"delivery":4,"legByes":0},{"ball":55,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":74,"delivery":5,"legByes":0},{"ball":56,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":74,"delivery":6,"legByes":0},{"ball":57,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":76,"delivery":1,"legByes":0},{"ball":58,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":76,"delivery":2,"legByes":0},{"ball":59,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":76,"delivery":3,"legByes":0},{"ball":60,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":76,"delivery":4,"legByes":0},{"ball":61,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":76,"delivery":5,"legByes":0},{"ball":62,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":76,"delivery":6,"legByes":0},{"ball":63,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"JL Pattinson","over":77,"delivery":3,"legByes":0},{"ball":64,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"JL Pattinson","over":77,"delivery":4,"legByes":0},{"ball":65,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"JL Pattinson","over":77,"delivery":5,"legByes":0},{"ball":66,"modelRun":0,"modelCumulative":3,"segmentIndex":0,"gear":0,"bowler":"JL Pattinson","over":77,"delivery":6,"legByes":0},{"ball":67,"modelRun":1,"modelCumulative":4,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":78,"delivery":2,"legByes":0},{"ball":68,"modelRun":0,"modelCumulative":4,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":78,"delivery":6,"legByes":0},{"ball":69,"modelRun":0,"modelCumulative":4,"segmentIndex":0,"gear":0,"bowler":"JL Pattinson","over":79,"delivery":3,"legByes":0},{"ball":70,"modelRun":0,"modelCumulative":4,"segmentIndex":0,"gear":0,"bowler":"JL Pattinson","over":79,"delivery":4,"legByes":0},{"ball":71,"modelRun":0,"modelCumulative":4,"segmentIndex":0,"gear":0,"bowler":"JL Pattinson","over":79,"delivery":5,"legByes":0},{"ball":72,"modelRun":0,"modelCumulative":4,"segmentIndex":0,"gear":0,"bowler":"JL Pattinson","over":79,"delivery":6,"legByes":0},{"ball":73,"modelRun":0,"modelCumulative":4,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":80,"delivery":3,"legByes":0},{"ball":74,"modelRun":4,"modelCumulative":8,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":80,"delivery":4,"legByes":0},{"ball":75,"modelRun":0,"modelCumulative":8,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":80,"delivery":5,"legByes":0},{"ball":76,"modelRun":0,"modelCumulative":8,"segmentIndex":0,"gear":0,"bowler":"NM Lyon","over":80,"delivery":6,"legByes":0},{"ball":77,"modelRun":0,"modelCumulative":8,"segmentIndex":0,"gear":0,"bowler":"PJ Cummins","over":81,"delivery":4,"legByes":0},{"ball":78,"modelRun":0,"modelCumulative":8,"segmentIndex":0,"gear":0,"bowler":"PJ Cummins","over":81,"delivery":5,"legByes":0},{"ball":79,"modelRun":0,"modelCumulative":8,"segmentIndex":0,"gear":0,"bowler":"PJ Cummins","over":81,"delivery":6,"legByes":0},{"ball":80,"modelRun":0,"modelCumulative":8,"segmentIndex":0,"gear":0,"bowler":"JR Hazlewood","over":82,"delivery":7,"legByes":0},{"ball":81,"modelRun":2,"modelCumulative":10,"segmentIndex":1,"gear":5,"bowler":"PJ Cummins","over":83,"delivery":6,"legByes":0},{"ball":82,"modelRun":0,"modelCumulative":10,"segmentIndex":1,"gear":5,"bowler":"PJ Cummins","over":85,"delivery":1,"legByes":0},{"ball":83,"modelRun":4,"modelCumulative":14,"segmentIndex":1,"gear":5,"bowler":"PJ Cummins","over":85,"delivery":2,"legByes":0},{"ball":84,"modelRun":0,"modelCumulative":14,"segmentIndex":1,"gear":5,"bowler":"PJ Cummins","over":85,"delivery":3,"legByes":0},{"ball":85,"modelRun":0,"modelCumulative":14,"segmentIndex":1,"gear":5,"bowler":"PJ Cummins","over":85,"delivery":4,"legByes":0},{"ball":86,"modelRun":0,"modelCumulative":14,"segmentIndex":1,"gear":5,"bowler":"PJ Cummins","over":85,"delivery":5,"legByes":0},{"ball":87,"modelRun":2,"modelCumulative":16,"segmentIndex":1,"gear":5,"bowler":"PJ Cummins","over":85,"delivery":6,"legByes":0},{"ball":88,"modelRun":0,"modelCumulative":16,"segmentIndex":1,"gear":5,"bowler":"JR Hazlewood","over":86,"delivery":4,"legByes":0},{"ball":89,"modelRun":2,"modelCumulative":18,"segmentIndex":1,"gear":5,"bowler":"JR Hazlewood","over":86,"delivery":5,"legByes":0},{"ball":90,"modelRun":0,"modelCumulative":18,"segmentIndex":1,"gear":5,"bowler":"JR Hazlewood","over":86,"delivery":6,"legByes":0},{"ball":91,"modelRun":0,"modelCumulative":18,"segmentIndex":1,"gear":5,"bowler":"JR Hazlewood","over":88,"delivery":1,"legByes":0},{"ball":92,"modelRun":0,"modelCumulative":18,"segmentIndex":1,"gear":5,"bowler":"JR Hazlewood","over":88,"delivery":2,"legByes":0},{"ball":93,"modelRun":0,"modelCumulative":18,"segmentIndex":1,"gear":5,"bowler":"JR Hazlewood","over":88,"delivery":3,"legByes":0},{"ball":94,"modelRun":1,"modelCumulative":19,"segmentIndex":1,"gear":5,"bowler":"JR Hazlewood","over":88,"delivery":4,"legByes":0},{"ball":95,"modelRun":0,"modelCumulative":19,"segmentIndex":1,"gear":5,"bowler":"JL Pattinson","over":89,"delivery":1,"legByes":0},{"ball":96,"modelRun":0,"modelCumulative":19,"segmentIndex":1,"gear":5,"bowler":"JL Pattinson","over":89,"delivery":2,"legByes":0},{"ball":97,"modelRun":0,"modelCumulative":19,"segmentIndex":1,"gear":5,"bowler":"JL Pattinson","over":89,"delivery":3,"legByes":0},{"ball":98,"modelRun":4,"modelCumulative":23,"segmentIndex":1,"gear":5,"bowler":"JL Pattinson","over":89,"delivery":4,"legByes":0},{"ball":99,"modelRun":1,"modelCumulative":24,"segmentIndex":1,"gear":5,"bowler":"JL Pattinson","over":89,"delivery":5,"legByes":0},{"ball":100,"modelRun":6,"modelCumulative":30,"segmentIndex":1,"gear":5,"bowler":"PJ Cummins","over":90,"delivery":1,"legByes":0},{"ball":101,"modelRun":0,"modelCumulative":30,"segmentIndex":1,"gear":5,"bowler":"PJ Cummins","over":90,"delivery":2,"legByes":0},{"ball":102,"modelRun":1,"modelCumulative":31,"segmentIndex":1,"gear":5,"bowler":"PJ Cummins","over":90,"delivery":3,"legByes":0},{"ball":103,"modelRun":0,"modelCumulative":31,"segmentIndex":1,"gear":5,"bowler":"NM Lyon","over":91,"delivery":3,"legByes":0},{"ball":104,"modelRun":0,"modelCumulative":31,"segmentIndex":2,"gear":0,"bowler":"NM Lyon","over":91,"delivery":4,"legByes":0},{"ball":105,"modelRun":0,"modelCumulative":31,"segmentIndex":2,"gear":0,"bowler":"NM Lyon","over":91,"delivery":5,"legByes":0},{"ball":106,"modelRun":0,"modelCumulative":31,"segmentIndex":2,"gear":0,"bowler":"NM Lyon","over":91,"delivery":6,"legByes":0},{"ball":107,"modelRun":0,"modelCumulative":31,"segmentIndex":2,"gear":0,"bowler":"NM Lyon","over":93,"delivery":1,"legByes":0},{"ball":108,"modelRun":0,"modelCumulative":31,"segmentIndex":2,"gear":0,"bowler":"NM Lyon","over":93,"delivery":2,"legByes":0},{"ball":109,"modelRun":0,"modelCumulative":31,"segmentIndex":2,"gear":0,"bowler":"NM Lyon","over":93,"delivery":3,"legByes":0},{"ball":110,"modelRun":1,"modelCumulative":32,"segmentIndex":2,"gear":0,"bowler":"NM Lyon","over":93,"delivery":4,"legByes":0},{"ball":111,"modelRun":0,"modelCumulative":32,"segmentIndex":2,"gear":0,"bowler":"NM Lyon","over":95,"delivery":1,"legByes":0},{"ball":112,"modelRun":0,"modelCumulative":32,"segmentIndex":2,"gear":0,"bowler":"NM Lyon","over":95,"delivery":2,"legByes":0},{"ball":113,"modelRun":0,"modelCumulative":32,"segmentIndex":2,"gear":0,"bowler":"NM Lyon","over":95,"delivery":3,"legByes":0},{"ball":114,"modelRun":0,"modelCumulative":32,"segmentIndex":2,"gear":0,"bowler":"NM Lyon","over":95,"delivery":4,"legByes":0},{"ball":115,"modelRun":0,"modelCumulative":32,"segmentIndex":2,"gear":0,"bowler":"NM Lyon","over":95,"delivery":5,"legByes":0},{"ball":116,"modelRun":0,"modelCumulative":32,"segmentIndex":2,"gear":0,"bowler":"NM Lyon","over":95,"delivery":6,"legByes":0},{"ball":117,"modelRun":0,"modelCumulative":32,"segmentIndex":2,"gear":0,"bowler":"M Labuschagne","over":96,"delivery":2,"legByes":0},{"ball":118,"modelRun":0,"modelCumulative":32,"segmentIndex":2,"gear":0,"bowler":"M Labuschagne","over":96,"delivery":3,"legByes":0},{"ball":119,"modelRun":1,"modelCumulative":33,"segmentIndex":2,"gear":0,"bowler":"M Labuschagne","over":96,"delivery":4,"legByes":0},{"ball":120,"modelRun":0,"modelCumulative":33,"segmentIndex":2,"gear":0,"bowler":"NM Lyon","over":97,"delivery":6,"legByes":0},{"ball":121,"modelRun":0,"modelCumulative":33,"segmentIndex":2,"gear":0,"bowler":"JR Hazlewood","over":98,"delivery":3,"legByes":0},{"ball":122,"modelRun":0,"modelCumulative":33,"segmentIndex":2,"gear":0,"bowler":"JR Hazlewood","over":98,"delivery":4,"legByes":0},{"ball":123,"modelRun":1,"modelCumulative":34,"segmentIndex":2,"gear":0,"bowler":"JR Hazlewood","over":98,"delivery":5,"legByes":0},{"ball":124,"modelRun":0,"modelCumulative":34,"segmentIndex":2,"gear":0,"bowler":"NM Lyon","over":99,"delivery":1,"legByes":0},{"ball":125,"modelRun":0,"modelCumulative":34,"segmentIndex":2,"gear":0,"bowler":"NM Lyon","over":99,"delivery":2,"legByes":0},{"ball":126,"modelRun":0,"modelCumulative":34,"segmentIndex":2,"gear":0,"bowler":"NM Lyon","over":99,"delivery":3,"legByes":0},{"ball":127,"modelRun":0,"modelCumulative":34,"segmentIndex":2,"gear":0,"bowler":"NM Lyon","over":99,"delivery":4,"legByes":0},{"ball":128,"modelRun":0,"modelCumulative":34,"segmentIndex":2,"gear":0,"bowler":"NM Lyon","over":99,"delivery":5,"legByes":0},{"ball":129,"modelRun":4,"modelCumulative":38,"segmentIndex":3,"gear":5,"bowler":"NM Lyon","over":99,"delivery":6,"legByes":0},{"ball":130,"modelRun":0,"modelCumulative":38,"segmentIndex":3,"gear":5,"bowler":"NM Lyon","over":101,"delivery":1,"legByes":0},{"ball":131,"modelRun":1,"modelCumulative":39,"segmentIndex":3,"gear":5,"bowler":"NM Lyon","over":101,"delivery":2,"legByes":0},{"ball":132,"modelRun":0,"modelCumulative":39,"segmentIndex":3,"gear":5,"bowler":"NM Lyon","over":101,"delivery":5,"legByes":0},{"ball":133,"modelRun":1,"modelCumulative":40,"segmentIndex":3,"gear":5,"bowler":"NM Lyon","over":101,"delivery":6,"legByes":0},{"ball":134,"modelRun":0,"modelCumulative":40,"segmentIndex":3,"gear":5,"bowler":"JR Hazlewood","over":102,"delivery":1,"legByes":0},{"ball":135,"modelRun":4,"modelCumulative":44,"segmentIndex":3,"gear":5,"bowler":"JR Hazlewood","over":102,"delivery":2,"legByes":0},{"ball":136,"modelRun":0,"modelCumulative":44,"segmentIndex":3,"gear":5,"bowler":"JR Hazlewood","over":102,"delivery":3,"legByes":0},{"ball":137,"modelRun":1,"modelCumulative":45,"segmentIndex":3,"gear":5,"bowler":"JR Hazlewood","over":102,"delivery":4,"legByes":0},{"ball":138,"modelRun":0,"modelCumulative":45,"segmentIndex":4,"gear":1,"bowler":"NM Lyon","over":103,"delivery":1,"legByes":0},{"ball":139,"modelRun":0,"modelCumulative":45,"segmentIndex":4,"gear":1,"bowler":"NM Lyon","over":103,"delivery":2,"legByes":0},{"ball":140,"modelRun":0,"modelCumulative":45,"segmentIndex":4,"gear":1,"bowler":"NM Lyon","over":103,"delivery":3,"legByes":0},{"ball":141,"modelRun":0,"modelCumulative":45,"segmentIndex":4,"gear":1,"bowler":"NM Lyon","over":103,"delivery":4,"legByes":0},{"ball":142,"modelRun":4,"modelCumulative":49,"segmentIndex":4,"gear":1,"bowler":"NM Lyon","over":103,"delivery":5,"legByes":0},{"ball":143,"modelRun":0,"modelCumulative":49,"segmentIndex":4,"gear":1,"bowler":"NM Lyon","over":103,"delivery":6,"legByes":0},{"ball":144,"modelRun":0,"modelCumulative":49,"segmentIndex":4,"gear":1,"bowler":"JR Hazlewood","over":104,"delivery":3,"legByes":0},{"ball":145,"modelRun":0,"modelCumulative":49,"segmentIndex":4,"gear":1,"bowler":"JR Hazlewood","over":104,"delivery":4,"legByes":0},{"ball":146,"modelRun":0,"modelCumulative":49,"segmentIndex":4,"gear":1,"bowler":"JR Hazlewood","over":104,"delivery":5,"legByes":0},{"ball":147,"modelRun":1,"modelCumulative":50,"segmentIndex":4,"gear":1,"bowler":"JR Hazlewood","over":104,"delivery":6,"legByes":0},{"ball":148,"modelRun":0,"modelCumulative":50,"segmentIndex":4,"gear":1,"bowler":"NM Lyon","over":105,"delivery":1,"legByes":0},{"ball":149,"modelRun":0,"modelCumulative":50,"segmentIndex":4,"gear":1,"bowler":"NM Lyon","over":105,"delivery":2,"legByes":0},{"ball":150,"modelRun":0,"modelCumulative":50,"segmentIndex":4,"gear":1,"bowler":"NM Lyon","over":105,"delivery":3,"legByes":0},{"ball":151,"modelRun":0,"modelCumulative":50,"segmentIndex":4,"gear":1,"bowler":"NM Lyon","over":105,"delivery":4,"legByes":0},{"ball":152,"modelRun":2,"modelCumulative":52,"segmentIndex":4,"gear":1,"bowler":"NM Lyon","over":105,"delivery":5,"legByes":0},{"ball":153,"modelRun":0,"modelCumulative":52,"segmentIndex":4,"gear":1,"bowler":"NM Lyon","over":105,"delivery":6,"legByes":0},{"ball":154,"modelRun":0,"modelCumulative":52,"segmentIndex":4,"gear":1,"bowler":"NM Lyon","over":107,"delivery":1,"legByes":0},{"ball":155,"modelRun":0,"modelCumulative":52,"segmentIndex":4,"gear":1,"bowler":"NM Lyon","over":107,"delivery":2,"legByes":0},{"ball":156,"modelRun":0,"modelCumulative":52,"segmentIndex":4,"gear":1,"bowler":"NM Lyon","over":107,"delivery":3,"legByes":0},{"ball":157,"modelRun":1,"modelCumulative":53,"segmentIndex":4,"gear":1,"bowler":"NM Lyon","over":107,"delivery":4,"legByes":0},{"ball":158,"modelRun":0,"modelCumulative":53,"segmentIndex":4,"gear":1,"bowler":"JR Hazlewood","over":108,"delivery":1,"legByes":0},{"ball":159,"modelRun":0,"modelCumulative":53,"segmentIndex":4,"gear":1,"bowler":"JR Hazlewood","over":108,"delivery":2,"legByes":0},{"ball":160,"modelRun":0,"modelCumulative":53,"segmentIndex":4,"gear":1,"bowler":"JR Hazlewood","over":108,"delivery":3,"legByes":0},{"ball":161,"modelRun":0,"modelCumulative":53,"segmentIndex":4,"gear":1,"bowler":"JR Hazlewood","over":108,"delivery":4,"legByes":0},{"ball":162,"modelRun":0,"modelCumulative":53,"segmentIndex":4,"gear":1,"bowler":"JR Hazlewood","over":108,"delivery":5,"legByes":0},{"ball":163,"modelRun":0,"modelCumulative":53,"segmentIndex":4,"gear":1,"bowler":"JR Hazlewood","over":108,"delivery":6,"legByes":0},{"ball":164,"modelRun":0,"modelCumulative":53,"segmentIndex":4,"gear":1,"bowler":"JL Pattinson","over":110,"delivery":1,"legByes":0},{"ball":165,"modelRun":0,"modelCumulative":53,"segmentIndex":4,"gear":1,"bowler":"JL Pattinson","over":110,"delivery":2,"legByes":0},{"ball":166,"modelRun":1,"modelCumulative":54,"segmentIndex":5,"gear":5,"bowler":"JL Pattinson","over":110,"delivery":3,"legByes":0},{"ball":167,"modelRun":2,"modelCumulative":56,"segmentIndex":5,"gear":5,"bowler":"JL Pattinson","over":110,"delivery":6,"legByes":0},{"ball":168,"modelRun":0,"modelCumulative":56,"segmentIndex":5,"gear":5,"bowler":"PJ Cummins","over":111,"delivery":6,"legByes":0},{"ball":169,"modelRun":0,"modelCumulative":56,"segmentIndex":5,"gear":5,"bowler":"NM Lyon","over":113,"delivery":1,"legByes":0},{"ball":170,"modelRun":0,"modelCumulative":56,"segmentIndex":5,"gear":5,"bowler":"NM Lyon","over":113,"delivery":2,"legByes":0},{"ball":171,"modelRun":1,"modelCumulative":57,"segmentIndex":5,"gear":5,"bowler":"NM Lyon","over":113,"delivery":3,"legByes":0},{"ball":172,"modelRun":4,"modelCumulative":61,"segmentIndex":5,"gear":5,"bowler":"NM Lyon","over":113,"delivery":5,"legByes":0},{"ball":173,"modelRun":0,"modelCumulative":61,"segmentIndex":5,"gear":5,"bowler":"NM Lyon","over":113,"delivery":6,"legByes":0},{"ball":174,"modelRun":1,"modelCumulative":62,"segmentIndex":5,"gear":5,"bowler":"NM Lyon","over":115,"delivery":1,"legByes":0},{"ball":175,"modelRun":0,"modelCumulative":62,"segmentIndex":6,"gear":3,"bowler":"NM Lyon","over":117,"delivery":1,"legByes":0},{"ball":176,"modelRun":0,"modelCumulative":62,"segmentIndex":6,"gear":3,"bowler":"NM Lyon","over":117,"delivery":2,"legByes":0},{"ball":177,"modelRun":0,"modelCumulative":62,"segmentIndex":6,"gear":3,"bowler":"NM Lyon","over":117,"delivery":3,"legByes":0},{"ball":178,"modelRun":6,"modelCumulative":68,"segmentIndex":6,"gear":3,"bowler":"NM Lyon","over":117,"delivery":4,"legByes":0},{"ball":179,"modelRun":0,"modelCumulative":68,"segmentIndex":6,"gear":3,"bowler":"NM Lyon","over":117,"delivery":5,"legByes":0},{"ball":180,"modelRun":1,"modelCumulative":69,"segmentIndex":6,"gear":3,"bowler":"NM Lyon","over":117,"delivery":6,"legByes":0},{"ball":181,"modelRun":0,"modelCumulative":69,"segmentIndex":6,"gear":3,"bowler":"JL Pattinson","over":118,"delivery":1,"legByes":0},{"ball":182,"modelRun":0,"modelCumulative":69,"segmentIndex":6,"gear":3,"bowler":"JL Pattinson","over":118,"delivery":2,"legByes":0},{"ball":183,"modelRun":0,"modelCumulative":69,"segmentIndex":6,"gear":3,"bowler":"JL Pattinson","over":118,"delivery":3,"legByes":0},{"ball":184,"modelRun":2,"modelCumulative":71,"segmentIndex":7,"gear":6,"bowler":"JL Pattinson","over":118,"delivery":5,"legByes":0},{"ball":185,"modelRun":1,"modelCumulative":72,"segmentIndex":7,"gear":6,"bowler":"JL Pattinson","over":118,"delivery":6,"legByes":0},{"ball":186,"modelRun":6,"modelCumulative":78,"segmentIndex":7,"gear":6,"bowler":"NM Lyon","over":119,"delivery":1,"legByes":0},{"ball":187,"modelRun":0,"modelCumulative":78,"segmentIndex":7,"gear":6,"bowler":"NM Lyon","over":119,"delivery":2,"legByes":0},{"ball":188,"modelRun":0,"modelCumulative":78,"segmentIndex":7,"gear":6,"bowler":"NM Lyon","over":119,"delivery":3,"legByes":0},{"ball":189,"modelRun":0,"modelCumulative":78,"segmentIndex":7,"gear":6,"bowler":"NM Lyon","over":119,"delivery":4,"legByes":0},{"ball":190,"modelRun":6,"modelCumulative":84,"segmentIndex":7,"gear":6,"bowler":"NM Lyon","over":119,"delivery":5,"legByes":0},{"ball":191,"modelRun":1,"modelCumulative":85,"segmentIndex":7,"gear":6,"bowler":"NM Lyon","over":119,"delivery":6,"legByes":0},{"ball":192,"modelRun":0,"modelCumulative":85,"segmentIndex":7,"gear":6,"bowler":"JL Pattinson","over":120,"delivery":1,"legByes":0},{"ball":193,"modelRun":1,"modelCumulative":86,"segmentIndex":7,"gear":6,"bowler":"JL Pattinson","over":120,"delivery":2,"legByes":0},{"ball":194,"modelRun":2,"modelCumulative":88,"segmentIndex":7,"gear":6,"bowler":"PJ Cummins","over":121,"delivery":1,"legByes":0},{"ball":195,"modelRun":0,"modelCumulative":88,"segmentIndex":7,"gear":6,"bowler":"PJ Cummins","over":121,"delivery":2,"legByes":0},{"ball":196,"modelRun":6,"modelCumulative":94,"segmentIndex":7,"gear":6,"bowler":"PJ Cummins","over":121,"delivery":3,"legByes":0},{"ball":197,"modelRun":2,"modelCumulative":96,"segmentIndex":7,"gear":6,"bowler":"PJ Cummins","over":121,"delivery":4,"legByes":0},{"ball":198,"modelRun":1,"modelCumulative":97,"segmentIndex":7,"gear":6,"bowler":"PJ Cummins","over":121,"delivery":5,"legByes":0},{"ball":199,"modelRun":4,"modelCumulative":101,"segmentIndex":7,"gear":6,"bowler":"JR Hazlewood","over":122,"delivery":1,"legByes":0},{"ball":200,"modelRun":6,"modelCumulative":107,"segmentIndex":7,"gear":6,"bowler":"JR Hazlewood","over":122,"delivery":2,"legByes":0},{"ball":201,"modelRun":6,"modelCumulative":113,"segmentIndex":7,"gear":6,"bowler":"JR Hazlewood","over":122,"delivery":3,"legByes":0},{"ball":202,"modelRun":2,"modelCumulative":115,"segmentIndex":7,"gear":6,"bowler":"JR Hazlewood","over":122,"delivery":4,"legByes":0},{"ball":203,"modelRun":1,"modelCumulative":116,"segmentIndex":7,"gear":6,"bowler":"JR Hazlewood","over":122,"delivery":5,"legByes":0},{"ball":204,"modelRun":0,"modelCumulative":116,"segmentIndex":8,"gear":5,"bowler":"NM Lyon","over":123,"delivery":1,"legByes":0},{"ball":205,"modelRun":0,"modelCumulative":116,"segmentIndex":8,"gear":5,"bowler":"NM Lyon","over":123,"delivery":2,"legByes":0},{"ball":206,"modelRun":0,"modelCumulative":116,"segmentIndex":8,"gear":5,"bowler":"NM Lyon","over":123,"delivery":3,"legByes":0},{"ball":207,"modelRun":0,"modelCumulative":116,"segmentIndex":8,"gear":5,"bowler":"NM Lyon","over":123,"delivery":4,"legByes":0},{"ball":208,"modelRun":1,"modelCumulative":117,"segmentIndex":8,"gear":5,"bowler":"NM Lyon","over":123,"delivery":5,"legByes":0},{"ball":209,"modelRun":0,"modelCumulative":117,"segmentIndex":8,"gear":5,"bowler":"PJ Cummins","over":124,"delivery":1,"legByes":0},{"ball":210,"modelRun":4,"modelCumulative":121,"segmentIndex":8,"gear":5,"bowler":"PJ Cummins","over":124,"delivery":2,"legByes":0},{"ball":211,"modelRun":4,"modelCumulative":125,"segmentIndex":8,"gear":5,"bowler":"PJ Cummins","over":124,"delivery":3,"legByes":0},{"ball":212,"modelRun":1,"modelCumulative":126,"segmentIndex":8,"gear":5,"bowler":"PJ Cummins","over":124,"delivery":4,"legByes":0},{"ball":213,"modelRun":0,"modelCumulative":126,"segmentIndex":8,"gear":5,"bowler":"NM Lyon","over":125,"delivery":1,"legByes":0},{"ball":214,"modelRun":0,"modelCumulative":126,"segmentIndex":8,"gear":5,"bowler":"NM Lyon","over":125,"delivery":2,"legByes":0},{"ball":215,"modelRun":6,"modelCumulative":132,"segmentIndex":8,"gear":5,"bowler":"NM Lyon","over":125,"delivery":3,"legByes":0},{"ball":216,"modelRun":0,"modelCumulative":132,"segmentIndex":8,"gear":5,"bowler":"NM Lyon","over":125,"delivery":4,"legByes":0},{"ball":217,"modelRun":0,"modelCumulative":132,"segmentIndex":8,"gear":5,"bowler":"NM Lyon","over":125,"delivery":5,"legByes":0},{"ball":218,"modelRun":0,"modelCumulative":132,"segmentIndex":8,"gear":5,"bowler":"NM Lyon","over":125,"delivery":6,"legByes":0},{"ball":219,"modelRun":4,"modelCumulative":136,"segmentIndex":8,"gear":5,"bowler":"PJ Cummins","over":126,"delivery":4,"legByes":0}];
+    const GEAR_COLORS = ["#5b6770", "#4878a8", "#3e9f8f", "#76a842", "#d79a2b", "#c85f4d", "#8e5ea2"];
+    const previewSegment = Number(new URLSearchParams(window.location.search).get("segment"));
+    let hoveredSegmentIndex = Number.isInteger(previewSegment) && previewSegment >= 1 && previewSegment <= 9
+      ? previewSegment - 1
+      : null;
+
+    function rgba(hex, alpha) {
+      const value = hex.replace("#", "");
+      const red = parseInt(value.slice(0, 2), 16);
+      const green = parseInt(value.slice(2, 4), 16);
+      const blue = parseInt(value.slice(4, 6), 16);
+      return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+    }
+
+    function roundedRect(ctx, x, y, width, height, radius) {
+      const right = x + width;
+      const bottom = y + height;
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(right - radius, y);
+      ctx.quadraticCurveTo(right, y, right, y + radius);
+      ctx.lineTo(right, bottom - radius);
+      ctx.quadraticCurveTo(right, bottom, right - radius, bottom);
+      ctx.lineTo(x + radius, bottom);
+      ctx.quadraticCurveTo(x, bottom, x, bottom - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+    }
+
+    const segmentPanelPlugin = {
+      id: "segmentPanel",
+      beforeDatasetsDraw(chart) {
+        const { ctx, chartArea, scales } = chart;
+        if (!chartArea) return;
+
+        const panelHeight = 28;
+        const panelTop = chartArea.top - panelHeight;
+        ctx.save();
+
+        SEGMENTS.forEach(segment => {
+          const left = scales.x.getPixelForValue(segment.start - 0.5);
+          const right = scales.x.getPixelForValue(segment.end + 0.5);
+          const color = GEAR_COLORS[segment.gear];
+
+          ctx.fillStyle = rgba(color, 0.055);
+          ctx.fillRect(left, chartArea.top, right - left, chartArea.bottom - chartArea.top);
+
+          ctx.fillStyle = color;
+          ctx.fillRect(left, panelTop, right - left, panelHeight);
+          ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
+          ctx.lineWidth = 1;
+          ctx.strokeRect(left, panelTop, right - left, panelHeight);
+
+          if (right - left >= 20) {
+            ctx.fillStyle = segment.gear === 3 || segment.gear === 4 ? "#17212b" : "#ffffff";
+            ctx.font = "700 10px Arial";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(`G${segment.gear}`, (left + right) / 2, panelTop + panelHeight / 2);
+          }
+        });
+
+        SEGMENTS.slice(0, -1).forEach(segment => {
+          const x = scales.x.getPixelForValue(segment.end + 0.5);
+          ctx.strokeStyle = "rgba(97, 112, 125, 0.5)";
+          ctx.lineWidth = 1;
+          ctx.setLineDash([3, 4]);
+          ctx.beginPath();
+          ctx.moveTo(x, chartArea.top);
+          ctx.lineTo(x, chartArea.bottom);
+          ctx.stroke();
+        });
+
+        ctx.restore();
+      },
+      afterEvent(chart, args) {
+        const { event } = args;
+        const { chartArea, scales } = chart;
+        if (!chartArea) return;
+
+        const panelTop = chartArea.top - 28;
+        let nextSegmentIndex = null;
+        if (
+          event.type !== "mouseout"
+          && event.x >= chartArea.left
+          && event.x <= chartArea.right
+          && event.y >= panelTop
+          && event.y <= chartArea.bottom
+        ) {
+          const ball = scales.x.getValueForPixel(event.x);
+          const segment = SEGMENTS.find(item => ball >= item.start - 0.5 && ball <= item.end + 0.5);
+          nextSegmentIndex = segment ? segment.index : null;
+        }
+
+        if (nextSegmentIndex !== hoveredSegmentIndex) {
+          hoveredSegmentIndex = nextSegmentIndex;
+          args.changed = true;
+        }
+      },
+      afterDraw(chart) {
+        if (hoveredSegmentIndex === null) return;
+
+        const { ctx, chartArea, scales } = chart;
+        const segment = SEGMENTS[hoveredSegmentIndex];
+        const left = scales.x.getPixelForValue(segment.start - 0.5);
+        const right = scales.x.getPixelForValue(segment.end + 0.5);
+        const pointerX = (left + right) / 2;
+        const title = `Segment ${segment.number} | Gear ${segment.gear}`;
+        const detail = `${segment.modelRuns} runs | ${segment.balls} balls | SR ${segment.modelSR.toFixed(1)}`;
+
+        ctx.save();
+        ctx.font = "700 11px Arial";
+        const titleWidth = ctx.measureText(title).width;
+        ctx.font = "11px Arial";
+        const detailWidth = ctx.measureText(detail).width;
+        const bubbleWidth = Math.max(titleWidth, detailWidth) + 20;
+        const bubbleHeight = 45;
+        const bubbleX = Math.max(
+          chartArea.left + 4,
+          Math.min(pointerX - bubbleWidth / 2, chartArea.right - bubbleWidth - 4)
+        );
+        const bubbleY = chartArea.top + 9;
+
+        ctx.fillStyle = "rgba(23, 33, 43, 0.96)";
+        ctx.beginPath();
+        ctx.moveTo(pointerX, chartArea.top + 1);
+        ctx.lineTo(pointerX - 6, bubbleY);
+        ctx.lineTo(pointerX + 6, bubbleY);
+        ctx.closePath();
+        ctx.fill();
+
+        roundedRect(ctx, bubbleX, bubbleY, bubbleWidth, bubbleHeight, 5);
+        ctx.fill();
+
+        ctx.fillStyle = "#ffffff";
+        ctx.textAlign = "left";
+        ctx.textBaseline = "middle";
+        ctx.font = "700 11px Arial";
+        ctx.fillText(title, bubbleX + 10, bubbleY + 15);
+        ctx.font = "11px Arial";
+        ctx.fillText(detail, bubbleX + 10, bubbleY + 31);
+        ctx.restore();
+      }
+    };
+
+    Chart.register(segmentPanelPlugin);
+
+    new Chart(document.getElementById("headingleyChart"), {
+      type: "bar",
+      data: {
+        datasets: [{
+          data: BALLS.map(ball => ({ ...ball, x: ball.ball, y: ball.modelRun })),
+          parsing: false,
+          backgroundColor: context => {
+            const raw = context.raw;
+            return raw ? rgba(GEAR_COLORS[raw.gear], 0.86) : "transparent";
+          },
+          borderWidth: 0,
+          barPercentage: 1,
+          categoryPercentage: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 180 },
+        layout: { padding: { top: 28 } },
+        interaction: { mode: "nearest", axis: "x", intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: { enabled: false }
+        },
+        scales: {
+          x: {
+            type: "linear",
+            min: 0.5,
+            max: 219.5,
+            offset: false,
+            title: {
+              display: true,
+              text: "Ball faced",
+              color: "#42515e",
+              font: { weight: "bold" }
+            },
+            ticks: {
+              color: "#61707d",
+              maxTicksLimit: 7,
+              callback(value) {
+                return Number.isInteger(value) ? value : "";
+              }
+            },
+            grid: { display: false },
+            border: { color: "#8a98a4" }
+          },
+          y: {
+            beginAtZero: true,
+            max: 6,
+            title: {
+              display: true,
+              text: "Runs on ball",
+              color: "#42515e",
+              font: { weight: "bold" }
+            },
+            ticks: { color: "#61707d", stepSize: 1 },
+            grid: { color: "rgba(217, 224, 229, 0.88)" },
+            border: { color: "#8a98a4" }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
