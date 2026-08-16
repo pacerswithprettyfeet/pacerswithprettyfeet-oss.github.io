@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "The Gears of the Fab Four"
+title: "The Fab Four, Seven Gears and a Few Loose Screws"
 comments: true
 author: "Atharv Tambade and Aadityan Ganesh"
 date: 2026-08-15
