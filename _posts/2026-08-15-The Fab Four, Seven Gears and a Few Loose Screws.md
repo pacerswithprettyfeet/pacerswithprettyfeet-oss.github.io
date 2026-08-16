@@ -2,7 +2,7 @@
 layout: post
 title: "The Fab Four, Seven Gears and a Few Loose Screws"
 comments: true
-author: "Atharv Tambade and Aadityan Ganesh"
+author: "Atharv Tambade, Aadityan Ganesh and Rishin Madan"
 date: 2026-08-15
 categories: descriptive test cricket
 tags: [Fab Four, batting, gears]
