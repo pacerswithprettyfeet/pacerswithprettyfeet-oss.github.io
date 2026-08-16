@@ -71,7 +71,7 @@ To build the gearbox, we first need to divide an innings into phases with distin
 
 <iframe
   class="fab-four-plot plot-headingley"
-  src="{{ '/assets/plots/fab-four-gears/headingley_stokes_segments.html' | relative_url }}"
+  src="{{ '/assets/plots/Fab fours and Gears/headingley_stokes_segments.html' | relative_url }}"
   loading="lazy"
   title="Gear-by-gear breakdown of Ben Stokes at Headingley"
 ></iframe>
@@ -80,7 +80,7 @@ As a sanity check, the likes of Lahiru Thirimanne, Rahul Dravid, Kraigg Brathwai
 
 <iframe
   class="fab-four-plot plot-monasteries"
-  src="{{ '/assets/plots/fab-four-gears/test_crickets_monasteries.html' | relative_url }}"
+  src="{{ '/assets/plots/Fab fours and Gears/test_crickets_monasteries.html' | relative_url }}"
   loading="lazy"
   title="Test cricket's monasteries"
 ></iframe>
@@ -89,7 +89,7 @@ At the other end is Adam Gilchrist, who spent almost a quarter of his deliveries
 
 <iframe
   class="fab-four-plot plot-arsonists"
-  src="{{ '/assets/plots/fab-four-gears/test_crickets_arsonists.html' | relative_url }}"
+  src="{{ '/assets/plots/Fab fours and Gears/test_crickets_arsonists.html' | relative_url }}"
   loading="lazy"
   title="Test cricket's arsonists"
 ></iframe>
@@ -104,14 +104,14 @@ The differences begin to appear lower down the gearbox. As expected, Williamson 
 
 <iframe
   class="fab-four-plot plot-fingerprint"
-  src="{{ '/assets/plots/fab-four-gears/master_gear_fingerprint.html' | relative_url }}"
+  src="{{ '/assets/plots/Fab fours and Gears/master_gear_fingerprint.html' | relative_url }}"
   loading="lazy"
   title="Fab Four gear-share comparison"
 ></iframe>
 
 <iframe
   class="fab-four-plot plot-average-survival"
-  src="{{ '/assets/plots/fab-four-gears/fab_four_average_survival_by_gear.html' | relative_url }}"
+  src="{{ '/assets/plots/Fab fours and Gears/fab_four_average_survival_by_gear.html' | relative_url }}"
   loading="lazy"
   title="Fab Four batting average and balls per dismissal by gear"
 ></iframe>
@@ -128,7 +128,7 @@ Williamson’s sheer calibre as an attacking batter felt ridiculous, and we assu
 
 <iframe
   class="fab-four-plot plot-major-opposition"
-  src="{{ '/assets/plots/fab-four-gears/fab_four_major_opposition_home_away.html' | relative_url }}"
+  src="{{ '/assets/plots/Fab fours and Gears/fab_four_major_opposition_home_away.html' | relative_url }}"
   loading="lazy"
   title="Fab Four high-gear home and away record against major opposition"
 ></iframe>
@@ -143,7 +143,7 @@ But there is no smoking gun. Even when Williamson accelerates to reach the high 
 
 <iframe
   class="fab-four-plot plot-ten-over-phases"
-  src="{{ '/assets/plots/fab-four-gears/williamson_missing_smoking_gun.html' | relative_url }}"
+  src="{{ '/assets/plots/Fab fours and Gears/williamson_missing_smoking_gun.html' | relative_url }}"
   loading="lazy"
   title="Fab Four high-gear ball share by ten-over phase"
 ></iframe>
@@ -158,7 +158,7 @@ More remarkably, this is the one part of Smith’s game that age has not managed
 
 <iframe
   class="fab-four-plot plot-smith-eras"
-  src="{{ '/assets/plots/fab-four-gears/smith_immortality_mortality.html' | relative_url }}"
+  src="{{ '/assets/plots/Fab fours and Gears/smith_immortality_mortality.html' | relative_url }}"
   loading="lazy"
   title="Steve Smith balls per dismissal by grouped gears across two eras"
 ></iframe>
@@ -173,7 +173,7 @@ Between 2014 and 2019, Kohli spent 42.6% of his balls in the middle gears, rough
 
 <iframe
   class="fab-four-plot plot-kohli-careers"
-  src="{{ '/assets/plots/fab-four-gears/kohli_three_careers.html' | relative_url }}"
+  src="{{ '/assets/plots/Fab fours and Gears/kohli_three_careers.html' | relative_url }}"
   loading="lazy"
   title="Virat Kohli across three career phases"
 ></iframe>
@@ -188,7 +188,7 @@ Then Root basically became good at cricket, and England discovered Bazball. His 
 
 <iframe
   class="fab-four-plot plot-root-handbrake"
-  src="{{ '/assets/plots/fab-four-gears/root_bazball_handbrake.html' | relative_url }}"
+  src="{{ '/assets/plots/Fab fours and Gears/root_bazball_handbrake.html' | relative_url }}"
   loading="lazy"
   title="Joe Root's gear distribution across three career phases"
 ></iframe>
@@ -197,7 +197,7 @@ Root’s reinvention has been built more on taking jogs than on finding new ways
 
 <iframe
   class="fab-four-plot plot-root-jogs"
-  src="{{ '/assets/plots/fab-four-gears/root_jog_economy.html' | relative_url }}"
+  src="{{ '/assets/plots/Fab fours and Gears/root_jog_economy.html' | relative_url }}"
   loading="lazy"
   title="Joe Root's jog percentage by gear before and after Bazball"
 ></iframe>
@@ -220,7 +220,7 @@ Smudger is the most fascinating, or perhaps the most erratic, among them all. He
 
 <iframe
   class="fab-four-plot plot-starting-innings"
-  src="{{ '/assets/plots/fab-four-gears/starting_an_innings.html' | relative_url }}"
+  src="{{ '/assets/plots/Fab fours and Gears/starting_an_innings.html' | relative_url }}"
   loading="lazy"
   title="First-segment gear distributions for the Fab Four"
 ></iframe>
@@ -239,14 +239,14 @@ Smith’s insomnia, on the other hand, actively causes his game to deteriorate a
 
 <iframe
   class="fab-four-plot plot-innings-average"
-  src="{{ '/assets/plots/fab-four-gears/across_innings_1_4.html' | relative_url }}"
+  src="{{ '/assets/plots/Fab fours and Gears/across_innings_1_4.html' | relative_url }}"
   loading="lazy"
   title="Fab Four batting average across innings one to four"
 ></iframe>
 
 <iframe
   class="fab-four-plot plot-innings-gears"
-  src="{{ '/assets/plots/fab-four-gears/innings_gear_explorer.html' | relative_url }}"
+  src="{{ '/assets/plots/Fab fours and Gears/innings_gear_explorer.html' | relative_url }}"
   loading="lazy"
   title="Steve Smith and Virat Kohli by innings, gear group and metric"
 ></iframe>
@@ -267,7 +267,7 @@ Kohli re-enters the conversation from the back, batting with the tail. He spent 
 
 <iframe
   class="fab-four-plot plot-peak-partners"
-  src="{{ '/assets/plots/fab-four-gears/peak_partner_story.html' | relative_url }}"
+  src="{{ '/assets/plots/Fab fours and Gears/peak_partner_story.html' | relative_url }}"
   loading="lazy"
   title="Fab Four partner patterns during 2014-19"
 ></iframe>
@@ -280,7 +280,7 @@ The poor man tried everything he could to fight the decline. First, he attempted
 
 <iframe
   class="fab-four-plot plot-kohli-post-2020"
-  src="{{ '/assets/plots/fab-four-gears/kohli_post_2020_gear_shares.html' | relative_url }}"
+  src="{{ '/assets/plots/Fab fours and Gears/kohli_post_2020_gear_shares.html' | relative_url }}"
   loading="lazy"
   title="Virat Kohli's gear shares from 2021 to 2024"
 ></iframe>
@@ -291,7 +291,7 @@ Between 2014 and 2019, Root lasted 85.6 balls per dismissal with top-five batter
 
 <iframe
   class="fab-four-plot plot-root-partners"
-  src="{{ '/assets/plots/fab-four-gears/root_alleged_partners.html' | relative_url }}"
+  src="{{ '/assets/plots/Fab fours and Gears/root_alleged_partners.html' | relative_url }}"
   loading="lazy"
   title="Joe Root's gear distribution by partner group across three eras"
 ></iframe>
