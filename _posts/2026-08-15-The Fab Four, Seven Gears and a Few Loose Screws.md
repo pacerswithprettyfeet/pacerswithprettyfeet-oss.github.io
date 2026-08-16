@@ -19,13 +19,13 @@ tags: [Fab Four, batting, gears]
   .plot-headingley { height: 550px; }
   .plot-monasteries, .plot-arsonists { height: 630px; }
   .plot-fingerprint { height: 430px; }
-  .plot-average-survival { height: 460px; }
+  .plot-average-survival { height: 470px; }
   .plot-major-opposition { height: 470px; }
   .plot-ten-over-phases { height: 490px; }
   .plot-smith-eras { height: 430px; }
   .plot-kohli-careers { height: 680px; }
   .plot-root-handbrake { height: 365px; }
-  .plot-root-jogs { height: 420px; }
+  .plot-root-jogs { height: 430px; }
   .plot-starting-innings { height: 420px; }
   .plot-innings-average { height: 405px; }
   .plot-innings-gears { height: 385px; }
@@ -59,15 +59,9 @@ We then use the gearbox to go over the careers of the Fab Four. Martin Crowe was
 
 To build the gearbox, we first need to divide an innings into phases with distinct scoring rates. We use PELT, an off-the-shelf change-point detection algorithm well suited to this purpose. A cruder approach would chop an innings into, say, fixed eight-ball blocks and calculate a strike rate for each. PELT instead lets the innings choose its own boundaries: a new segment begins when the scoring pattern changes enough, regardless of the length of the previous segment. In his legendary Headingley innings, Stokes went from barely scoring at all for his first 80 balls to assaulting Josh Hazlewood towards the end. That is precisely the kind of change in tempo that PELT captures. We calculate each phase’s strike rate and assign it to one of seven gears.
 
-| Gear | Strike rate |
-| ---: | ----------: |
-| 0 | 0–20 |
-| 1 | 20–40 |
-| 2 | 40–60 |
-| 3 | 60–80 |
-| 4 | 80–100 |
-| 5 | 100–130 |
-| 6 | 130+ |
+| Gear | 0 | 1 | 2 | 3 | 4 | 5 | 6 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Strike rate | 0–20 | 20–40 | 40–60 | 60–80 | 80–100 | 100–130 | 130+ |
 
 <iframe
   class="fab-four-plot plot-headingley"
